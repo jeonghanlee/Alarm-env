@@ -1,0 +1,20 @@
+[Unit]
+Description=@TARGET_NAME@ Service
+Documentation=@DOCURL@
+After=network.target 
+
+[Service]
+# User=
+# Group=
+
+ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGETPATH@/@TARGET_JAR_NAME@
+SuccessExitStatus=143 
+
+ExecReload=kill -SIGINT $MAINPID
+KillMode=process
+
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

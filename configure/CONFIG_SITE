@@ -1,12 +1,12 @@
 
 ### channelfinder installation location
-TARGET:=/opt/alarms
+TARGET_ROOT:=/opt/alarms
 #
 #
-TARGET_NAMES =alarm-server alarm-logger alarm-config-logger
+TARGET_NAMES = alarm-server alarm-logger alarm-config-logger
 #
 #
-INSTALL_LOCATIONS:=$(addprefix $(TARGET)/, $(TARGET_NAMES))
+#INSTALL_LOCATIONS:=$(sort $(addprefix $(TARGET)/, $(TARGET_NAMES)))
 
 ### One may not need to change the following variables
 ### SRC_GITURL used for git clone
