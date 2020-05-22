@@ -6,11 +6,12 @@ SRC_NAME:=phoebus
 
 
 ## Which the source tag / branch / hash id would like to use
-## 2020-04-21
-SRC_TAG:=0ef703a
+### 2020-05-21
+SRC_TAG:=475c1a4
 
-## Placeholder for the site-specific version control 
-SRC_VERSION:=04212020
+
+### Placeholder for the site-specific version control 
+SRC_VERSION:=$(SRC_TAG)
 
 
 -include $(TOP)/../RELEASE.local

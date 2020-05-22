@@ -18,7 +18,9 @@ endif
 #
 SITE_TEMPLATE_PATH:=$(TOP)/site-template
 SYSTEMD_PATH:=/etc/systemd/system
-SYSTEMD_FILENAME:=aaa.service
+
+SYSTEMD_FILENAMES:=$(addsuffix .service, $(TARGET_NAMES))
+
 #
 #
 VARS_EXCLUDES+=SRC_PATH_INFO

@@ -46,15 +46,17 @@ else
 endif
 
 
-.PHONY: build conf
+.PHONY: build $(SRC_PATHS)
 
-## Build Source
-build: 
-	$(QUIET)mvn -f $(SRC_PATH)/pom.xml clean install
 
-## Copy the site specific files into sources
-conf:
-	$(QUIET)sed -e "s:_KEYSTORE_:$(KEYSTORE_FILENAME):g" -e "s:_CFLDIF_:$(CFLDIF_FILENAME):g" < $(SITE_TEMPLATE_PATH)/application.properties.in > $(SITE_TEMPLATE_PATH)/application.properties
-	$(QUIET)cp $(SITE_TEMPLATE_PATH)/$(CFLDIF_FILENAME)     $(SITE_SPECIFIC_FILES_PATH)/
-	$(QUIET)cp $(SITE_TEMPLATE_PATH)/$(KEYSTORE_FILENAME)   $(SITE_SPECIFIC_FILES_PATH)/keystore/
-	$(QUIET)cp $(SITE_TEMPLATE_PATH)/application.properties $(SITE_SPECIFIC_FILES_PATH)/
+build: $(SRC_PATHS)
+
+$(SRC_PATHS): 
+	$(QUIET)mvn -f $@/ clean install -Dmaven.test.skip=true
+	
+.PHONY: build. build*
+
+build.%:
+	$(if $(filter $(strip $*), $(strip $(TARGET_NAMES))), $(QUIET)mvn -f $(SRC_ROOT)/services/$*/ clean install -Dmaven.test.skip=true, $(QUIET)echo "$* doesn't exist")
+FORCE:
+
