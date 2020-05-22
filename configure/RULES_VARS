@@ -21,11 +21,11 @@ _header:
 # https://www.cmcrossroads.com/article/printing-value-makefile-variable
 PRINT.%:
 	$(QUIET)echo $* = $($*)
-	$(QUIET)echo $*\'s origin is $(origin $*)
+#	$(QUIET)echo $*\'s origin is $(origin $*)
 
 print-%:
 	$(QUIET)echo $* = $($*)
-	$(QUIET)echo $*\'s origin is $(origin $*)
+#	$(QUIET)echo $*\'s origin is $(origin $*)
 
-FORCE:
+
 

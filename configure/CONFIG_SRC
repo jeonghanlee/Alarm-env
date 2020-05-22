@@ -6,12 +6,12 @@ INSTALL_DATA:=$(INSTALL) -m 644
 SUDO := sudo
 #
 #
-# SRC_PATH_INFO 1 : the directory is not there
-# SRC_PATH_INFO 0 : the directory is there
-SRC_PATH_INFO := $(shell test -d $(SRC_PATH) 1>&2 2> /dev/null; echo $$?)
+# SRC_ROOT_INFO 1 : the directory is not there
+# SRC_ROOT_INFO 0 : the directory is there
+SRC_ROOT_INFO := $(shell test -d $(SRC_ROOT) 1>&2 2> /dev/null; echo $$?)
 #
 #
-ifeq "$(SRC_PATH_INFO)" "1"
+ifeq "$(SRC_ROOT_INFO)" "1"
 INIT_SRC = 1
 endif
 #
@@ -23,7 +23,7 @@ SYSTEMD_FILENAMES:=$(addsuffix .service, $(TARGET_NAMES))
 
 #
 #
-VARS_EXCLUDES+=SRC_PATH_INFO
+VARS_EXCLUDES+=SRC_ROOT_INFO
 VARS_EXCLUDES+=INSTALL
 VARS_EXCLUDES+=INSTALL_PROGRAM
 VARS_EXCLUDES+=INSTALL_DATA

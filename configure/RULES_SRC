@@ -28,35 +28,37 @@ default: help
 ## Clone Source
 init:
 ifeq "$(INIT_SRC)" "1"
-	git clone $(SRC_GITURL) $(SRC_PATH)
-	cd $(SRC_PATH) && git checkout $(SRC_TAG)
+	git clone $(SRC_GITURL) $(SRC_ROOT)
+	cd $(SRC_ROOT) && git checkout $(SRC_TAG)
 else
-	$(QUIET)echo "$(SRC_PATH) exists. make distclean first, if one would like to restart it."
+	$(QUIET)echo "$(SRC_ROOT) exists. make distclean first, if one would like to restart it."
 endif
 
 deinit: distclean
+
 ## Clean Source
 distclean:
-ifneq ($(wildcard $(SRC_PATH)/.*),)
-	$(QUIET)echo "We've found $(SRC_PATH)"
+ifneq ($(wildcard $(SRC_ROOT)/.*),)
+	$(QUIET)echo "We've found $(SRC_ROOT)"
 	$(QUIET)echo "Removing ....."
-	$(QUIET)rm -rf $(SRC_PATH)
+	$(QUIET)rm -rf $(SRC_ROOT)
 else
-	$(QUIET)echo "There is no $(SRC_PATH)."
+	$(QUIET)echo "There is no $(SRC_ROOT)."
 endif
 
 
-.PHONY: build $(SRC_PATHS)
+.PHONY: build $(SRC_PATHS) build.
 
 
+## Build all services
 build: $(SRC_PATHS)
 
 $(SRC_PATHS): 
 	$(QUIET)mvn -f $@/ clean install -Dmaven.test.skip=true
 	
-.PHONY: build. build*
 
-build.%:
-	$(if $(filter $(strip $*), $(strip $(TARGET_NAMES))), $(QUIET)mvn -f $(SRC_ROOT)/services/$*/ clean install -Dmaven.test.skip=true, $(QUIET)echo "$* doesn't exist")
+build.%: FORCE
+	$(if $(filter $(strip $*), $(strip $(TARGET_NAMES))), $(QUIET)mvn -f $(SRC_ROOT)/services/$*/ clean install -Dmaven.test.skip=true, $(QUIET)echo ">> Target build.$* doesn't exist.\n>> Please check available tagets via make PRINT.TARGET_NAMES.")
+	
 FORCE:
 

@@ -11,7 +11,7 @@ INSTALL_LOCATIONS:=$(addprefix $(TARGET)/, $(TARGET_NAMES))
 ### One may not need to change the following variables
 ### SRC_GITURL used for git clone
 SRC_GITURL:=$(SRC_URL)/$(SRC_NAME)
-### SRC_PATH used for a local directory which is a clone git repository
+### SRC_ROOT used for a local directory which is a clone git repository
 #
 SRC_ROOT:=$(SRC_NAME)-src
 SRC_PATHS:=$(addprefix $(SRC_ROOT)/services/, $(TARGET_NAMES))
