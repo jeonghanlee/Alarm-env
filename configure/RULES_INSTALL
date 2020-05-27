@@ -1,96 +1,105 @@
 
-TARGET_JARS:=$(sort $(foreach dir,$(SRC_PATHS),$(wildcard $(dir)/target/*.jar)))
-TARGET_JARS_FILENAMES:=$(notdir $(TARGET_JARS))
-INSTALL_LOCATIONS:=$(addprefix $(TARGET_ROOT)/, $(basename $(TARGET_JARS_FILENAMES)))
 
 
+OPTIONS:=
 
 
-.PHONY: sd_config sd_install sd_status sd_stop sd_clean sd_enable
-
-sd_config:
-	$(QUIET)sed -e "s:_JAVAPATH_:$(JAVA_PATH):g" -e "s:_JAVAOPTS_:$(JAVA_OPTS):g" -e "s:_CFPATH_:$(INSTALL_LOCATION):g" -e "s:_CHANNELFINDER_JAR_NAME_:$(CFJAR_FILENAME):g" < $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME).in > $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME)
+# Now it may be difficult to figure out how to handle all independent options for each alarm service globally.
+# One can change
+#
+.PHONY: $(INSTALL_FILENAMES) $(SYSTEMD_FILENAMES) sd_config sd_install
 
 	
-sd_install: sd_config
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME) $(SYSTEMD_PATH)/
+sd_install: $(SYSTEMD_FILENAMES)
 	$(QUIET)$(SUDO) systemctl daemon-reload
-	
+
+$(SYSTEMD_FILENAMES): sd_config
+	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/$@ $(SYSTEMD_PATH)/
+
+
+## Generate the system default systemd unit file(s)
+sd_config: $(INSTALL_FILENAMES)
+
+$(INSTALL_FILENAMES):
+	$(eval $(if $(findstring alarm-server,$@), OPTIONS=$(OPTIONS_SERVER) ))
+	$(eval $(if $(findstring alarm-logger,$@), OPTIONS=$(OPTIONS_LOGGERS) ))
+	$(eval $(if $(findstring alarm-config-logger,$@), OPTIONS=$(OPTIONS_CONFIG_LOGGER) ))
+	$(if $(wildcard $(SITE_TEMPLATE_PATH)/$(basename $@).service),,$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s:@TARGET_NAME@:$@:g" -e "s|@DOCURL@|$(SRC_GITURL)|g"  -e "s|@TARGETPATH@|$(TARGET_ROOT)/$(basename $@)|g" -e "s|@TARGET_JAR_NAME@|$@|g"  -e "s|@OPTIONS@|$(OPTIONS)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(basename $@).service)
+
+
+.PHONY: sd_status sd_start sd_stop sd_restart sd_clean sd_enable 
+
+
 sd_status:
-	$(QUIET) systemctl status -l $(SYSTEMD_FILENAME) | cat
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) systemctl status -l  $(sd_unit) | cat;)
 
 sd_start:
-	$(QUIET)$(SUDO) systemctl start $(SYSTEMD_FILENAME)
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) systemctl start  $(sd_unit);)
 
 sd_stop:
-	$(QUIET)$(SUDO) systemctl stop $(SYSTEMD_FILENAME)
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) systemctl stop  $(sd_unit);)
 
 sd_restart:
-	$(QUIET)$(SUDO) systemctl restart $(SYSTEMD_FILENAME)
-
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) systemctl restart $(sd_unit);)
 
 sd_clean:
-	$(QUIET)$(SUDO) systemctl disable $(SYSTEMD_FILENAME)
-	$(QUIET)$(SUDO) rm -f $(SYSTEMD_PATH)/$(SYSTEMD_FILENAME)
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) rm -f $(SYSTEMD_PATH)/$(sd_unit);)
 
-sd_enable:
-	$(QUIET)$(SUDO) systemctl enable $(SYSTEMD_FILENAME)
+sd_disable:
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) systemctl disable $(sd_unit);)
 	
-
-.PHONY: cf_status cf_start cf_stop cf_restart cf_install install src_versions uninstall
-
-cf_status: sd_status
-
-cf_start: sd_start
-
-cf_stop: sd_stop
-
-cf_restart: sd_restart
+sd_enable:
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) systemctl enable $(sd_unit);)
 
 
+.PHONY: install uninstall reinstall restart 
 
 
-## Install Service related files 
+## Install Jar and systemd unit files
 install: tg_install sd_install sd_enable
 	$(QUIET)echo "----- Note that one should start it and check its status via "
-	$(QUIET)echo "----- systemctl start  $(SYSTEMD_FILENAME)"
-	$(QUIET)echo "----- systemctl status $(SYSTEMD_FILENAME)"
+	$(QUIET)echo "----- systemctl start  $(SYSTEMD_FILENAMES)"
+	$(QUIET)echo "----- systemctl status $(SYSTEMD_FILENAMES)"
 
 
-## Uninstall 
-uninstall: tg_uninstall
-	$(QUIET)$(SUDO) rm -rf $(TARGET_ROOT)	   
+## Stop systemd service(s), remove all
+uninstall: sd_stop sd_clean tg_uninstall
+ifeq "$(TARGET)" "all"
+	$(QUIET)echo "Removing $(TARGET_ROOT)..."
+	$(SUDO) rm -rf $(TARGET_ROOT)	   
+endif
+
+## Build and install
+reinstall: build install
 
 
+restart: uninstall reinstall sd_start sd_status
 
-reinstall: conf build install
+# ##
 
-restart: uninstall reinstall cf_start cf_status
-
-##
-
-.PHONY:  tg_install tg_uninstall src_versions $(INSTALL_LOCATIONS) $(TARGET_JARS)
+.PHONY:  tg_install tg_uninstall src_version $(INSTALL_LOCATIONS) $(TARGET_NAMES)
 
 
-tg_install: $(INSTALL_LOCATIONS) $(TARGET_JARS)
+tg_install: $(INSTALL_LOCATIONS) $(TARGET_NAMES)
 	$(QUIET) rm -f $(SITE_TEMPLATE_PATH)/.versions
 
-tg_uninstall: 
+tg_uninstall:
+	$(QUIET)echo "Removing $(INSTALL_LOCATIONS)..."
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATIONS)
-	
-
-$(INSTALL_LOCATIONS): src_versions
-	$(QUIET)$(SUDO) $(INSTALL) -d $@
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $@/
 
 
-$(TARGET_JARS):
-	$(QUIET)$(SUDO) $(INSTALL) -m 744 $@  $(TARGET_ROOT)/$(notdir $(basename $@))
+$(TARGET_NAMES): src_version 
+	$(QUIET)$(SUDO) $(INSTALL) -d $(TARGET_ROOT)/$@
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(TARGET_ROOT)/$@/
+	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_ROOT)/services/$@/target/service-$@-*.jar  $(TARGET_ROOT)/$@/$@.jar
 
-src_versions:
+src_version: FORCE
 	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC URL : $(SRC_GITURL)"  >> $(SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC VER : $(SRC_TAG)"     >> $(SITE_TEMPLATE_PATH)/.versions
-	
 
 
+FORCE:
+
+
+VARS_EXCLUDES+=OPTIONS

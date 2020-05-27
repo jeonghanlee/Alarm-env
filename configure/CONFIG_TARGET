@@ -1,0 +1,29 @@
+
+TARGET?=all
+
+ifneq "$(TARGET)" "all"
+ifneq "$(filter $(strip $(TARGET)), $(strip $(TARGET_NAMES)))" ""
+TARGET_NAMES:=$(TARGET)
+else
+$(error $(TARGET) doesn't exist in $(TARGET_NAMES) )
+endif
+endif
+
+SD_NAMES:=$(TARGET_NAMES)
+
+SRC_PATHS:=$(addprefix $(SRC_ROOT)/services/, $(TARGET_NAMES))
+
+#TARGET_JARS:=$(sort $(foreach dir,$(SRC_PATHS),$(wildcard $(dir)/target/*.jar)))
+#TARGET_JARS_FILENAMES:=$(patsubst %-SNAPSHOT.jar, %.jar, $(patsubst service-%, %, $(notdir $(TARGET_JARS))))
+
+# We use INSTALL_LOCATIONS in the following rules:
+# 1) uninstall
+# 2) exist 
+INSTALL_LOCATIONS:=$(addprefix $(TARGET_ROOT)/, $(TARGET_NAMES))
+INSTALL_FILENAMES:=$(addsuffix .jar, $(TARGET_NAMES))
+SYSTEMD_FILENAMES:=$(addsuffix .service, $(TARGET_NAMES))
+
+
+#VARS_EXCLUDES+=INSTALL_LOCATIONS2
+#VARS_EXCLUDES+=INSTALL_JARS
+#VARS_EXCLUDES+=TARGET_JARS_FILENAMES_

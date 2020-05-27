@@ -7,7 +7,7 @@ After=network.target
 # User=
 # Group=
 
-ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGETPATH@/@TARGET_JAR_NAME@
+ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGETPATH@/@TARGET_JAR_NAME@ @OPTIONS@
 SuccessExitStatus=143 
 
 ExecReload=kill -SIGINT $MAINPID

@@ -2,6 +2,8 @@ VARS_EXCLUDES+=.SHELLSTATUS
 VARS_EXCLUDES+=INIT_SRC
 VARS_EXCLUDES+=SITE_SPECIFIC_FILES_PATH
 
+LEVEL?=2
+
 SRC_VARIABLES:=$(sort $(filter-out $(VARS_EXCLUDES) VARS_EXCLUDES,$(.VARIABLES)))
 
 .PHONY : env vars header
@@ -28,4 +30,6 @@ print-%:
 #	$(QUIET)echo $*\'s origin is $(origin $*)
 
 
-
+exist:
+	$(QUIET)$(foreach dir,$(INSTALL_LOCATIONS), tree -aL $(LEVEL) $(dir);)
+	$(QUIET)-sudo ls -ltar $(SYSTEMD_PATH)/alarm-*.service

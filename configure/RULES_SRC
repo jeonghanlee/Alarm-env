@@ -47,18 +47,29 @@ else
 endif
 
 
-.PHONY: build $(SRC_PATHS) build.
+.PHONY: build $(SRC_PATHS)
 
 
 ## Build all services
-build: $(SRC_PATHS)
+build: $(SRC_PATHS) 
 
 $(SRC_PATHS): 
 	$(QUIET)mvn -f $@/ clean install -Dmaven.test.skip=true
-	
 
-build.%: FORCE
-	$(if $(filter $(strip $*), $(strip $(TARGET_NAMES))), $(QUIET)mvn -f $(SRC_ROOT)/services/$*/ clean install -Dmaven.test.skip=true, $(QUIET)echo ">> Target build.$* doesn't exist.\n>> Please check available tagets via make PRINT.TARGET_NAMES.")
+# endif
+
+# ifneq "$(TARGET)" "all"
+# build: 
+# ifneq "$(filter $(strip $(TARGET)), $(strip $(TARGET_NAMES)))" ""
+# 	$(QUIET)mvn -f $(SRC_PATH) clean install -Dmaven.test.skip=true
+# else
+# 	$(QUIET)echo ">> Selected TARGET $(TARGET) doesn't exist."
+# 	$(QUIET)echo ">> Please choose an available TARGET from \"$(TARGET_NAMES)\"."
+# endif
+# endif
+
+# # build.%: FORCE
+# # 	$(if $(filter $(strip $*), $(strip $(TARGET_NAMES))), $(QUIET)mvn -f $(SRC_ROOT)/services/$*/ clean install -Dmaven.test.skip=true, $(QUIET)echo ">> Target build.$* doesn't exist.\n>> Please check available tagets via make PRINT.TARGET_NAMES.")
 	
-FORCE:
+# FORCE:
 

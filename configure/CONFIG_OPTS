@@ -1,0 +1,23 @@
+
+
+OPTIONS_SERVER:=-server localhost:9092 
+OPTIONS_SERVER+=-config Accelerator
+OPTIONS_SERVER+=-settings settings.xml
+OPTIONS_SERVER+=-logging logging.properties
+OPTIONS_SERVER+=-export config.xml
+OPTIONS_SERVER+=-import config.xml
+
+
+OPTIONS_LOGGER:=-topics
+OPTIONS_LOGGER+= MY,
+OPTIONS_LOGGER+= ALARM,
+OPTIONS_LOGGER+= CONFIGS
+
+OPTIONS_CONFIG_LOGGER:=
+
+
+# These allow developers to override the CONFIG_OPTS variable
+# settings without having to modify the configure/CONFIG_OPTS
+# file itself.
+-include $(TOP)/../CONFIG_OPTS.local
+-include $(TOP)/configure/CONFIG_OPTS.local
