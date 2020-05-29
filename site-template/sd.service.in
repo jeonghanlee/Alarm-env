@@ -7,14 +7,16 @@ After=network.target
 # User=
 # Group=
 
-ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGETPATH@/@TARGET_JAR_NAME@ @OPTIONS@
-SuccessExitStatus=143 
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=@TARGET_NAME@
+WorkingDirectory=@TARGETPATH@
 
-ExecReload=kill -SIGINT $MAINPID
+ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGETPATH@/@TARGET_JAR_NAME@ @OPTIONS@ 
+#SuccessExitStatus=143 
+
+ExecReload=kill -s TERM $MAINPID
 KillMode=process
-
-Restart=on-failure
-RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target

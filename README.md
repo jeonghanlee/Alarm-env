@@ -6,10 +6,15 @@ Configuration Environment for Alarm Trio at https://github.com/ControlSystemStud
 # Alarm Trio
 
 ## alarm-server
+* Standard Java Application
+
 
 ## alarm-logger
+* Java SpringBoot Application 
 
 ## alarm-config-logger
+* Java SpringBoot Application
+
 
 # Configuration defined in each systemd unit file
 
@@ -82,6 +87,11 @@ $ make uninstall
 ```
 $ make exist
 ```
+The default `tree` `LEVEL` is 1, one can explore more with the following option:
+```
+$ make exist LEVEL=2
+```
+
 
 * Reinstall Trio
 ```
@@ -108,6 +118,13 @@ $ make TARGET=alarm-config-logger install
 $ make TARGET=alarm-server uninstall
 $ make TARGET=alarm-logger uninstall
 $ make TARGET=alarm-config-logger uninstall
+```
+
+* Reinstall 
+```
+$ make TARGET=alarm-server reinstall
+$ make TARGET=alarm-logger reinstall
+$ make TARGET=alarm-config-logger reinstall
 ```
 
 

@@ -34,6 +34,10 @@ else
 	$(QUIET)echo "$(SRC_ROOT) exists. make distclean first, if one would like to restart it."
 endif
 
+
+clean: sd_config_clean
+
+
 deinit: distclean
 
 ## Clean Source
@@ -53,7 +57,8 @@ endif
 ## Build all services
 build: $(SRC_PATHS) 
 
-$(SRC_PATHS): 
+$(SRC_PATHS):
+	$(if $(findstring alarm-logger,$@), $(QUIET)$(SUDO) cp -f $(SITE_TEMPLATE_PATH)/alarm_logger.properties   $@/src/main/resources/)
 	$(QUIET)mvn -f $@/ clean install -Dmaven.test.skip=true
 
 # endif

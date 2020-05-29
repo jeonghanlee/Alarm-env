@@ -20,8 +20,12 @@ $(SYSTEMD_FILENAMES): sd_config
 ## Generate the system default systemd unit file(s)
 sd_config: $(INSTALL_FILENAMES)
 
+sd_config_clean:
+	$(QUIET)$(foreach sd_unit,$(SYSTEMD_FILENAMES), $(SUDO) rm -f $(SITE_TEMPLATE_PATH)/$(sd_unit);)
+
+
 $(INSTALL_FILENAMES):
-	$(eval $(if $(findstring alarm-server,$@), OPTIONS=$(OPTIONS_SERVER) ))
+	$(eval $(if $(findstring alarm-server,$@), OPTIONS=$(OPTIONS_SERVER) -settings $(TARGET_ROOT)/$(basename $@)/settings.ini ))
 	$(eval $(if $(findstring alarm-logger,$@), OPTIONS=$(OPTIONS_LOGGERS) ))
 	$(eval $(if $(findstring alarm-config-logger,$@), OPTIONS=$(OPTIONS_CONFIG_LOGGER) ))
 	$(if $(wildcard $(SITE_TEMPLATE_PATH)/$(basename $@).service),,$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s:@TARGET_NAME@:$@:g" -e "s|@DOCURL@|$(SRC_GITURL)|g"  -e "s|@TARGETPATH@|$(TARGET_ROOT)/$(basename $@)|g" -e "s|@TARGET_JAR_NAME@|$@|g"  -e "s|@OPTIONS@|$(OPTIONS)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(basename $@).service)
@@ -63,17 +67,17 @@ install: tg_install sd_install sd_enable
 
 
 ## Stop systemd service(s), remove all
-uninstall: sd_stop sd_clean tg_uninstall
+uninstall: sd_stop sd_clean sd_config_clean tg_uninstall
 ifeq "$(TARGET)" "all"
 	$(QUIET)echo "Removing $(TARGET_ROOT)..."
 	$(SUDO) rm -rf $(TARGET_ROOT)	   
 endif
 
 ## Build and install
-reinstall: build install
+reinstall: uninstall install
 
 
-restart: uninstall reinstall sd_start sd_status
+restart: uninstall build sd_config_clean install sd_start sd_status
 
 # ##
 
@@ -87,11 +91,15 @@ tg_uninstall:
 	$(QUIET)echo "Removing $(INSTALL_LOCATIONS)..."
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATIONS)
 
-
+# alarm-server isn't the springboot application, so we have to move all lib/* into target
 $(TARGET_NAMES): src_version 
 	$(QUIET)$(SUDO) $(INSTALL) -d $(TARGET_ROOT)/$@
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/settings.ini $(TARGET_ROOT)/
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(TARGET_ROOT)/$@/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_ROOT)/services/$@/target/service-$@-*.jar  $(TARGET_ROOT)/$@/$@.jar
+	$(if $(findstring alarm-server,$@), $(QUIET)$(SUDO) cp -rp $(SRC_ROOT)/services/$@/target/lib  $(SITE_TEMPLATE_PATH)/settings.ini   $(TARGET_ROOT)/$@/)
+
+	
 
 src_version: FORCE
 	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(SITE_TEMPLATE_PATH)/.versions
