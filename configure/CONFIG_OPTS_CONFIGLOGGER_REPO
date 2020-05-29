@@ -1,0 +1,7 @@
+
+CONFIGLOGGER_REPO_LOCAL_LOCATION:=/tmp/alarm-config-logger
+CONFIGLOGGER_REPO_REMOTE_LOCATION:=http://github.com/jeonghanlee/alarm-config-logger
+CONFIGLOGGER_REPO_USERNAME:=jeonghanlee
+CONFIGLOGGER_REPO_PASSWORD:=
+
+

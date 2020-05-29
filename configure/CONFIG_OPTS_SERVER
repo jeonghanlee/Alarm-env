@@ -1,0 +1,26 @@
+
+
+# All options are defined in AlarmServerMain.java
+# -h* does work
+#
+
+SERVER_SETTINGS:=alarm-server_settings.ini
+SERVER_LOGGING_PROPERTIES:=alarm-server_logging.properties
+
+### Configuration / Topics
+OPTIONS_SERVER:=-config
+OPTIONS_SERVER+=$(ALARM_CONFIG_TOPICS)
+### Kafka Server (server, bootstrap.servers)
+OPTIONS_SERVER+=-server
+OPTIONS_SERVER+=$(KFKA_URL)
+### Settings / Properties for this service
+OPTIONS_SERVER+=-settings
+OPTIONS_SERVER+=$(INSTALL_LOCATION_SERVER)/$(SERVER_SETTINGS)
+### Logging properties
+OPTIONS_SERVER+=-logging
+OPTIONS_SERVER+=$(INSTALL_LOCATION_SERVER)/$(SERVER_LOGGING_PROPERTIES)
+### Extra
+OPTIONS_SERVER+=-noshell
+#OPTIONS_SERVER+=-export config.xml
+#OPTIONS_SERVER+=-import config.xml
+

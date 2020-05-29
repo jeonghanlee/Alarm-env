@@ -1,22 +1,11 @@
 
+KFKA_URL:=$(KFKA_SERVER):$(KFKA_SERVER_PORT)
 
-OPTIONS_SERVER:=-server 10.0.0.49:9092 
-OPTIONS_SERVER+=-config Accelerator
-#OPTIONS_SERVER+=-settings alarm.ini
-#OPTIONS_SERVER+=-logging logging.properties
-#OPTIONS_SERVER+=-export config.xml
-#OPTIONS_SERVER+=-import config.xml
-
-
-OPTIONS_LOGGER:=-topics Accelerator
-OPTIONS_LOGGER+=-bootstrap.servers 10.0.0.49:9092
-OPTIONS_LOGGER+=-es_host localhost -es_port 9200 
-
-OPTIONS_CONFIG_LOGGER:=
+include $(TOP)/configure/CONFIG_OPTS_SERVER
+include $(TOP)/configure/CONFIG_OPTS_LOGGER
+include $(TOP)/configure/CONFIG_OPTS_CONFIGLOGGER_REPO
+include $(TOP)/configure/CONFIG_OPTS_CONFIGLOGGER
 
 
-# These allow developers to override the CONFIG_OPTS variable
-# settings without having to modify the configure/CONFIG_OPTS
-# file itself.
--include $(TOP)/../CONFIG_OPTS.local
--include $(TOP)/configure/CONFIG_OPTS.local
+VARS_EXCLUDES+=%_PROPERTIES
+VARS_EXCLUDES+=%_SETTINGS

@@ -1,3 +1,4 @@
+# -*- mode: Makefile;-*-
 
 define patch_src
 for i in $(wildcard $(TOP)/patch/*p0.patch); do\

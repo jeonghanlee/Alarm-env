@@ -31,9 +31,9 @@ $make sd_config
 ```
 or
 ```
-$ make TARGET=alarm-server sd_config
-$ make TARGET=alarm-logger sd_config
-$ make TARGET=alarm-config-logger sd_config
+$ make sd_config.alarm-server
+$ make sd_config.alarm-logger
+$ make sd_config.alarm-config-logge
 ```
 
 Then please edit `*.service` file according to individual options. 
@@ -42,11 +42,29 @@ Then please edit `*.service` file according to individual options.
 $make install 
 ```
 or 
+```
+$ make install.alarm-server
+$ make install.alarm-logger
+$ make install.alarm-config-logger
+```
+
+# Typical Setup Rule
 
 ```
-$ make TARGET=alarm-server install
-$ make TARGET=alarm-logger install
-$ make TARGET=alarm-config-logger install
+$ make init
+$ make build
+$ make sd_config
+$ make install
+$ make sd_start
+```
+For alarm-server
+
+```
+$ make init
+$ make build.alarm-server
+$ make sd_config.alarm-server
+$ make install.alarm-server
+$ make sd_start.alarm-server
 ```
 
 
@@ -74,13 +92,19 @@ $ make vars
 ```
 $ make build
 ```
-* Install Trio
+* Install Trio : Should run `make build` first
+
 ```
 $ make install
 ```
 * Uninstall Trio
 ```
 $ make uninstall
+```
+
+* Reinstall Trio
+```
+$ make Reinstall
 ```
 
 * Check installation path, and systemd unit file (tree is required)
@@ -92,47 +116,87 @@ The default `tree` `LEVEL` is 1, one can explore more with the following option:
 $ make exist LEVEL=2
 ```
 
+* Restart everything
 
-* Reinstall Trio
 ```
-$ make reinstall
+$ make restart
 ```
+
+
 
 ## Individual One
 
 * Build
 ```
-$ make TARGET=alarm-server build
-$ make TARGET=alarm-logger build
-$ make TARGET=alarm-config-logger build
+$ make build.alarm-server
+$ make build.alarm-logger
+$ make build.alarm-config-logger
 ```
-* Install
+
+* Generate systemd unit files
+One can generate it by hand, please look at `site-template/sd.service.in`
 ```
-$ make TARGET=alarm-server install
-$ make TARGET=alarm-logger install
-$ make TARGET=alarm-config-logger install
+$ make sd_config.alarm-server
+$ make sd_config.alarm-logger
+$ make sd_config.alarm-config-logger
+
+```
+
+* Install : should run `make build.TARGET` first
+This rule contains `sd_install.TARGET`, so the corresponding systemd unit file should be in `site-template` path. We don't generate it automatically by `install` rule in order to give a possiblity to update it before installation. 
+** Install the systemd unit file
+** Run `systemctl daemon-reload`
+** Enable that systemd unit
+```
+$ make install.alarm-server
+$ make install.alarm-logger
+$ make install.alarm-config-logger
 ```
 
 * Uninstall 
+** Stop the systemd service
+** Disable the systemd service
+** Remove the systemd unit file
+** Remove the corresponding alarm service
+
 ```
-$ make TARGET=alarm-server uninstall
-$ make TARGET=alarm-logger uninstall
-$ make TARGET=alarm-config-logger uninstall
+$ make uninstall.alarm-server
+$ make uninstall.alarm-logger
+$ make uninstall.alarm-config-logger
 ```
 
-* Reinstall 
+* Reinstall (uninstall / install)
 ```
-$ make TARGET=alarm-server reinstall
-$ make TARGET=alarm-logger reinstall
-$ make TARGET=alarm-config-logger reinstall
+$ make reinstall.alarm-server
+$ make reinstall.alarm-logger
+$ make reinstall.alarm-config-logger
 ```
 
 
 * Check installation path, and systemd unit file
 ```
-$ make TARGET=alarm-server exist
-$ make TARGET=alarm-logger exist
-$ make TARGET=alarm-config-logger exist
+$ make exist.alarm-server
+$ make exist.alarm-logger
+$ make exist.alarm-config-logger
 ```
 
+
+
+
+* Start / stop / status / restart service
+** `sd_start` can be replaced with `sd_status`, `sd_stop`, `sd_restart`, `sd_disable` and `sd_enable`. 
+
+```
+$ make sd_start.alarm-server
+$ make sd_start.alarm-logger
+$ make sd_start.alarm-config-logger
+```
+
+* Restart everything
+
+```
+$ make restart.alarm-server
+$ make restart.alarm-logger
+$ make restart.alarm-config-logger
+```
 

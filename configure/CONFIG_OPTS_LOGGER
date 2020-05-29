@@ -1,0 +1,32 @@
+
+LOGGER_PROPERTIES:=alarm-logger.properties
+LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
+
+# All options are defined in AlarmLoggingServer.java
+# -h* doesn't work
+#
+### Configuration / Topics
+OPTIONS_LOGGER:=-topics
+OPTIONS_LOGGER+=$(ALARM_CONFIG_TOPICS)
+### Kafka Server (server, bootstrap.servers)
+OPTIONS_LOGGER+=-bootstrap.servers
+OPTIONS_LOGGER+=$(KFKA_URL)
+### Settings / Properties for this service
+OPTIONS_LOGGER+=-properties
+OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_PROPERTIES)
+### Logging properties
+OPTIONS_LOGGER+=-logging
+OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_LOGGING_PROPERTIES)
+### Extra
+OPTIONS_LOGGER+=-noshell
+OPTIONS_LOGGER+=-es_host
+OPTIONS_LOGGER+=$(ES_SERVER)
+OPTIONS_LOGGER+=-es_port
+OPTIONS_LOGGER+=$(ES_PORT)
+OPTIONS_LOGGER+=-es_sniff
+OPTIONS_LOGGER+=false
+OPTIONS_LOGGER+=-date_span_units
+OPTIONS_LOGGER+=M
+OPTIONS_LOGGER+=-date_span_value
+OPTIONS_LOGGER+=1
+

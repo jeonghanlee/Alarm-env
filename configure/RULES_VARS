@@ -1,10 +1,13 @@
 VARS_EXCLUDES+=.SHELLSTATUS
 VARS_EXCLUDES+=INIT_SRC
 VARS_EXCLUDES+=SITE_SPECIFIC_FILES_PATH
+VARS_EXCLUDES+=LEVEL
+VARS_EXCLUDES+=%_ROOT
 
 LEVEL?=1
 
 SRC_VARIABLES:=$(sort $(filter-out $(VARS_EXCLUDES) VARS_EXCLUDES,$(.VARIABLES)))
+
 
 .PHONY : env vars header
 
@@ -30,6 +33,22 @@ print-%:
 #	$(QUIET)echo $*\'s origin is $(origin $*)
 
 
-exist:
-	$(QUIET)$(foreach dir,$(INSTALL_LOCATIONS), tree -aL $(LEVEL) $(dir);)
-	$(QUIET)-sudo ls -ltar $(SYSTEMD_PATH)/alarm-*.service
+.PHONY : exist exist.alarm-server exist.alarm-server exist.alarm-server
+
+exist: exist.alarm-server exist.alarm-logger exist.alarm-config-logger
+
+
+exist.alarm-server:
+	$(if $(wildcard $(INSTALL_LOCATION_SERVER)), tree -aL $(LEVEL) $(INSTALL_LOCATION_SERVER), $(QUIET)echo "No $(INSTALL_LOCATION_SERVER)")
+	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server.service), $(QUIET)$(SUDO) ls -ltar $(SYSTEMD_PATH)/alarm-server.service,$(QUIET)echo "No alarm-server.service unit file")
+
+exist.alarm-logger:
+	$(if $(wildcard $(INSTALL_LOCATION_LOGGER)), tree -aL $(LEVEL) $(INSTALL_LOCATION_LOGGER), $(QUIET)echo "No $(INSTALL_LOCATION_LOGGER)")
+	$(if $(wildcard $(SYSTEMD_PATH)/alarm-logger.service), $(QUIET)$(SUDO) ls -ltar $(SYSTEMD_PATH)/alarm-logger.service,$(QUIET)echo "No alarm-logger.service unit file")
+
+
+exist.alarm-config-logger:
+	$(if $(wildcard $(INSTALL_LOCATION_CONFIGLOGGER)), tree -aL $(LEVEL) $(INSTALL_LOCATION_CONFIGLOGGER), $(QUIET)echo "No $(INSTALL_LOCATION_CONFIGLOGGER)")
+	$(if $(wildcard $(SYSTEMD_PATH)/alarm-config-logger.service), $(QUIET)$(SUDO) ls -ltar $(SYSTEMD_PATH)/alarm-config-logger.service,$(QUIET)echo "No alarm-config-logger.service unit file")
+
+	

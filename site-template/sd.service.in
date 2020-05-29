@@ -10,9 +10,9 @@ After=network.target
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=@TARGET_NAME@
-WorkingDirectory=@TARGETPATH@
 
-ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGETPATH@/@TARGET_JAR_NAME@ @OPTIONS@ 
+
+ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
 #SuccessExitStatus=143 
 
 ExecReload=kill -s TERM $MAINPID

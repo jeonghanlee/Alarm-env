@@ -1,4 +1,4 @@
-#
+# -*- mode: Makefile;-*-
 .DEFAULT_GOAL := help
 
 .PHONY: help default init distclean deinit
@@ -35,13 +35,10 @@ else
 endif
 
 
-clean: sd_config_clean
-
-
 deinit: distclean
 
 ## Clean Source
-distclean:
+distclean: clean
 ifneq ($(wildcard $(SRC_ROOT)/.*),)
 	$(QUIET)echo "We've found $(SRC_ROOT)"
 	$(QUIET)echo "Removing ....."
@@ -51,30 +48,26 @@ else
 endif
 
 
-.PHONY: build $(SRC_PATHS)
+.PHONY: build build.alarm-server build.alarm-logger build.alarm-config-logger 
+
+build: build.alarm-server build.alarm-logger build.alarm-config-logger
+
+build.alarm-server:
+	$(QUIET)mvn -f $(SRC_PATH_SERVER) clean install -Dmaven.test.skip=true
+
+build.alarm-logger:
+	$(QUIET)mvn -f $(SRC_PATH_LOGGER) clean install -Dmaven.test.skip=true
+
+build.alarm-config-logger:
+	$(QUIET)mvn -f $(SRC_PATH_CONFIGLOGGER) clean install -Dmaven.test.skip=true
 
 
-## Build all services
-build: $(SRC_PATHS) 
+restart: restart.alarm-server restart.alarm-logger restart.alarm-config-logger
 
-$(SRC_PATHS):
-	$(if $(findstring alarm-logger,$@), $(QUIET)$(SUDO) cp -f $(SITE_TEMPLATE_PATH)/alarm_logger.properties   $@/src/main/resources/)
-	$(QUIET)mvn -f $@/ clean install -Dmaven.test.skip=true
+restart.alarm-server: uninstall.alarm-server build.alarm-server sd_config.alarm-server install.alarm-server sd_start.alarm-server
 
-# endif
+restart.alarm-logger: uninstall.alarm-logger build.alarm-logger sd_config.alarm-logger install.alarm-logger sd_start.alarm-logger
 
-# ifneq "$(TARGET)" "all"
-# build: 
-# ifneq "$(filter $(strip $(TARGET)), $(strip $(TARGET_NAMES)))" ""
-# 	$(QUIET)mvn -f $(SRC_PATH) clean install -Dmaven.test.skip=true
-# else
-# 	$(QUIET)echo ">> Selected TARGET $(TARGET) doesn't exist."
-# 	$(QUIET)echo ">> Please choose an available TARGET from \"$(TARGET_NAMES)\"."
-# endif
-# endif
-
-# # build.%: FORCE
-# # 	$(if $(filter $(strip $*), $(strip $(TARGET_NAMES))), $(QUIET)mvn -f $(SRC_ROOT)/services/$*/ clean install -Dmaven.test.skip=true, $(QUIET)echo ">> Target build.$* doesn't exist.\n>> Please check available tagets via make PRINT.TARGET_NAMES.")
-	
-# FORCE:
+restart.alarm-config-logger: uninstall.alarm-config-logger build.alarm-config-logger sd_config.alarm-config-logger install.alarm-config-logger sd_start.alarm-config-logger
+# .PHONY: build $(SRC_PATHS)
 

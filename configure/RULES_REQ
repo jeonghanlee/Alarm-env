@@ -1,3 +1,4 @@
+# -*- mode: Makefile;-*-
 
 # .PHONY: es_install es_start es_status es_mapping es_mapping_clean es_all
 
