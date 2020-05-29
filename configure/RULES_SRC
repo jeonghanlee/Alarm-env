@@ -29,13 +29,17 @@ default: help
 
 ## Clone Source
 
-init: __init core-build alarm-model-build
+ifeq "$(INIT_SRC)" "1"
+#init: __init core-build alarm-model-build save-and-restore-build
+init: __init phoebus-build
 
 __init:
-ifeq "$(INIT_SRC)" "1"
 	git clone $(SRC_GITURL) $(SRC_ROOT)
 	cd $(SRC_ROOT) && git checkout $(SRC_TAG)
 else
+init: __init 
+
+__init:
 	$(QUIET)echo "$(SRC_ROOT) exists. make distclean first, if one would like to restart it."
 endif
 

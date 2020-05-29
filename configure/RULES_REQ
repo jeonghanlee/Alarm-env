@@ -1,19 +1,25 @@
 # -*- mode: Makefile;-*-
 
 
-.PHONY: core-build alarm-model-build save-and-restore-model-build
+.PHONY: core-build alarm-build save-and-restore-build phoebus-build
 # Phoebus doesn't own phoebus.org, so we cannot download Phoebus snapshot from sonatype,
 # So, it is mandatory to build Phoebus first, before we build any of Alarm services.
 # alarm-server        : core-framework, core-util, core-pv, core-formula, core-email, app-alarm-model
 # alarm-logger        : core-util, app-alarm-model
 # alarm-config-logger : app-alarm-model
 # save-and-restore    : app-save-and-retore-model
-core-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects framework,util,pv,formula,email
+phoebus-build:
+	$(QUIET) mvn -f $(SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
 
-alarm-model-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/app/alarm/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model
+core-build:
+	$(QUIET) mvn -f $(SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true 
+#	$(QUIET) mvn -f $(SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects util,vtype,formula,framework,pva,pv,email
+
+alarm-build:
+	$(QUIET) mvn -f $(SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects alarm
+#	$(QUIET) mvn -f $(SRC_ROOT)/app/alarm/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model
 
 # Potential extension for near future. 
-save-and-restore-model-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/app/save-and-restore/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model
+save-and-restore-build:
+	$(QUIET) mvn -f $(SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects save-and-restore
+
