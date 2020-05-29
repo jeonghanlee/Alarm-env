@@ -1,6 +1,8 @@
 # -*- mode: Makefile;-*-
 .DEFAULT_GOAL := help
 
+MVN_OPTS:=
+
 .PHONY: help default init distclean deinit
 
 # # help is defined in 
@@ -53,13 +55,13 @@ endif
 build: build.alarm-server build.alarm-logger build.alarm-config-logger
 
 build.alarm-server:
-	$(QUIET)mvn -f $(SRC_PATH_SERVER) clean install -Dmaven.test.skip=true
+	$(QUIET)mvn -f $(SRC_PATH_SERVER) $(MVN_OPTS) clean install -Dmaven.test.skip=true
 
 build.alarm-logger:
-	$(QUIET)mvn -f $(SRC_PATH_LOGGER) clean install -Dmaven.test.skip=true
+	$(QUIET)mvn -f $(SRC_PATH_LOGGER) $(MVN_OPTS) clean install -Dmaven.test.skip=true
 
 build.alarm-config-logger:
-	$(QUIET)mvn -f $(SRC_PATH_CONFIGLOGGER) clean install -Dmaven.test.skip=true
+	$(QUIET)mvn -f $(SRC_PATH_CONFIGLOGGER) $(MVN_OPTS) clean install -Dmaven.test.skip=true
 
 
 restart: restart.alarm-server restart.alarm-logger restart.alarm-config-logger

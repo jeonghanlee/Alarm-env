@@ -27,8 +27,8 @@ jobs:
     - run: |
         make init
     - run:
-        make build.alarm-config-logger
-        make sd_config.alarm-config-logger
-        make install.alarm-config-logger
+        make build.alarm-config-logger -MVN_OPTS=-U
+        make sd_config.alarm-config-logger -MVN_OPTS=-U
+        make install.alarm-config-logger -MVN_OPTS=-U
                 
         
