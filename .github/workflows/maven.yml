@@ -21,10 +21,11 @@ jobs:
         java-version: '11'
         java-package: jdk
         architecture: x64
-    - run: |
+    - run:
         make init
-        make build.alarm-server
-        make sd_config.alarm-server
-        make install.alarm-server
+    - run:
+        make build.alarm-config-logger
+        make sd_config.alarm-config-logger
+        make install.alarm-config-logger
                 
         
