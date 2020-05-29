@@ -24,9 +24,9 @@ jobs:
     - run: |
         java -version
         mvn --version
-    - run: |
-        make init
     - run:
+        make init
+    - run: |
         make sd_config.alarm-server
         make MVN_OPTS=-U build.alarm-server
         make MVN_OPTS=-U install.alarm-server
