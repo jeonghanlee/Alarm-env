@@ -26,11 +26,15 @@ jobs:
         mvn --version
     - run:
         make init
-    - run: 
-        mvn -f phoebus-src/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
     - run: |
-        make sd_config.alarm-server
-        make MVN_OPTS=-U build.alarm-server
-        make MVN_OPTS=-U install.alarm-server
+        bash scripts/build_test.sh sd0
+        bash scripts/build_test.sh build0
+        bash scripts/build_test.sh sd1
+        bash scripts/build_test.sh build1
+        bash scripts/build_test.sh sd2
+        bash scripts/build_test.sh build2
+        bash scripts/build_test.sh sd3
+        bash scripts/build_test.sh build3
+        
                 
         
