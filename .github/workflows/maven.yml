@@ -18,10 +18,13 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with:
-        java-version: '11'
+        java-version: '11.0.x'
         java-package: jdk
         architecture: x64
-    - run:
+    - run: |
+        java -version
+        mvn --version
+    - run: |
         make init
     - run:
         make build.alarm-config-logger
