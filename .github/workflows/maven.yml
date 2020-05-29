@@ -22,6 +22,7 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: |
+        make init
         bash scripts/build_test.sh sd0
         bash scripts/build_test.sh build0
         
