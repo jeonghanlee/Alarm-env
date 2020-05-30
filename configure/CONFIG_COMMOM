@@ -1,0 +1,18 @@
+#KFKA_SERVER:=localhost
+KAFKA_HOST:=10.0.0.49
+KAFKA_PORT:=9092
+
+
+#
+ES_HOST:=10.0.0.49
+ES_PORT:=9200
+
+ALARM_CONFIG_TOPICS:=Accelerator
+
+
+
+
+# These allow developers to override the variable
+-include $(TOP)/../CONFIG_COMMOM.local
+-include $(TOP)/configure/CONFIG_COMMON.local
+

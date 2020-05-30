@@ -6,27 +6,51 @@ LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
 # -h* doesn't work
 #
 ### Configuration / Topics
-OPTIONS_LOGGER:=-topics
-OPTIONS_LOGGER+=$(ALARM_CONFIG_TOPICS)
-### Kafka Server (server, bootstrap.servers)
-OPTIONS_LOGGER+=-bootstrap.servers
-OPTIONS_LOGGER+=$(KFKA_URL)
 ### Settings / Properties for this service
 OPTIONS_LOGGER+=-properties
 OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_PROPERTIES)
 ### Logging properties
-OPTIONS_LOGGER+=-logging
-OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_LOGGING_PROPERTIES)
+#OPTIONS_LOGGER+=-logging
+#OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_LOGGING_PROPERTIES)
 ### Extra
 OPTIONS_LOGGER+=-noshell
-OPTIONS_LOGGER+=-es_host
-OPTIONS_LOGGER+=$(ES_SERVER)
-OPTIONS_LOGGER+=-es_port
-OPTIONS_LOGGER+=$(ES_PORT)
-OPTIONS_LOGGER+=-es_sniff
-OPTIONS_LOGGER+=false
-OPTIONS_LOGGER+=-date_span_units
-OPTIONS_LOGGER+=M
-OPTIONS_LOGGER+=-date_span_value
-OPTIONS_LOGGER+=1
 
+
+
+AL_ES_HOST:=$(ES_HOST)
+AL_ES_PORT:=$(ES_PORT)
+# Kafka server location
+AL_KAFKA_URL:=$(KAFKA_URL)
+
+# Alarm topics to be logged, they can be defined as a comma separated list
+ALARM_CONFIG_TOPICS:=Accelerator
+#
+# Size of the thread pool for message and command loggers. Two threads per topic/configuration are required
+AL_THREAD_POOL_SIZE:=4
+#
+# max default size for es queries
+AL_ES_MAX_SIZE:=1000
+#
+# set to 'true' if sniffing to be enabled to discover other cluster nodes
+AL_ES_SNIFF:=false
+#
+# The units of the indices date span: Days (D), Weeks(W), Months(M), Years(Y).
+AL_DATE_SPAN_UNITS:=M
+#
+# The value of the indices date span. 
+# An integer value to be combined with the units. For example, if months were selected and the value set to 2, each index would span 2 months.
+AL_DATE_SPAN_VALUE:=1
+
+# The server port for the rest service
+AL_REST_PORT:=9000
+# Disable the spring banner
+AL_BANNER_MODE:=off
+# Suppress the logging from spring boot during debugging this should be set to DEBUG
+AL_LOG_LEVEL:=WARN
+AL_LOG_FILENAME:=/var/log/alarm-logger.log
+
+# These allow developers to override the CONFIG_SITE variable
+# settings without having to modify the configure/CONFIG_SITE
+# file itself.
+-include $(TOP)/../CONFIG_OPTS_LOGGER.local
+-include $(TOP)/configure/CONFIG_OPTS_LOGGER.local

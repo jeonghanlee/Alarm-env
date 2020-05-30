@@ -21,7 +21,7 @@ install.alarm-server: src_version sd_install.alarm-server
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_SERVER)/target/service-*.jar  $(INSTALL_SERVER)
 	$(QUIET)$(SUDO) cp -rp $(SRC_PATH_SERVER)/target/lib  $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS) $(SITE_TEMPLATE_PATH)/$(SERVER_LOGGING_PROPERTIES)  $(INSTALL_LOCATION_SERVER)/
 
-install.alarm-logger: src_version sd_install.alarm-logger
+install.alarm-logger: src_version sd_install.alarm-logger prop.alarm-logger
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_LOGGER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_LOGGER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_LOGGER)/target/service-*.jar  $(INSTALL_LOGGER)

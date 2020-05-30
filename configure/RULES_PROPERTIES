@@ -1,0 +1,19 @@
+
+
+prop.alarm-logger:
+	$(QUIET)sed -e "s:@ALARM_CONFIG_TOPICS@:$(ALARM_CONFIG_TOPICS):g" \
+		    -e "s:@AL_THREAD_POOL_SIZE@:$(AL_THREAD_POOL_SIZE):g" \
+		    -e "s:@AL_ES_HOST@:$(AL_ES_HOST):g" \
+		    -e "s:@AL_ES_PORT@:$(AL_ES_PORT):g" \
+		    -e "s:@AL_ES_MAX_SIZE@:$(AL_ES_MAX_SIZE):g" \
+		    -e "s:@AL_ES_SNIFF@:$(AL_ES_SNIFF):g" \
+		    -e "s|@AL_KAFKA_URL@|$(AL_KAFKA_URL)|g" \
+		    -e "s:@AL_DATE_SPAN_UNITS@:$(AL_DATE_SPAN_UNITS):g" \
+		    -e "s:@AL_DATE_SPAN_VALUE@:$(AL_DATE_SPAN_VALUE):g" \
+		    -e "s:@AL_REST_PORT@:$(AL_REST_PORT):g" \
+		    -e "s:@AL_BANNER_MODE@:$(AL_BANNER_MODE):g" \
+		    -e "s:@AL_LOG_LEVEL@:$(AL_LOG_LEVEL):g" \
+		    < $(SITE_TEMPLATE_PATH)/alarm-logger.properties.in > $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
+
+
+

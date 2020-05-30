@@ -3,15 +3,6 @@
 TARGET_ROOT:=/opt/alarms
 #
 #
-#KFKA_SERVER:=localhost
-KFKA_SERVER:=10.0.0.49
-KFKA_SERVER_PORT:=9092
-#
-ES_SERVER:=10.0.0.49
-ES_SERVER_PORT:=9200
-
-
-ALARM_CONFIG_TOPICS:=Accelerator
 
 ### One may not need to change the following variables
 ### SRC_GITURL used for git clone

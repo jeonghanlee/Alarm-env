@@ -7,9 +7,9 @@ After=network.target
 # User=
 # Group=
 
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=@TARGET_NAME@
+#StandardOutput=syslog
+#StandardError=syslog
+#SyslogIdentifier=@TARGET_NAME@
 
 
 ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
