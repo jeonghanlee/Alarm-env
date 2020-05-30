@@ -69,7 +69,9 @@ function build_test
     if [ -z "$name" ]; then
 	printf "\n\n>>>>> make build \n\n"
 	make build
-	printf "\n\n>>>>> make install \n\n"	
+	printf "\n>>>>> make sd_config \n"
+	make sd_config
+	printf "\n\n>>>>> make install \n\n"
 	make install
 	printf "\n\n>>>>> make exist \n"	
 	make exist
@@ -81,6 +83,8 @@ function build_test
     else
 	printf "\n\n >>>>> make build \n"
 	make build.${name}
+	printf "\n>>>>> make sd_config \n"
+	make sd_config.${name}
 	printf "\n\n >>>>> make install \n"	
 	make install.${name}
 	printf "\n\n >>>>> make exist \nn"	

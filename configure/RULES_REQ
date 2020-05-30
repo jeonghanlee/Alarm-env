@@ -1,25 +1,21 @@
 # -*- mode: Makefile;-*-
 
 
-.PHONY: core-build alarm-build save-and-restore-build phoebus-build
+.PHONY: phoebus-build depedencies-build save-and-restore-build
 # Phoebus doesn't own phoebus.org, so we cannot download Phoebus snapshot from sonatype,
 # So, it is mandatory to build Phoebus first, before we build any of Alarm services.
-# alarm-server        : core-framework, core-util, core-pv, core-formula, core-email, app-alarm-model
-# alarm-logger        : core-util, app-alarm-model
-# alarm-config-logger : app-alarm-model
-# save-and-restore    : app-save-and-retore-model
+
 phoebus-build:
 	$(QUIET) mvn -f $(SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
 
-core-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true 
-#	$(QUIET) mvn -f $(SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects util,vtype,formula,framework,pva,pv,email
-
-alarm-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects alarm
-#	$(QUIET) mvn -f $(SRC_ROOT)/app/alarm/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model
+# dependencies_build is the minimum modules, which we need to build the alarm trio.
+depedencies-build:
+	$(QUIET) mvn -f $(SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects core,app --also-make
+	$(QUIET) mvn -f $(SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --also-make 
+	$(QUIET) mvn -f $(SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects alarm --also-make 
+	$(QUIET) mvn -f $(SRC_ROOT)/app/alarm/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model --also-make 
 
 # Potential extension for near future. 
 save-and-restore-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects save-and-restore
+	$(QUIET) mvn -f $(SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects save-and-restore --also-make  
 

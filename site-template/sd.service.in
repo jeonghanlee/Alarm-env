@@ -13,10 +13,8 @@ SyslogIdentifier=@TARGET_NAME@
 
 
 ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
-#SuccessExitStatus=143 
 
-ExecReload=kill -s TERM $MAINPID
-KillMode=process
+
 
 [Install]
 WantedBy=multi-user.target
