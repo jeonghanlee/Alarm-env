@@ -24,6 +24,7 @@ jobs:
     - run: |
         java -version
         mvn --version
+    - run: sudo apt-get install tree
     - run:
         make init
     - run:
