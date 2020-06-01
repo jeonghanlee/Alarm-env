@@ -4,7 +4,6 @@ KAFKA_URL:=$(KAFKA_HOST):$(KAFKA_PORT)
 
 include $(TOP)/configure/CONFIG_OPTS_SERVER
 include $(TOP)/configure/CONFIG_OPTS_LOGGER
-include $(TOP)/configure/CONFIG_OPTS_CONFIGLOGGER_REPO
 include $(TOP)/configure/CONFIG_OPTS_CONFIGLOGGER
 
 
