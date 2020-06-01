@@ -6,12 +6,6 @@ CONFIGLOGGER_LOGGING_PROPERTIES:=alarm-config-logger_logging.properties
 # All options are defined in AlarmConfigLoggingServer.java
 # -h* does work
 #
-### Configuration / Topics
-OPTIONS_CONFIGLOGGER:=-topics
-OPTIONS_CONFIGLOGGER+=$(ALARM_CONFIG_TOPICS)
-### Kafka Server (server, bootstrap.servers)
-OPTIONS_CONFIGLOGGER+=-bootstrap.servers
-OPTIONS_CONFIGLOGGER+=$(KFKA_URL)
 ### Settings / Properties for this service
 OPTIONS_CONFIGLOGGER+=-properties
 OPTIONS_CONFIGLOGGER+=$(INSTALL_LOCATION_CONFIGLOGGER)/$(CONFIGLOGGER_PROPERTIES)
@@ -19,12 +13,23 @@ OPTIONS_CONFIGLOGGER+=$(INSTALL_LOCATION_CONFIGLOGGER)/$(CONFIGLOGGER_PROPERTIES
 OPTIONS_CONFIGLOGGER+=-logging
 OPTIONS_CONFIGLOGGER+=$(INSTALL_LOCATION_CONFIGLOGGER)/$(CONFIGLOGGER_LOGGING_PROPERTIES)
 #
-OPTIONS_CONFIGLOGGER+=-repo.location
-OPTIONS_CONFIGLOGGER+=$(CONFIGLOGGER_REPO_LOCAL_LOCATION)
-OPTIONS_CONFIGLOGGER+=-remote.location
-OPTIONS_CONFIGLOGGER+=$(CONFIGLOGGER_REPO_REMOTE_LOCATION)
-OPTIONS_CONFIGLOGGER+=-username 
-OPTIONS_CONFIGLOGGER+=$(CONFIGLOGGER_REPO_USERNAME)
-OPTIONS_CONFIGLOGGER+=-password
-OPTIONS_CONFIGLOGGER+=$(CONFIGLOGGER_REPO_PASSWORD)
+# Kafka server location
+ACL_KAFKA_URL:=$(KAFKA_URL)
+ACL_CONFIG_TOPICS:=$(ALARM_CONFIG_TOPICS)
+# Location of the git repo
+ACL_LOCAL_REPO_LOCATION:=/tmp/alarm-config-logger
+# location of the remote git repo, 
+# The complete URI of the remote is created using the remote.location
+# it is recomended that your remote url end in the alarm topic assigned to this config service alarm_topic
+ACL_REMOTE_REPO_URL:=http://github.com/jeonghanlee/alarm-config-logger
+ACL_REMOTE_REPO_USERNAME:=test
+ACL_REMOTE_REPO_USERPASSWORD:=testpw
+
+
+# These allow developers to override the CONFIG_ variable
+# settings without having to modify the configure/CONFIG_
+# file itself.
+-include $(TOP)/../CONFIG_OPTS_CONFIGLOGGER.local
+-include $(TOP)/configure/CONFIG_OPTS_CONFIGLOGGER.local
+
 

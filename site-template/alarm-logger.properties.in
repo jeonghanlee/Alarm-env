@@ -1,5 +1,5 @@
 # alarm-logger SpringBoot properties
-alarm_topics=@ALARM_CONFIG_TOPICS@
+alarm_topics=@AL_CONFIG_TOPICS@
 thread_pool_size=@AL_THREAD_POOL_SIZE@
 #
 es_host=@AL_ES_HOST@
@@ -16,11 +16,8 @@ server.port: @AL_REST_PORT@
 spring.main.banner-mode=@AL_BANNER_MODE@
 #
 # 
-#logging.file=@AL_LOG_FILENAME@
-#
 logging.level.root=@AL_LOG_LEVEL@
 logging.level.org.springframework=@AL_LOG_LEVEL@
 logging.level.org.apache.catalina=@AL_LOG_LEVEL@
 logging.level.org.apache.kafka=@AL_LOG_LEVEL@
-
 

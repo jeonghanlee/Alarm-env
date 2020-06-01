@@ -1,0 +1,12 @@
+#
+#
+alarm_topics=@ACL_CONFIG_TOPICS@
+bootstrap.servers=@ACL_KAFKA_URL@
+#
+#
+local.location=@ACL_LOCAL_REPO_LOCATION@
+#
+#
+remote.location=@ACL_REMOTE_REPO_URL@
+username=@ACL_REMOTE_REPO_USERNAME@
+password=@ACL_REMOTE_REPO_USERPASSWORD@

@@ -34,6 +34,44 @@ function popd  { builtin popd  "$@" > /dev/null; }
 
 
 
+
+function prop_test
+{
+    local name=${1}; shift;
+    local filter="alarm-server";
+
+
+    pushd ${SC_TOP}/../
+    if [ -z "$name" ]; then
+	printf "\n>>>>> make prop \n"
+	make prop
+	printf "\n>>>>> Check Setting files \n"
+	cat -b site-template/*.properties
+	cat -b site-template/*.ini
+	printf "\n >>>>> Removing files \n"
+	make prop_clean
+	ls site-template/*.ini
+	ls site-template/*.properties
+	printf "\n >>>>>  Should see No such file or directory \n"
+    else
+	local suffix=properties;
+	if test "${name#*$filter}" != "$name"; then
+	    suffix=ini
+	fi
+	printf "\n>>>>> make prop.${name} \n"
+	make prop.${name}
+	printf "\n>>>>> Check Setting files \n"
+	cat -b site-template/${name}.${suffix}
+	printf "\n >>>>> Removing files \n"
+	make prop_clean.${name}
+	ls site-template/${name}.${suffix}
+	printf "\n >>>>>  Should see No such file or directory \n"
+    fi
+    popd
+}
+
+
+
 function sd_test
 {
     local name=${1}; shift;
@@ -107,6 +145,10 @@ function usage
       	echo "           sd1    : ";
       	echo "           sd2    : ";
       	echo "           sd3    : ";
+	echo "           prop0    : ";
+      	echo "           prop1    : ";
+      	echo "           prop2    : ";
+      	echo "           prop3    : ";
 	echo "           build0    : ";
       	echo "           build1    : ";
       	echo "           build2    : ";
@@ -132,10 +174,15 @@ case "$1" in
     sd1)    sd_test alarm-server;;
     sd2)    sd_test alarm-logger;;
     sd3)    sd_test alarm-config-logger;;
+    prop0)  prop_test;;
+    prop1)  prop_test alarm-server;;
+    prop2)  prop_test alarm-logger;;
+    prop3)  prop_test alarm-config-logger;;
     build0) build_test;;
     build1) build_test alarm-server;;
     build2) build_test alarm-logger;;
     build3) build_test alarm-config-logger;;
+    
     *)      usage;;
 esac
 

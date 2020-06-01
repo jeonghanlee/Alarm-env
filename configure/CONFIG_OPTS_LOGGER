@@ -10,8 +10,8 @@ LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
 OPTIONS_LOGGER+=-properties
 OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_PROPERTIES)
 ### Logging properties
-#OPTIONS_LOGGER+=-logging
-#OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_LOGGING_PROPERTIES)
+OPTIONS_LOGGER+=-logging
+OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_LOGGING_PROPERTIES)
 ### Extra
 OPTIONS_LOGGER+=-noshell
 
@@ -23,7 +23,7 @@ AL_ES_PORT:=$(ES_PORT)
 AL_KAFKA_URL:=$(KAFKA_URL)
 
 # Alarm topics to be logged, they can be defined as a comma separated list
-ALARM_CONFIG_TOPICS:=Accelerator
+AL_CONFIG_TOPICS:=$(ALARM_CONFIG_TOPICS)
 #
 # Size of the thread pool for message and command loggers. Two threads per topic/configuration are required
 AL_THREAD_POOL_SIZE:=4
@@ -47,7 +47,6 @@ AL_REST_PORT:=9000
 AL_BANNER_MODE:=off
 # Suppress the logging from spring boot during debugging this should be set to DEBUG
 AL_LOG_LEVEL:=WARN
-AL_LOG_FILENAME:=/var/log/alarm-logger.log
 
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE

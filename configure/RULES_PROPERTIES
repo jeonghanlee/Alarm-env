@@ -1,7 +1,24 @@
+# -*- mode: Makefile;-*-
 
 
+.PHONY: prop prop.alarm-server prop.alarm-logger prop.alarm-config-logger
+
+# we may not need the global rule, but it is useful for debugging purpose
+prop: prop.alarm-server prop.alarm-logger prop.alarm-config-logger
+
+# this rule is called install.alarm-server in configure/RULES_INSTALL
+prop.alarm-server:
+	$(QUIET)sed -e "s:@AS_CONFIG_TOPICS@:$(AS_CONFIG_TOPICS):g" \
+		    -e "s:@AS_ES_HOST@:$(AS_ES_HOST):g" \
+		    -e "s:@AS_ES_PORT@:$(AS_ES_PORT):g" \
+		    -e "s:@AS_ES_MAX_SIZE@:$(AS_ES_MAX_SIZE):g" \
+		    -e "s:@AS_ES_INDEXS@:$(AS_ES_INDEXS):g" \
+		    -e "s|@AS_KAFKA_URL@|$(AS_KAFKA_URL)|g" \
+		    < $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS).in > $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
+
+# this rule is called install.alarm-logger in configure/RULES_INSTALL
 prop.alarm-logger:
-	$(QUIET)sed -e "s:@ALARM_CONFIG_TOPICS@:$(ALARM_CONFIG_TOPICS):g" \
+	$(QUIET)sed -e "s:@AL_CONFIG_TOPICS@:$(AL_CONFIG_TOPICS):g" \
 		    -e "s:@AL_THREAD_POOL_SIZE@:$(AL_THREAD_POOL_SIZE):g" \
 		    -e "s:@AL_ES_HOST@:$(AL_ES_HOST):g" \
 		    -e "s:@AL_ES_PORT@:$(AL_ES_PORT):g" \
@@ -13,7 +30,30 @@ prop.alarm-logger:
 		    -e "s:@AL_REST_PORT@:$(AL_REST_PORT):g" \
 		    -e "s:@AL_BANNER_MODE@:$(AL_BANNER_MODE):g" \
 		    -e "s:@AL_LOG_LEVEL@:$(AL_LOG_LEVEL):g" \
-		    < $(SITE_TEMPLATE_PATH)/alarm-logger.properties.in > $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
+		    < $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES).in > $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
 
+# this rule is called install.alarm-config-logger in configure/RULES_INSTALL
+prop.alarm-config-logger:
+	$(QUIET)sed -e "s:@ACL_CONFIG_TOPICS@:$(ACL_CONFIG_TOPICS):g" \
+		    -e "s|@ACL_KAFKA_URL@|$(ACL_KAFKA_URL)|g" \
+		    -e "s:@ACL_LOCAL_REPO_LOCATION@:$(ACL_LOCAL_REPO_LOCATION):g" \
+		    -e "s|@ACL_REMOTE_REPO_URL@|$(ACL_REMOTE_REPO_URL)|g" \
+		    -e "s:@ACL_REMOTE_REPO_USERNAME@:$(ACL_REMOTE_REPO_USERNAME):g" \
+		    -e "s:@ACL_REMOTE_REPO_USERPASSWORD@:$(ACL_REMOTE_REPO_USERPASSWORD):g" \
+		    < $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES).in > $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES)
+
+
+.PHONY: prop_clean prop_clean.alarm-server prop_clean.alarm-logger  prop_clean.alarm-config-logger
+
+prop_clean: prop_clean.alarm-server prop_clean.alarm-logger  prop_clean.alarm-config-logger
+
+prop_clean.alarm-server:
+	rm -f $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
+
+prop_clean.alarm-logger:
+	rm -f $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
+
+prop_clean.alarm-config-logger:
+	rm -f $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES)
 
 

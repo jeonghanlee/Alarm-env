@@ -47,3 +47,6 @@ auto_positions.sav*
 .versions
 *-src
 *.service
+site-template/alarm-server_settings.ini
+site-template/alarm-config-logger.properties
+site-template/alarm-logger.properties
