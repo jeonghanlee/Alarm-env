@@ -17,9 +17,9 @@
 #
 #  Author  : Jeong Han Lee
 #  email   : jeonghan.lee@gmail.com
-#  Date    : Friday, May 29 01:01:59 PDT 2020
+#  Date    : 
 #
-#  version : 0.0.0
+#  version : 0.0.1
 
 
 declare -gr SC_SCRIPT="$(realpath "$0")"
@@ -136,23 +136,25 @@ function build_test
     popd
 }
 
+
 function usage
 {
     {
 	echo " < option > ";
 	echo "";
-      	echo "           sd0    : ";
-      	echo "           sd1    : ";
-      	echo "           sd2    : ";
-      	echo "           sd3    : ";
-	echo "           prop0    : ";
-      	echo "           prop1    : ";
-      	echo "           prop2    : ";
-      	echo "           prop3    : ";
-	echo "           build0    : ";
-      	echo "           build1    : ";
-      	echo "           build2    : ";
-      	echo "           build3    : ";	
+      	echo "           sd0       : generate all systemd unit files ";
+      	echo "           sd1       : generate alarm-server systemd unit file";
+      	echo "           sd2       : generate alarm-logger systemd unit file";
+      	echo "           sd3       : generate alarm-config-logger systemd unit file";
+	echo "           prop0     : generate all properties files";
+      	echo "           prop1     : generate alarm-server properties file";
+      	echo "           prop2     : generate alarm-logger properties file";
+      	echo "           prop3     : generate alarm-config-logger properties file";
+	echo "           build0    : build all alarm services";
+      	echo "           build1    : build alarm-server";
+      	echo "           build2    : build alarm-logger";
+      	echo "           build3    : build alarm-config-logger";
+	echo "           all       : all";	
 	echo ""           ;
 	echo ""    ;
 	
@@ -166,6 +168,21 @@ function usage
     exit 1; 
 }
 
+function test_all
+{
+    sd_test;
+    sd_test alarm-server;
+    sd_test alarm-logger;
+    sd_test alarm-config-logger;
+    prop_test;
+    prop_test alarm-server;
+    prop_test alarm-logger;
+    prop_test alarm-config-logger;
+    build_test;
+    build_test alarm-server;
+    build_test alarm-logger;
+    build_test alarm-config-logger;
+}
 
 
 
@@ -182,7 +199,7 @@ case "$1" in
     build1) build_test alarm-server;;
     build2) build_test alarm-logger;;
     build3) build_test alarm-config-logger;;
-    
+    all)    test_all;;
     *)      usage;;
 esac
 

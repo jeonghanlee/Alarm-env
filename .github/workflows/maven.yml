@@ -26,15 +26,7 @@ jobs:
         mvn --version
     - run:
         make init
-    - run: |
-        bash scripts/build_test.sh sd0
-        bash scripts/build_test.sh build0
-        bash scripts/build_test.sh sd1
-        bash scripts/build_test.sh build1
-        bash scripts/build_test.sh sd2
-        bash scripts/build_test.sh build2
-        bash scripts/build_test.sh sd3
-        bash scripts/build_test.sh build3
-        
+    - run:
+        bash scripts/build_test.sh all        
                 
         
