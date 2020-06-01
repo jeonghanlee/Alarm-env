@@ -25,7 +25,8 @@ jobs:
         java -version
         mvn --version
     - run: sudo apt-get install tree
-    - run:
+    - run: |
+        make vars
         make init
     - run:
         bash scripts/build_test.sh all        
