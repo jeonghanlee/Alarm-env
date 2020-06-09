@@ -1,0 +1,47 @@
+# After changes
+#   sudo systemctl daemon-reload
+#
+# Start/status/stop
+#   sudo systemctl start  @TARGET_NAME@.service
+#   sudo systemctl status @TARGET_NAME@.service
+#   sudo systemctl stop   @TARGET_NAME@.service
+#
+# Start when computer boots:
+#   sudo systemctl enable @TARGET_NAME@.service
+#
+# Log file:
+#   less @INSTALL_LOCATION@/procServ_@TARGET_NAME@.log
+#
+# Console:
+#   telnet localhost @PROCSERV_PORT@
+
+[Unit]
+Description=Phoebus Alarm Server
+After=kafka.service
+
+
+[Unit]
+Description=@TARGET_NAME@ Service
+Documentation=@DOCURL@
+# If the kafka server is running in the different host,
+After=network.target
+# If the kafka server is running in the same host
+# After=kafka.service
+
+[Service]
+# User=
+# Group=
+# StandardOutput=syslog
+# StandardError=syslog
+# SyslogIdentifier=@TARGET_NAME@
+
+# Without procServ configuration
+# ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
+
+
+[Service]
+ExecStart=/usr/bin/procServ --foreground --noautorestart --name @TARGET_NAME@ --chdir @INSTALL_LOCATION@ --logfile @INSTALL_LOCATION@/procServ_@TARGET_NAME@.log @PROCSERV_PORT@ @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
+
+
+[Install]
+WantedBy=multi-user.target

@@ -7,12 +7,18 @@ Configuration Environment for Alarm Trio at https://github.com/ControlSystemStud
 
 # Alarm Trio
 
+## Requirements
+* `procServ` [1] : Major Linux distributions provide it within packaging system. 
+
 ## alarm-server
 * Standard Java Application
-
+* Run within `procServ`
+* `telent localhost 4510`
 
 ## alarm-logger
 * Java SpringBoot Application 
+* Run within `procServ`
+* WIP with `procServ`
 
 ## alarm-config-logger
 * Java SpringBoot Application
@@ -67,6 +73,7 @@ $ make build.alarm-server
 $ make sd_config.alarm-server
 $ make install.alarm-server
 $ make sd_start.alarm-server
+$ systemctl status alarm-server
 ```
 
 
@@ -106,7 +113,7 @@ $ make uninstall
 
 * Reinstall Trio
 ```
-$ make Reinstall
+$ make reinstall
 ```
 
 * Check installation path, and systemd unit file (tree is required)
@@ -202,3 +209,5 @@ $ make restart.alarm-logger
 $ make restart.alarm-config-logger
 ```
 
+# References
+[1] procServ : https://github.com/ralphlange/procServ

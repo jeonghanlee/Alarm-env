@@ -1,6 +1,8 @@
 SERVER_SETTINGS:=alarm-server_settings.ini
 SERVER_LOGGING_PROPERTIES:=alarm-server_logging.properties
 
+SERVER_PROCSERV_PORT:=4510
+
 
 # All options are defined in AlarmServerMain.java
 # -h* does work
@@ -17,7 +19,8 @@ OPTIONS_SERVER+=$(INSTALL_LOCATION_SERVER)/$(SERVER_SETTINGS)
 OPTIONS_SERVER+=-logging
 OPTIONS_SERVER+=$(INSTALL_LOCATION_SERVER)/$(SERVER_LOGGING_PROPERTIES)
 ### Extra
-OPTIONS_SERVER+=-noshell
+# Without procServ
+#OPTIONS_SERVER+=-noshell
 #OPTIONS_SERVER+=-export config.xml
 #OPTIONS_SERVER+=-import config.xml
 

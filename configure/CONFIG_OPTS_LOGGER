@@ -2,8 +2,9 @@
 LOGGER_PROPERTIES:=alarm-logger.properties
 LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
 
+LOGGER_PROCSERV_PORT:=4511
+
 # All options are defined in AlarmLoggingServer.java
-# -h* doesn't work
 #
 ### Configuration / Topics
 ### Settings / Properties for this service
@@ -13,7 +14,8 @@ OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_PROPERTIES)
 OPTIONS_LOGGER+=-logging
 OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_LOGGING_PROPERTIES)
 ### Extra
-OPTIONS_LOGGER+=-noshell
+# Without procServ
+#OPTIONS_SERVER+=-noshell
 
 
 

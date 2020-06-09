@@ -45,7 +45,10 @@ sd_clean.alarm-config-logger:
 sd_config: sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger
 
 sd_config.alarm-server:
-	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(SERVER_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" < $(SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+
+# sd_config.alarm-server:
+# 	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
 
 sd_config.alarm-logger:
 	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_LOGGER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_LOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_LOGGER)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
