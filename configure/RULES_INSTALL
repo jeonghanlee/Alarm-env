@@ -15,23 +15,26 @@ reinstall.alarm-config-logger: uninstall.alarm-config-logger install.alarm-confi
 
 install: install.alarm-server install.alarm-logger install.alarm-config-logger
 
-install.alarm-server: src_version sd_install.alarm-server prop.alarm-server
+install.alarm-server: src_version src_preinst.alarm-server sd_install.alarm-server prop.alarm-server
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_SERVER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_SERVER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_SERVER)/target/service-*.jar  $(INSTALL_SERVER)
 	$(QUIET)$(SUDO) cp -rp $(SRC_PATH_SERVER)/target/lib  $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS) $(SITE_TEMPLATE_PATH)/$(SERVER_LOGGING_PROPERTIES)  $(INSTALL_LOCATION_SERVER)/
+	$(QUIET)$(SUDO)	chown -R $(AS_USERID):$(GROUPID) $(INSTALL_LOCATION_SERVER)
 
-install.alarm-logger: src_version sd_install.alarm-logger prop.alarm-logger
+install.alarm-logger: src_version src_preinst.alarm-logger sd_install.alarm-logger prop.alarm-logger
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_LOGGER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_LOGGER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_LOGGER)/target/service-*.jar  $(INSTALL_LOGGER)
 	$(QUIET)$(SUDO) cp -rp $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES) $(SITE_TEMPLATE_PATH)/$(LOGGER_LOGGING_PROPERTIES)  $(INSTALL_LOCATION_LOGGER)/
+	$(QUIET)$(SUDO)	chown -R $(AL_USERID):$(GROUPID) $(INSTALL_LOCATION_LOGGER)
 
-install.alarm-config-logger: src_version sd_install.alarm-config-logger  prop.alarm-config-logger
+install.alarm-config-logger: src_version src_preinst.alarm-config-logger sd_install.alarm-config-logger  prop.alarm-config-logger
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_CONFIGLOGGER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_CONFIGLOGGER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_CONFIGLOGGER)/target/service-*.jar  $(INSTALL_CONFIGLOGGER)
 	$(QUIET)$(SUDO) cp -rp $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES) $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_LOGGING_PROPERTIES)  $(INSTALL_LOCATION_CONFIGLOGGER)/
+	$(QUIET)$(SUDO)	chown -R $(ACL_USERID):$(GROUPID) $(INSTALL_LOCATION_CONFIGLOGGER)
 
 .PHONY: uninstall uninstall.alarm-server uninstall.alarm-logger uninstall.alarm-config-logger
 
@@ -39,21 +42,47 @@ install.alarm-config-logger: src_version sd_install.alarm-config-logger  prop.al
 uninstall: uninstall.alarm-server uninstall.alarm-logger uninstall.alarm-config-logger
 
 
-uninstall.alarm-server: sd_stop.alarm-server sd_disable.alarm-server sd_remove.alarm-server
+uninstall.alarm-server: sd_stop.alarm-server sd_disable.alarm-server sd_remove.alarm-server src_postrm.alarm-server
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_SERVER)..."
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_SERVER)
 
 
-uninstall.alarm-logger: sd_stop.alarm-logger sd_disable.alarm-logger sd_remove.alarm-logger
+uninstall.alarm-logger: sd_stop.alarm-logger sd_disable.alarm-logger sd_remove.alarm-logger src_postrm.alarm-logger
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_LOGGER)..."
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_LOGGER)
 
-uninstall.alarm-config-logger: sd_stop.alarm-config-logger sd_disable.alarm-config-logger sd_remove.alarm-config-logger
+uninstall.alarm-config-logger: sd_stop.alarm-config-logger sd_disable.alarm-config-logger sd_remove.alarm-config-logger src_postrm.alarm-config-logger
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_CONFIGLOGGER)..."
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_CONFIGLOGGER)
 
 
+
 .PHONY: src_version
+.PHONY: src_preinst src_preinst.alarm-server src_preinst.alarm-logger src_preinst.alarm-config-logger
+.PHONY: src_postrm  src_postrm.alarm-server  src_postrm.alarm-logger src_postrm.alarm-config-logger
+
+src_preinst: src_preinst.alarm-server src_preinst.alarm-logger src_preinst.alarm-config-logger
+
+src_preinst.alarm-server:
+	$(QUIET)$(SUDO) bash $(SITE_TEMPLATE_PATH)/usergroup.postinst "configure" "$(AS_USERID)" "$(GROUPID)"
+
+src_preinst.alarm-logger:
+	$(QUIET)$(SUDO) bash $(SITE_TEMPLATE_PATH)/usergroup.postinst "configure" "$(AL_USERID)" "$(GROUPID)"
+
+src_preinst.alarm-config-logger:
+	$(QUIET)$(SUDO) bash $(SITE_TEMPLATE_PATH)/usergroup.postinst "configure" "$(ACL_USERID)" "$(GROUPID)"
+
+src_postrm: src_postrm.alarm-server  src_postrm.alarm-logger src_postrm.alarm-config-logger
+
+src_postrm.alarm-server:
+	$(QUIET)$(SUDO) bash  $(SITE_TEMPLATE_PATH)/usergroup.postrm "purge" "$(AS_USERID)"
+
+src_postrm.alarm-logger:
+	$(QUIET)$(SUDO) bash  $(SITE_TEMPLATE_PATH)/usergroup.postrm "purge" "$(AL_USERID)"
+
+src_postrm.alarm-config-logger:
+	$(QUIET)$(SUDO) bash  $(SITE_TEMPLATE_PATH)/usergroup.postrm "purge" "$(ACL_USERID)"
+
 src_version: FORCE
 	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC URL : $(SRC_GITURL)"  >> $(SITE_TEMPLATE_PATH)/.versions

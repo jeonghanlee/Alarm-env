@@ -1,20 +1,34 @@
+# After changes
+#   sudo systemctl daemon-reload
+#
+# Start/status/stop
+#   sudo systemctl start  @TARGET_NAME@.service
+#   sudo systemctl status @TARGET_NAME@.service
+#   sudo systemctl stop   @TARGET_NAME@.service
+#
+# Start when computer boots:
+#   sudo systemctl enable @TARGET_NAME@.service
+#
+
 [Unit]
 Description=@TARGET_NAME@ Service
 Documentation=@DOCURL@
-After=network.target 
+# If the kafka server is running in the different host,
+After=network.target remote-fs.target
+# If the kafka server is running in the same host
+# After=network.target remote-fs.target kafka.service
 
 [Service]
-# User=
-# Group=
+Type=simple
+ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ \
+			  @OPTIONS@
+
+User=@USERID@
+Group=@GROUPID@
 
 #StandardOutput=syslog
 #StandardError=syslog
 #SyslogIdentifier=@TARGET_NAME@
-
-
-ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
-
-
 
 [Install]
 WantedBy=multi-user.target

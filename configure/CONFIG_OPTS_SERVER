@@ -1,9 +1,6 @@
 SERVER_SETTINGS:=alarm-server_settings.ini
 SERVER_LOGGING_PROPERTIES:=alarm-server_logging.properties
 
-SERVER_PROCSERV_PORT:=4510
-
-
 # All options are defined in AlarmServerMain.java
 # -h* does work
 #
@@ -26,6 +23,10 @@ OPTIONS_SERVER+=$(INSTALL_LOCATION_SERVER)/$(SERVER_LOGGING_PROPERTIES)
 
 AS_CONFIG_TOPICS:=$(ALARM_CONFIG_TOPICS)
 AS_KAFKA_URL:=$(KAFKA_URL)
+
+
+AS_PROCSERV_PORT:=4510
+
 
 
 AS_ES_HOST:=$(ES_HOST)

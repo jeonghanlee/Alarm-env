@@ -1,8 +1,7 @@
+# -*- mode: Makefile;-*-
 
 LOGGER_PROPERTIES:=alarm-logger.properties
 LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
-
-LOGGER_PROCSERV_PORT:=4511
 
 # All options are defined in AlarmLoggingServer.java
 #
@@ -49,6 +48,11 @@ AL_REST_PORT:=9000
 AL_BANNER_MODE:=off
 # Suppress the logging from spring boot during debugging this should be set to DEBUG
 AL_LOG_LEVEL:=WARN
+
+
+# Alarm-logger procServ port number
+AL_PROCSERV_PORT:=4511
+
 
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE

@@ -19,24 +19,30 @@
 Description=@TARGET_NAME@ Service
 Documentation=@DOCURL@
 # If the kafka server is running in the different host,
-After=network.target
+After=network.target remote-fs.target
 # If the kafka server is running in the same host
-# After=kafka.service
+# After=network.target remote-fs.target kafka.service
+
+ConditionPathIsDirectory=@INSTALL_LOCATION@
 
 [Service]
-# User=
-# Group=
+Type=simple
+ExecStart=/usr/bin/procServ \
+		    --foreground \
+		    --noautorestart \
+		    --port=@PROCSERV_PORT@ \
+		    --name @TARGET_NAME@ \
+		    --chdir @INSTALL_LOCATION@ \
+		    --logfile @INSTALL_LOCATION@/procServ_@TARGET_NAME@.log \
+		    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ \
+		    @OPTIONS@
+
+User=@USERID@
+Group=@GROUPID@
+
 # StandardOutput=syslog
 # StandardError=syslog
 # SyslogIdentifier=@TARGET_NAME@
-
-# Without procServ configuration
-# ExecStart=@JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
-
-
-[Service]
-ExecStart=/usr/bin/procServ --foreground --noautorestart --name @TARGET_NAME@ --chdir @INSTALL_LOCATION@ --logfile @INSTALL_LOCATION@/procServ_@TARGET_NAME@.log @PROCSERV_PORT@ @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ 
-
 
 [Install]
 WantedBy=multi-user.target

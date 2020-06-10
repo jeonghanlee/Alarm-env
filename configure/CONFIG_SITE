@@ -18,6 +18,19 @@ JAVA_PATH:=/usr/bin
 # # JAVA_OPTS=-XX:MaxMetaspaceSize=256M -XX:+UseG1GC -Xms2G -Xmx2G
 
 
+### In addition, one should look at src_preinst and src_postrm rules in
+### configure/RULES_INSTALL
+AS_USERID:=alarmas
+AL_USERID:=alarmal
+ACL_USERID:=alarmacl
+### nogroup is valid for Debain
+### nfsgroup is valid for CentOS
+### Both has 65534 gid,
+### Do not change it if one doesn't know what could be done properly.
+GROUPID:=65534
+#
+
+
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE
 # file itself.
