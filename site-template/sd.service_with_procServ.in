@@ -16,11 +16,6 @@
 #   telnet localhost @PROCSERV_PORT@
 
 [Unit]
-Description=Phoebus Alarm Server
-After=kafka.service
-
-
-[Unit]
 Description=@TARGET_NAME@ Service
 Documentation=@DOCURL@
 # If the kafka server is running in the different host,
