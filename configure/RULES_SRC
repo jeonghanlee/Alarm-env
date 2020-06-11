@@ -80,3 +80,6 @@ restart.alarm-logger: uninstall.alarm-logger build.alarm-logger sd_config.alarm-
 restart.alarm-config-logger: uninstall.alarm-config-logger build.alarm-config-logger sd_config.alarm-config-logger install.alarm-config-logger sd_start.alarm-config-logger
 # .PHONY: build $(SRC_PATHS)
 
+
+VARS_EXCLUDES+=MVN_OPTS
+

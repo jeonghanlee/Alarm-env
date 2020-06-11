@@ -18,7 +18,7 @@ Configuration Environment for Alarm Trio at https://github.com/ControlSystemStud
 ## alarm-logger
 * Java SpringBoot Application 
 * Run within `procServ`
-* WIP with `procServ`
+* `telent localhost 4511`
 
 ## alarm-config-logger
 * Java SpringBoot Application
@@ -41,7 +41,7 @@ or
 ```
 $ make sd_config.alarm-server
 $ make sd_config.alarm-logger
-$ make sd_config.alarm-config-logge
+$ make sd_config.alarm-config-logger
 ```
 
 Then please edit `*.service` file according to individual options. 
