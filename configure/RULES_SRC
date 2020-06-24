@@ -31,7 +31,7 @@ default: help
 
 ifeq "$(INIT_SRC)" "1"
 #init: __init core-build alarm-model-build save-and-restore-build
-init: __init depedencies-build
+init: __init
 
 __init:
 	git clone $(SRC_GITURL) $(SRC_ROOT)

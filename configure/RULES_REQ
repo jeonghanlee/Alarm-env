@@ -1,12 +1,9 @@
 # -*- mode: Makefile;-*-
 
 
-.PHONY: phoebus-build depedencies-build save-and-restore-build
+.PHONY: depedencies-build save-and-restore-build
 # Phoebus doesn't own phoebus.org, so we cannot download Phoebus snapshot from sonatype,
 # So, it is mandatory to build Phoebus first, before we build any of Alarm services.
-
-phoebus-build:
-	$(QUIET) mvn -f $(SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
 
 # dependencies_build is the minimum modules, which we need to build the alarm trio.
 depedencies-build:
