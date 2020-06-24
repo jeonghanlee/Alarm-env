@@ -1,8 +1,8 @@
 # -*- mode: Makefile;-*-
 
 
-PHOEBUS_SHELL:=run-phoebus.bash
-PHOEBUS_ACTIVATE:=activate-phoebus.bash
+PHOEBUS_SHELL:=xPhoebus
+PHOEBUS_ACTIVATE:=activate-phoebus
 PHOEBUS_SETTINGS:=phoebus_settings.ini
 PHOEBUS_LOGGING_PROPERTIES:=phoebus_logging.properties
 PHOEBUS_LOGBACK:=phoebus_logback.xml

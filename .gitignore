@@ -54,3 +54,6 @@ test/
 .phoebus
 *-src-*
 phoebus-products/als-*/target/
+scripts/activate-phoebus
+scripts/xPhoebus
+site-template/phoebus_settings.ini

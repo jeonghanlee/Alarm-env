@@ -1,218 +1,43 @@
-Alarm Trio Configuration Environment
-===
+# Phoebus and Alarm Trio Configuration Environment
+![Java CI with Maven](https://github.com/jeonghanlee/phoebus-env/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-Configuration Environment for Alarm Trio at https://github.com/ControlSystemStudio/phoebus/tree/master/services
+Configuration Environment for Phoebus [1] and Alarm Trio [2]. 
 
-![Java CI with Maven](https://github.com/jeonghanlee/alarms-env/workflows/Java%20CI%20with%20Maven/badge.svg)
+## Roles
 
-# Alarm Trio
+To download, install, setup all relevant components, one should do many steps manually. This repository was designed for the easy-to-reproducible environment for ControlSystemStudio/phoebus and its alarm services (alarm-server, alarm-logger, and alarm-config-logger), because most of their configuration are common, shareable, and consistent.
 
-## Requirements
-* `procServ` [1] : Major Linux distributions provide it within packaging system. 
+## Notice 
+  
+* This environment can change a system configuration as small as possible. Thus, all things we can do is to remove installation directory and clean up systemd services properly. It uses an ugly makefile, Linux command line tools, and bash shell scripts.
 
-## alarm-server
-* Standard Java Application
-* Run within `procServ`
-* `telent localhost 4510`
-
-## alarm-logger
-* Java SpringBoot Application 
-* Run within `procServ`
-* `telent localhost 4511`
-
-## alarm-config-logger
-* Java SpringBoot Application
+* There are a plenty of tools around us to do similar jobs. This repository is designed for my working environment and conditions. I do not have available time to learn others automation tools, such as ansible, and so on. And I am enough to be tired by thier own incompatibilities within their release versions. 
 
 
-# Configuration defined in each systemd unit file
+## Phoebus
 
-For example, there are three options variables defined in `configure/CONFIG_OPTS` such as 
-```
-OPTIONS_CONFIG_LOGGER
-OPTIONS_LOGGER
-OPTIONS_SERVER
-```
-By using them, the following rule create the corresponding systemd unit file. If one would like to edit it, before installing it to system. 
+### Building and Installation
 
-```
-$make sd_config
-```
-or
-```
-$ make sd_config.alarm-server
-$ make sd_config.alarm-logger
-$ make sd_config.alarm-config-logger
-```
+See [docs/Phoebus.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/Phoebus.md)
 
-Then please edit `*.service` file according to individual options. 
+## Alarm Trios
 
-```
-$make install 
-```
-or 
-```
-$ make install.alarm-server
-$ make install.alarm-logger
-$ make install.alarm-config-logger
-```
+### Building and Installation
 
-# Typical Setup Rule
-
-```
-$ make init
-$ make build
-$ make sd_config
-$ make install
-$ make sd_start
-```
-For alarm-server
-
-```
-$ make init
-$ make build.alarm-server
-$ make sd_config.alarm-server
-$ make install.alarm-server
-$ make sd_start.alarm-server
-$ systemctl status alarm-server
-```
-
-
-# Build
-
-* Download the latest phoebus source
-```
-$ make init
-```
-
-* If the system doesn't have any Phoebus building history, 
-```
-$ make depedencies-build
-```
-
-* Remove the downloaded source
-```
-$ make distclean
-```
-
-* Print out makefile variables
-```
-$ make vars
-```
-
-
-## All Trio
-
-* Build trio
-```
-$ make build
-```
-* Install Trio : Should run `make build` first
-
-```
-$ make install
-```
-* Uninstall Trio
-```
-$ make uninstall
-```
-
-* Reinstall Trio
-```
-$ make reinstall
-```
-
-* Check installation path, and systemd unit file (tree is required)
-```
-$ make exist
-```
-The default `tree` `LEVEL` is 1, one can explore more with the following option:
-```
-$ make exist LEVEL=2
-```
-
-* Restart everything
-
-```
-$ make restart
-```
+See [docs/AlarmTrio.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/AlarmTrio.md)
 
 
 
-## Individual One
-
-* Build
-```
-$ make build.alarm-server
-$ make build.alarm-logger
-$ make build.alarm-config-logger
-```
-
-* Generate systemd unit files
-One can generate it by hand, please look at `site-template/sd.service.in`
-```
-$ make sd_config.alarm-server
-$ make sd_config.alarm-logger
-$ make sd_config.alarm-config-logger
-
-```
-
-* Install : should run `make build.TARGET` first
-This rule contains `sd_install.TARGET`, so the corresponding systemd unit file should be in `site-template` path. We don't generate it automatically by `install` rule in order to give a possiblity to update it before installation. 
-** Install the systemd unit file
-** Run `systemctl daemon-reload`
-** Enable that systemd unit
-```
-$ make install.alarm-server
-$ make install.alarm-logger
-$ make install.alarm-config-logger
-```
-
-* Uninstall 
-** Stop the systemd service
-** Disable the systemd service
-** Remove the systemd unit file
-** Remove the corresponding alarm service
-
-```
-$ make uninstall.alarm-server
-$ make uninstall.alarm-logger
-$ make uninstall.alarm-config-logger
-```
-
-* Reinstall (uninstall / install)
-```
-$ make reinstall.alarm-server
-$ make reinstall.alarm-logger
-$ make reinstall.alarm-config-logger
-```
+## Reporting issues
+If you encounter any bugs you can report them here on Github. 
 
 
-* Check installation path, and systemd unit file
-```
-$ make exist.alarm-server
-$ make exist.alarm-logger
-$ make exist.alarm-config-logger
-```
+## Known issues
+See [docs/KnownIssues.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/KnonwIssues.md)
 
 
+## References
 
+[1] https://github.com/ControlSystemStudio/phoebus
 
-* Start / stop / status / restart service
-** `sd_start` can be replaced with `sd_status`, `sd_stop`, `sd_restart`, `sd_disable` and `sd_enable`. 
-
-```
-$ make sd_start.alarm-server
-$ make sd_start.alarm-logger
-$ make sd_start.alarm-config-logger
-```
-
-* Restart everything
-
-```
-$ make restart.alarm-server
-$ make restart.alarm-logger
-$ make restart.alarm-config-logger
-```
-
-# References
-[1] procServ : https://github.com/ralphlange/procServ
+[2] https://github.com/ControlSystemStudio/phoebus/tree/master/services

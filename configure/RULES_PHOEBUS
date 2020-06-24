@@ -32,7 +32,7 @@ build.als-phoebus: als-phoebus
 
 .PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 
-install.phoebus: sh.phoebus
+install.phoebus: src_version sh.phoebus
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_PHOEBUS)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_PHOEBUS)/target/product-*.jar  $(INSTALL_PHOEBUS)
