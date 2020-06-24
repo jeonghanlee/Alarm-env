@@ -1,0 +1,21 @@
+# -*- mode: Makefile;-*-
+
+
+
+PHOEBUS_SETTINGS:=phoebus_settings.ini
+PHOEBUS_LOGGING_PROPERTIES:=phoebus_logging.properties
+PHOEBUS_LOGBACK:=phoebus_logback.xml
+
+
+
+
+# JAVA_OPTS_PHOEBUS+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_PHOEBUS)/
+JAVA_OPTS_PHOEBUS+=-DCA_DISABLE_REPEATER=true
+JAVA_OPTS_PHOEBUS+=-Dnashorn.args=--no-deprecation-warning
+JAVA_OPTS_PHOEBUS+=-Djdk.gtk.verbose=false
+JAVA_OPTS_PHOEBUS+=-Djdk.gtk.version=2
+JAVA_OPTS_PHOEBUS+=-Dprism.forceGPU=true
+JAVA_OPTS_PHOEBUS+=-Dlogback.configurationFile=$(INSTALL_LOCATION_PHOEBUS)/logback.xml
+JAVA_OPTS_PHOEBUS+=-Dorg.csstudio.javafx.rtplot.update_counter=false
+
+

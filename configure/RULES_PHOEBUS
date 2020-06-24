@@ -2,14 +2,15 @@
 
 JAVAHOME = ${JAVA_HOME}
 
-.PHONY: phoebus als-phoebus
+.PHONY: phoebus als-phoebus build.phoebus build.als-phoebus
+
 # Phoebus doesn't own phoebus.org, so we cannot download Phoebus snapshot from sonatype,
 # So, it is mandatory to build Phoebus first, before we build any of Alarm services.
 
 phoebus:
 ifeq "$(JAVAHOME)" ""
 	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"     
-	$(QUIET)echo "source scripts/set_java_path.bash \"set\" "
+	$(QUIET)echo "source scripts/set_java_path.bash \"$(JAVA_PATH)\" "
 else
 	$(QUIET)mvn -f $(SRC_ROOT)/pom.xml clean install -settings=$(SITE_TEMPLATE_PATH)/phoebus_settings.xml  -Dmaven.test.skip=true
 endif
@@ -18,8 +19,27 @@ endif
 
 als-phoebus:
 ifeq "$(JAVAHOME)" ""
-	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"     
-	$(QUIET)echo "source scripts/set_java_path.bash \"set\" "
+	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"
+	$(QUIET)echo "source scripts/set_java_path.bash \"$(JAVA_PATH)\" "
 else
 	$(QUIET)mvn -f $(TOP)/phoebus-products/pom.xml clean install -settings=$(SITE_TEMPLATE_PATH)/phoebus_settings.xml  -Dmaven.test.skip=true
 endif
+
+
+build.phoebus: phoebus
+
+build.als-phoebus: als-phoebus
+
+
+install.phoebus:
+	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_PHOEBUS)
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_PHOEBUS)/target/product-*.jar  $(INSTALL_PHOEBUS)
+	$(QUIET)$(SUDO) ln -sf $(INSTALL_PHOEBUS) $(INSTALL_LOCATION_PHOEBUS)/product-phoebus.jar
+	$(QUIET)$(SUDO) cp -rp $(SRC_PATH_PHOEBUS)/target/lib  $(SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS) $(SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(SRC_PATH_PHOEBUS)/phoebus.sh $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_PHOEBUS)/bin
+	#	$(QUIET)$(SUDO) $(INSTALL) -m 755 $(SRC_PATH_PHOEBUS)/phoebus.sh $(INSTALL_LOCATION_PHOEBUS)/bin 
+	
+uninstall.phoebus:
+	$(QUIET)echo "Removing $(INSTALL_LOCATION_PHOEBUS)..."
+	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_PHOEBUS)

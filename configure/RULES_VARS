@@ -40,9 +40,9 @@ print-%:
 #	$(QUIET)echo $*\'s origin is $(origin $*)
 
 
-.PHONY : exist exist.alarm-server exist.alarm-server exist.alarm-server
+.PHONY : exist exist.alarm-server exist.alarm-server exist.alarm-server exist.phoebus 
 
-exist: exist.alarm-server exist.alarm-logger exist.alarm-config-logger
+exist: exist.alarm-server exist.alarm-logger exist.alarm-config-logger exist.phoebus 
 
 
 exist.alarm-server:
@@ -58,4 +58,6 @@ exist.alarm-config-logger:
 	$(if $(wildcard $(INSTALL_LOCATION_CONFIGLOGGER)), tree -aL $(LEVEL) $(INSTALL_LOCATION_CONFIGLOGGER), $(QUIET)echo "No $(INSTALL_LOCATION_CONFIGLOGGER)")
 	$(if $(wildcard $(SYSTEMD_PATH)/alarm-config-logger.service), $(QUIET)$(SUDO) ls -ltar $(SYSTEMD_PATH)/alarm-config-logger.service,$(QUIET)echo "No alarm-config-logger.service unit file")
 
-	
+
+exist.phoebus:
+	$(if $(wildcard $(INSTALL_LOCATION_PHOEBUS)), tree -aL $(LEVEL) $(INSTALL_LOCATION_PHOEBUS), $(QUIET)echo "No $(INSTALL_LOCATION_PHOEBUS)")

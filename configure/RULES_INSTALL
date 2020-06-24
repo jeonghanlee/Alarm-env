@@ -85,8 +85,11 @@ src_postrm.alarm-config-logger:
 
 src_version: FORCE
 	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC URL : $(SRC_GITURL)"  >> $(SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC VER : $(SRC_TAG)"     >> $(SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC REMOTE URL   : $(SRC_GITURL)"  >> $(SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC SITE VERSION : $(SRC_TAG)"     >> $(SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo -n "- SRC GIT  VERSION : "  >> $(SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)cd $(SRC_ROOT) && git describe --tags >> $(SITE_TEMPLATE_PATH)/.versions
+
 
 clean:
 	rm -rf $(SITE_TEMPLATE_PATH)/.versions

@@ -1,29 +1,10 @@
 #!/usr/bin/env bash
 #
-#  Copyright (c) 2020           Jeong Han Lee
-#
-#  The program is free software: you can redistribute
-#  it and/or modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation, either version 2 of the
-#  License, or any newer version.
-#
-#  This program is distributed in the hope that it will be useful, but WITHOUT
-#  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-#  more details.
-#
-#  You should have received a copy of the GNU General Public License along with
-#  this program. If not, see https://www.gnu.org/licenses/gpl-2.0.txt
-#
 #  Author  : Jeong Han Lee
 #  email   : jeonghan.lee@gmail.com
 #  Date    : Tuesday, June 23 21:39:10 PDT 2020#
 #  version : 0.0.1
 #
-# 
-
-set -e
-
 # the following function drop_from_path was copied from
 # the ROOT build system in ${ROOTSYS}/bin/, and modified
 # a little to return its result
@@ -77,24 +58,19 @@ function set_variable
 }
 
 
-if [ -z "$2" ]; then
-    JAVA_HOME=$(dirname $(dirname $(realpath `which javac`)))
-else
-    JAVA_HOME=$(dirname $(dirname $(realpath $2/javac)))
-fi
-
-
-if [ "$1" = "set" ]; then
-    old_path=${PATH}
-    new_PATH="${JAVA_HOME}/bin"
-    PATH=$(set_variable "${old_path}" "${new_PATH}")
-    export PATH
+# If JAVA_HOME exists,
+# Skip, export JAVA_HOME
+if [ -n "$JAVA_HOME" ]; then
     export JAVA_HOME
+else
+    JAVAPATH="$1";
+    if [ -n "${JAVAPATH}" ]; then
+	JAVA_HOME=$(dirname $(dirname $(realpath ${JAVAPATH}/javac)))
+	old_path=${PATH}
+	new_PATH="${JAVA_HOME}/bin"
+	PATH=$(set_variable "${old_path}" "${new_PATH}")
+	export PATH
+	export JAVA_HOME
+    fi
     
-elif [ "$1" = "unset" ]; then
-    system_path=${PATH};
-    drop_path="${JAVA_HOME}/bin"
-    PATH=$(drop_from_path "${system_path}" "${drop_path}")
-    export PATH
-    unset JAVA_HOME
 fi

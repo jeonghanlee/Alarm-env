@@ -1,7 +1,7 @@
 ES_URL:=$(ES_HOST):$(ES_PORT)
 KAFKA_URL:=$(KAFKA_HOST):$(KAFKA_PORT)
 
--include $(TOP)/configure/CONFIG_OPTS_PHOEBUS
+include $(TOP)/configure/CONFIG_OPTS_PHOEBUS
 include $(TOP)/configure/CONFIG_OPTS_SERVER
 include $(TOP)/configure/CONFIG_OPTS_LOGGER
 include $(TOP)/configure/CONFIG_OPTS_CONFIGLOGGER

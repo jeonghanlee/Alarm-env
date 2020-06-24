@@ -1,6 +1,6 @@
 
 ### channelfinder installation location
-TARGET_ROOT:=/opt/alarms
+TARGET_ROOT:=/opt/phoebus-products
 #
 #
 
