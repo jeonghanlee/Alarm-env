@@ -95,6 +95,7 @@ tree -aL 1 /opt/phoebus-products/phoebus
 ```
 * Expand its `tree` level with `make exist.phoebus LEVEL=2`
 * Prerequirement of this rule is `make sh.phoebus` which generates two files
+* If the exist `phoebus` path is found, the exist one will be renamed to `phoebus_backup_YYMMDD-HHMMSS`.
 
 ### `make sh.phoebus`
 * `PHOEBUS_SHELL` and `PHOEBUS_ACTIVATE` in `configure/CONFIG_OPTS_PHOEBUS`. 

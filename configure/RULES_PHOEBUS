@@ -33,6 +33,7 @@ build.als-phoebus: als-phoebus
 .PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 
 install.phoebus: src_version sh.phoebus
+	$(if $(wildcard $(INSTALL_LOCATION_PHOEBUS)), $(QUIET)$(SUDO) mv $(INSTALL_LOCATION_PHOEBUS) $(INSTALL_LOCATION_PHOEBUS)_backup_$$(date +%Y%m%d-%H%M%S))
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_PHOEBUS)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_PHOEBUS)/target/product-*.jar  $(INSTALL_PHOEBUS)
@@ -45,7 +46,7 @@ install.phoebus: src_version sh.phoebus
 
 uninstall.phoebus:
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_PHOEBUS)..."
-	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_PHOEBUS)
+	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_PHOEBUS)/
 
 
 sh.phoebus:

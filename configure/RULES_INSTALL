@@ -16,6 +16,7 @@ reinstall.alarm-config-logger: uninstall.alarm-config-logger install.alarm-confi
 install: install.alarm-server install.alarm-logger install.alarm-config-logger
 
 install.alarm-server: src_version src_preinst.alarm-server sd_install.alarm-server
+	$(if $(wildcard $(INSTALL_LOCATION_SERVER)), $(QUIET)$(SUDO) mv $(INSTALL_LOCATION_SERVER) $(INSTALL_LOCATION_SERVER)_backup_$$(date +%Y%m%d-%H%M%S))
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_SERVER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_SERVER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_SERVER)/target/service-*.jar  $(INSTALL_SERVER)
@@ -23,6 +24,7 @@ install.alarm-server: src_version src_preinst.alarm-server sd_install.alarm-serv
 	$(QUIET)$(SUDO)	chown -R $(AS_USERID):$(GROUPID) $(INSTALL_LOCATION_SERVER)
 
 install.alarm-logger: src_version src_preinst.alarm-logger sd_install.alarm-logger
+	$(if $(wildcard $(INSTALL_LOCATION_LOGGER)), $(QUIET)$(SUDO) mv $(INSTALL_LOCATION_LOGGER) $(INSTALL_LOCATION_LOGGER)_backup_$$(date +%Y%m%d-%H%M%S))
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_LOGGER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_LOGGER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_LOGGER)/target/service-*.jar  $(INSTALL_LOGGER)
@@ -30,6 +32,7 @@ install.alarm-logger: src_version src_preinst.alarm-logger sd_install.alarm-logg
 	$(QUIET)$(SUDO)	chown -R $(AL_USERID):$(GROUPID) $(INSTALL_LOCATION_LOGGER)
 
 install.alarm-config-logger: src_version src_preinst.alarm-config-logger sd_install.alarm-config-logger
+	$(if $(wildcard $(INSTALL_LOCATION_CONFIGLOGGER)), $(QUIET)$(SUDO) mv $(INSTALL_LOCATION_CONFIGLOGGER) $(INSTALL_LOCATION_CONFIGLOGGER)_backup_$$(date +%Y%m%d-%H%M%S))
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_CONFIGLOGGER)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_CONFIGLOGGER)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_CONFIGLOGGER)/target/service-*.jar  $(INSTALL_CONFIGLOGGER)
@@ -44,16 +47,16 @@ uninstall: uninstall.alarm-server uninstall.alarm-logger uninstall.alarm-config-
 
 uninstall.alarm-server: sd_stop.alarm-server sd_disable.alarm-server sd_remove.alarm-server src_postrm.alarm-server
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_SERVER)..."
-	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_SERVER)
+	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_SERVER)/
 
 
 uninstall.alarm-logger: sd_stop.alarm-logger sd_disable.alarm-logger sd_remove.alarm-logger src_postrm.alarm-logger
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_LOGGER)..."
-	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_LOGGER)
+	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_LOGGER)/
 
 uninstall.alarm-config-logger: sd_stop.alarm-config-logger sd_disable.alarm-config-logger sd_remove.alarm-config-logger src_postrm.alarm-config-logger
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_CONFIGLOGGER)..."
-	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_CONFIGLOGGER)
+	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_CONFIGLOGGER)/
 
 
 
