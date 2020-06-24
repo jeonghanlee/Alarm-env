@@ -2,7 +2,7 @@
 ### Phoebus Alarm
 org.phoebus.applications.alarm/server=@AS_KAFKA_URL@
 org.phoebus.applications.alarm/config_names=@AS_CONFIG_TOPICS@
-
+org.phoebus.applications.alarm/alarm_area_level=1
 
 ### Phoebus Alarm logger (elastic index)
 org.phoebus.applications.alarm.logging.ui/es_host=@AS_ES_HOST@

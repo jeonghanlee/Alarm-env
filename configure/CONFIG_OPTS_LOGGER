@@ -7,6 +7,7 @@ LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
 #
 ### Configuration / Topics
 ### Settings / Properties for this service
+OPTIONS_LOGGER+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_SERVER)/
 OPTIONS_LOGGER+=-properties
 OPTIONS_LOGGER+=$(INSTALL_LOCATION_LOGGER)/$(LOGGER_PROPERTIES)
 ### Logging properties
@@ -53,6 +54,9 @@ AL_LOG_LEVEL:=WARN
 # Alarm-logger procServ port number
 AL_PROCSERV_PORT:=4511
 
+
+AL_JAVA_OPTS:=$(JAVA_OPTS)
+AL_JAVA_OPTS+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_LOGGER)/
 
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE

@@ -1,3 +1,4 @@
+# -*- mode: Makefile;-*-
 
 CONFIGLOGGER_PROPERTIES:=alarm-config-logger.properties
 CONFIGLOGGER_LOGGING_PROPERTIES:=alarm-config-logger_logging.properties
@@ -24,6 +25,10 @@ ACL_LOCAL_REPO_LOCATION:=/tmp/alarm-config-logger
 ACL_REMOTE_REPO_URL:=http://github.com/jeonghanlee/alarm-config-logger
 ACL_REMOTE_REPO_USERNAME:=test
 ACL_REMOTE_REPO_USERPASSWORD:=testpw
+
+
+ACL_JAVA_OPTS:=$(JAVA_OPTS)
+ACL_JAVA_OPTS+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_CONFIGLOGGER)/
 
 
 # These allow developers to override the CONFIG_ variable

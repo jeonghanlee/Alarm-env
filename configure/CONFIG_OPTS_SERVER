@@ -1,9 +1,15 @@
+# -*- mode: Makefile;-*-
+
+
 SERVER_SETTINGS:=alarm-server_settings.ini
 SERVER_LOGGING_PROPERTIES:=alarm-server_logging.properties
 
 # All options are defined in AlarmServerMain.java
 # -h* does work
 #
+
+JAVA_OPTS_SERVER+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_SERVER)/
+
 
 ### Settings / Properties for this service
 #OPTIONS_SERVER:=-config
@@ -34,4 +40,14 @@ AS_ES_PORT:=$(ES_PORT)
 AS_ES_MAX_SIZE:=1000
 # ES Index must be lowercase
 AS_ES_INDEXS:=$(addsuffix _alarms, $(shell echo $(AS_CONFIG_TOPICS) | tr A-Z a-z))
+
+
+AS_JAVA_OPTS:=$(JAVA_OPTS)
+AS_JAVA_OPTS+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_SERVER)/
+
+# These allow developers to override the CONFIG_SITE variable
+# settings without having to modify the configure/CONFIG_SITE
+# file itself.
+-include $(TOP)/../CONFIG_OPTS_SERVER.local
+-include $(TOP)/configure/CONFIG_OPTS_SERVER.local
 
