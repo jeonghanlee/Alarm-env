@@ -3,8 +3,6 @@ Alarm Trio Configuration Environment
 
 Configuration Environment for Alarm Trio at https://github.com/ControlSystemStudio/phoebus/tree/master/services
 
-![Java CI with Maven](https://github.com/jeonghanlee/alarms-env/workflows/Java%20CI%20with%20Maven/badge.svg)
-
 # Alarm Trio
 
 ## Requirements
