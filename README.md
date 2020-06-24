@@ -33,7 +33,7 @@ If you encounter any bugs you can report them here on Github.
 
 
 ## Known issues
-See [docs/KnownIssues.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/KnonwIssues.md)
+See [docs/KnownIssues.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/KnownIssues.md)
 
 
 ## References
