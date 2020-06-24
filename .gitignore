@@ -53,3 +53,4 @@ site-template/alarm-logger.properties
 test/
 .phoebus
 *-src-*
+phoebus-products/als-*/target/
