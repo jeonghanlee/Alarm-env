@@ -28,6 +28,8 @@ jobs:
     - run: |
         make vars
         make init
+        make depedencies-build
+        make build
     - run:
         bash scripts/build_test.sh all        
                 

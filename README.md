@@ -84,6 +84,11 @@ $ systemctl status alarm-server
 $ make init
 ```
 
+* If the system doesn't have any Phoebus building history, 
+```
+$ make depedencies-build
+```
+
 * Remove the downloaded source
 ```
 $ make distclean
