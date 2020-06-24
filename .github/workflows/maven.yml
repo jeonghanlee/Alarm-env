@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java CI with Maven
+name: Phoebus and Alarm Trio Build Test
 
 on:
   push:
@@ -24,12 +24,18 @@ jobs:
     - run: |
         java -version
         mvn --version
-    - run: sudo apt-get install tree
+    - run: sudo apt-get install tree openjfx libopenjfx-java
+    - run: make vars
+    - run: make init
     - run: |
-        make vars
-        make init
-        make depedencies-build
+        make build.phoebus
+        make prop.phoebus
+        make install.phoebus
+    - run: |
         make build
+        make sd_config
+        make install
+    - run: make exist
     - run:
         bash scripts/build_test.sh all        
                 
