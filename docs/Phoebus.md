@@ -48,8 +48,8 @@ $ make init
 $ make build.phoebus
 $ make prop.phoebus
 $ make install.phoebus
-$ source scripts/activate-phoebus.bash
-$ run-phoebus.bash
+$ source scripts/activate-phoebus
+$ xPhoebus
 ```
 
 ## Makefile Rules
@@ -81,7 +81,7 @@ Please check site-template/phoebus_settings.ini file to match your environment. 
 ```
 tree -aL 1 /opt/phoebus-products/phoebus
 /opt/phoebus-products/phoebus
-├── activate-phoebus.bash
+├── activate-phoebus
 ├── bin
 ├── lib
 ├── phoebus.jar
@@ -90,8 +90,7 @@ tree -aL 1 /opt/phoebus-products/phoebus
 ├── phoebus_settings.ini
 ├── phoebus.sh
 ├── product-phoebus.jar -> /opt/phoebus-products/phoebus/phoebus.jar
-├── .versions
-└── .versions~
+└── .versions
 ```
 * Expand its `tree` level with `make exist.phoebus LEVEL=2`
 * Prerequirement of this rule is `make sh.phoebus` which generates two files
