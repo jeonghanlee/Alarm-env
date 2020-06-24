@@ -50,3 +50,6 @@ auto_positions.sav*
 site-template/alarm-server_settings.ini
 site-template/alarm-config-logger.properties
 site-template/alarm-logger.properties
+test/
+.phoebus
+*-src-*
