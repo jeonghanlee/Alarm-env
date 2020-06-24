@@ -1,0 +1,97 @@
+
+
+# ChannelFinder
+org.phoebus.channelfinder/serviceURL=@PS_CF_PRTO@\://@PS_CF_HOST@:@PS_CF_PORT@/ChannelFinder/
+
+# Databrowser preferences
+org.csstudio.trends.databrowser3/archives=Current|0|pbraw\://@PS_AA_HOST@:17668/retrieval
+org.csstudio.trends.databrowser3/urls=pbraw\://@PS_AA_HOST@:17668/retrieval
+
+# Logbook
+org.phoebus.logbook.ui/logbook_factory=olog
+
+# Olog
+org.phoebus.olog.api.OlogClient/olog_url=@PS_OG_PRTO@\://@PS_OG_HOST@\:@PS_OG_PORT@/Olog/resources
+
+# UI monitoring
+org.phoebus.ui/ui_monitor_period=0
+
+
+### Phoebus Alarm
+org.phoebus.applications.alarm/server=@PS_KAFKA_URL@
+org.phoebus.applications.alarm/config_name=@PS_MAIN_CONFIG_TOPIC@
+org.phoebus.applications.alarm/config_names=@PS_CONFIG_TOPICS@
+org.phoebus.applications.alarm/alarm_area_level=1
+
+### Phoebus Alarm logger (elastic index)
+org.phoebus.applications.alarm.logging.ui/es_host=@PS_ES_HOST@
+org.phoebus.applications.alarm.logging.ui/es_port=@PS_ES_PORT@
+org.phoebus.applications.alarm.logging.ui/es_index=@PS_ES_INDEXS@
+org.phoebus.applications.alarm.logging.ui/es_max_size=@PS_ES_MAX_SIZE@
+
+
+
+# Hide menu entries that are only useful in specific scenarios
+#org.phoebus.ui/hide_spi_menu=org.phoebus.ui.monitoring.FreezeUI, org.phoebus.sns.mpsbypasses.OpenMPSBypasses,org.phoebus.logbook.ui.LogEntryCalenderMenuEntry,org.phoebus.logbook.ui.LogEntryTableMenuEntry
+
+# Site-specific welcome
+#org.phoebus.ui/welcome=file:$(phoebus.install)/site_welcome.html
+
+# Support external tools
+#org.phoebus.framework.workbench/external_app_text=Text Editor,txt|dat|tab|py|ini|def|db|xml|xsl|css|cmd|sh|st|log|out|md|tex|shp|bob|opi|pvs|edl,gedit
+#org.phoebus.framework.workbench/external_app_image=Image Viewer,png|jpg|gif|jpeg,eog
+#org.phoebus.framework.workbench/external_app_pdf=PDF Viewer,pdf|ps,firefox
+#org.phoebus.framework.workbench/external_app_gnumeric=Gnumeric,csv|gnumeric,gnumeric
+#org.phoebus.framework.workbench/external_app_py=Python IDE,py,idle
+
+org.phoebus.ui/ui_monitor_period=5000
+
+
+# Channel Access
+# org.phoebus.pv.ca/addr_list=127.0.0.1 
+
+# Display Builder
+org.phoebus.ui/top_resources=
+org.csstudio.display.builder.runtime/probe_display=
+org.csstudio.display.builder.runtime/python_path=
+
+# Subtle shading
+org.csstudio.javafx.rtplot/shady_future=128, 128, 128, 10
+
+# PV throttle (250)
+org.csstudio.display.builder.runtime/update_throttle=250
+
+# Display hesitation to accumulate updates (20)
+org.csstudio.display.builder.representation/update_accumulation_time = 20
+# Pause after updates (100)
+org.csstudio.display.builder.representation/update_delay = 100
+# Line Plot update throttle
+org.csstudio.display.builder.representation/plot_update_delay = 250
+# Image plot update throttle
+org.csstudio.display.builder.representation/image_update_delay = 250
+
+# Faster (for tests)
+# Display actual update rate by setting
+# -Dorg.csstudio.javafx.rtplot.update_counter=true
+#org.csstudio.display.builder.runtime/update_throttle=1
+#org.csstudio.display.builder.representation/update_accumulation_time = 1
+#org.csstudio.display.builder.representation/update_delay = 1
+#org.csstudio.display.builder.representation/plot_update_delay = 1
+#org.csstudio.display.builder.representation/image_update_delay = 1
+
+# EDM Auto-conversion
+#org.csstudio.display.converter.edm/edm_paths_config=
+#org.csstudio.display.converter.edm/colors_list=
+#org.csstudio.display.converter.edm/auto_converter_dir=
+
+
+# Alarm server emails
+# org.phoebus.email/mailhost=
+# org.phoebus.applications.alarm/automated_email_sender=Alarm Notifier
+
+
+# Comma-separated list of default log books for new log entries
+org.phoebus.logbook.ui/logbook_factory=
+org.phoebus.logbook.ui/default_logbooks=
+org.phoebus.logbook.ui/save_credentials=
+

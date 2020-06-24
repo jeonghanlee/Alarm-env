@@ -8,9 +8,6 @@ SERVER_LOGGING_PROPERTIES:=alarm-server_logging.properties
 # -h* does work
 #
 
-JAVA_OPTS_SERVER+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_SERVER)/
-
-
 ### Settings / Properties for this service
 #OPTIONS_SERVER:=-config
 #OPTIONS_SERVER+=$(ALARM_CONFIG_TOPICS)
@@ -27,7 +24,9 @@ OPTIONS_SERVER+=$(INSTALL_LOCATION_SERVER)/$(SERVER_LOGGING_PROPERTIES)
 #OPTIONS_SERVER+=-export config.xml
 #OPTIONS_SERVER+=-import config.xml
 
+AS_MAIN_CONFIG_TOPIC:=$(ALARM_CONFIG_TOPIC)
 AS_CONFIG_TOPICS:=$(ALARM_CONFIG_TOPICS)
+
 AS_KAFKA_URL:=$(KAFKA_URL)
 
 

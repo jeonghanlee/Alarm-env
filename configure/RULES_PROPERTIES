@@ -9,6 +9,7 @@ prop: prop.alarm-server prop.alarm-logger prop.alarm-config-logger
 # this rule is called install.alarm-server in configure/RULES_INSTALL
 prop.alarm-server:
 	$(QUIET)sed -e "s:@AS_CONFIG_TOPICS@:$(AS_CONFIG_TOPICS):g" \
+		    -e "s:@AS_MAIN_CONFIG_TOPIC@:$(AS_MAIN_CONFIG_TOPIC):g" \
 		    -e "s:@AS_ES_HOST@:$(AS_ES_HOST):g" \
 		    -e "s:@AS_ES_PORT@:$(AS_ES_PORT):g" \
 		    -e "s:@AS_ES_MAX_SIZE@:$(AS_ES_MAX_SIZE):g" \

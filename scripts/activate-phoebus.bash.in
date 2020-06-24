@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#
+#  Author  : Jeong Han Lee
+#  email   : jeonghan.lee@gmail.com
+#  Date    : Tuesday, June 23 21:39:10 PDT 2020#
+#  version : 0.0.1
+
+# the following function drop_from_path was copied from
+# the ROOT build system in ${ROOTSYS}/bin/, and modified
+# a little to return its result
+function drop_from_path
+{
+    #
+    # Assert that we got enough arguments
+    if test $# -ne 2 ; then
+	echo "drop_from_path: needs 2 arguments"
+	return 1
+    fi
+
+    local p=$1
+    local drop=$2
+
+    local new_path=`echo $p | sed -e "s;:${drop}:;:;g" \
+                 -e "s;:${drop};;g"   \
+                 -e "s;${drop}:;;g"   \
+                 -e "s;${drop};;g";`
+    echo ${new_path}
+}
+
+
+function set_variable
+{
+    if test $# -ne 2 ; then
+	echo "set_variable: needs 2 arguments"
+	return 1
+    fi
+
+    local old_path="$1"
+    local add_path="$2"
+
+    local new_path=""
+    local system_old_path=""
+
+    if [ -z "$old_path" ]; then
+	new_path=${add_path}
+    else
+	system_old_path=$(drop_from_path ${old_path} ${add_path})
+	if [ -z "$system_old_path" ]; then
+	    new_path=${add_path}
+	else
+	    new_path=${add_path}:${system_old_path}
+	fi
+   
+    fi
+
+    echo "${new_path}"
+}
+
+
+# THIS_SRC=${BASH_SOURCE[0]:-${0}}
+
+
+# if [ -L $THIS_SRC ]; then
+#     SRC_PATH="$( cd -P "$( dirname $(readlink -f "$THIS_SRC") )" && pwd )"
+# else
+#     SRC_PATH="$( cd -P "$( dirname "$THIS_SRC" )" && pwd )"
+# fi
+
+# SRC_NAME=${THIS_SRC##*/}
+
+
+old_PATH=${PATH}
+add_path=@INSTALL_LOCATION_PHOEBUS@/bin
+
+PATH=$(set_variable "${old_PATH}" "${add_path}")
+
+export PATH

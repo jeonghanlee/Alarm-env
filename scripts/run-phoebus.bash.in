@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Phoebus launcher for Linux
+
+# To get one instance, use server mode
+ID=$(id -u)
+OPT="-server 4$ID"
+
+filter1="-help"
+filter2="-main"
+
+firstarg="$1";
+
+
+if test "${firstarg#*$filter1}" != "$firstarg"; then
+    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ $OPT "$@"
+elif test "${firstarg#*$filter2}" != "$firstarg"; then
+    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ $OPT "$@"
+else
+    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ $OPT "$@" & 
+fi

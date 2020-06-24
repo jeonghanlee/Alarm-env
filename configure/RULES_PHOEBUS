@@ -1,4 +1,4 @@
-# -*- mode: Makefile;-*
+# -*- mode: Makefile;-*-
 
 JAVAHOME = ${JAVA_HOME}
 
@@ -30,16 +30,56 @@ build.phoebus: phoebus
 
 build.als-phoebus: als-phoebus
 
+.PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 
-install.phoebus:
+install.phoebus: sh.phoebus
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_PHOEBUS)
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 744 $(SRC_PATH_PHOEBUS)/target/product-*.jar  $(INSTALL_PHOEBUS)
 	$(QUIET)$(SUDO) ln -sf $(INSTALL_PHOEBUS) $(INSTALL_LOCATION_PHOEBUS)/product-phoebus.jar
 	$(QUIET)$(SUDO) cp -rp $(SRC_PATH_PHOEBUS)/target/lib  $(SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS) $(SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(SRC_PATH_PHOEBUS)/phoebus.sh $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)$(SUDO) $(INSTALL) -d $(INSTALL_LOCATION_PHOEBUS)/bin
-	#	$(QUIET)$(SUDO) $(INSTALL) -m 755 $(SRC_PATH_PHOEBUS)/phoebus.sh $(INSTALL_LOCATION_PHOEBUS)/bin 
-	
+	$(QUIET)$(SUDO) $(INSTALL) -m 755 $(SCRIPTS_PATH)/$(PHOEBUS_SHELL) $(INSTALL_LOCATION_PHOEBUS)/bin
+	$(QUIET)$(SUDO) $(INSTALL) -m 644 $(SCRIPTS_PATH)/$(PHOEBUS_ACTIVATE) $(INSTALL_LOCATION_PHOEBUS)/
+
+
 uninstall.phoebus:
 	$(QUIET)echo "Removing $(INSTALL_LOCATION_PHOEBUS)..."
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION_PHOEBUS)
+
+
+sh.phoebus:
+	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g"      \
+		    -e "s:@JAVAOPTS@:$(PS_JAVA_OPTS):g"   \
+		    -e "s:@TARGET_FILENAME@:$(INSTALL_PHOEBUS):g"        \
+		    -e "s|@OPTIONS@|$(OPTIONS_PHOEBUS)|g" \
+		    < $(SCRIPTS_PATH)/$(PHOEBUS_SHELL).in > $(SCRIPTS_PATH)/$(PHOEBUS_SHELL)
+	$(QUIET)chmod +x $(SCRIPTS_PATH)/$(PHOEBUS_SHELL)
+	$(QUIET)sed -e "s:@INSTALL_LOCATION_PHOEBUS@:$(INSTALL_LOCATION_PHOEBUS):g"      \
+		    < $(SCRIPTS_PATH)/$(PHOEBUS_ACTIVATE).in > $(SCRIPTS_PATH)/$(PHOEBUS_ACTIVATE)
+
+
+sh_clean.phoebus:
+	rm -f $(SCRIPTS_PATH)/$(PHOEBUS_SHELL)
+
+
+
+prop.phoebus:
+	$(QUIET)sed -e "s:@PS_CF_PRTO@:$(PS_CF_PRTO):g" \
+		    -e "s:@PS_CF_HOST@:$(PS_CF_HOST):g" \
+		    -e "s:@PS_CF_PORT@:$(PS_CF_PORT):g" \
+		    -e "s:@PS_AA_HOST@:$(PS_AA_HOST):g" \
+		    -e "s|@PS_KAFKA_URL@|$(PS_KAFKA_URL)|g" \
+		    -e "s:@PS_MAIN_CONFIG_TOPIC@:$(PS_MAIN_CONFIG_TOPIC):g" \
+		    -e "s:@PS_CONFIG_TOPICS@:$(PS_CONFIG_TOPICS):g" \
+		    -e "s:@PS_ES_HOST@:$(PS_ES_HOST):g" \
+		    -e "s:@PS_ES_PORT@:$(PS_ES_PORT):g" \
+		    -e "s:@PS_ES_INDEXS@:$(PS_ES_INDEXS):g" \
+		    -e "s:@PS_ES_MAX_SIZE@:$(PS_ES_MAX_SIZE):g" \
+		    -e "s:@PS_OG_PRTO@:$(PS_OG_PRTO):g" \
+		    -e "s:@PS_OG_HOST@:$(PS_OG_HOST):g" \
+		    -e "s:@PS_OG_PORT@:$(PS_OG_PORT):g" \
+		    < $(SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS).in > $(SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS)
+
+prop_clean.phoebus:
+	rm -f $(SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS)

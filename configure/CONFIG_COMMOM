@@ -1,16 +1,26 @@
-#KFKA_SERVER:=localhost
+## KFKA Server
 KAFKA_HOST:=10.0.0.49
 KAFKA_PORT:=9092
 
-
-#
+## Elasticsearch Server
 ES_HOST:=10.0.0.200
 ES_PORT:=9200
 
+## Channel Finder
+CF_PRTO:=http
+CF_HOST:=localhost
+CF_PORT:=8080
+#
+#
+CF_URL:=$(CF_HOST):$(CF_PORT)/ChannelFinder
+
+ALARM_CONFIG_TOPIC:=Acclerator
 ALARM_CONFIG_TOPICS:=Accelerator
+AA_HOST:=localhost
 
-
-
+OG_PRTO:=https
+OG_HOST:=localhost
+OG_PORT:=8181
 
 # These allow developers to override the variable
 -include $(TOP)/../CONFIG_COMMOM.local

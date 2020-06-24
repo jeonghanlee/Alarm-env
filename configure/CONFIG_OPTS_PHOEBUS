@@ -1,21 +1,67 @@
 # -*- mode: Makefile;-*-
 
 
-
+PHOEBUS_SHELL:=run-phoebus.bash
+PHOEBUS_ACTIVATE:=activate-phoebus.bash
 PHOEBUS_SETTINGS:=phoebus_settings.ini
 PHOEBUS_LOGGING_PROPERTIES:=phoebus_logging.properties
 PHOEBUS_LOGBACK:=phoebus_logback.xml
 
 
+PS_JAVA_OPTS:=$(JAVA_OPTS)
+
+#PS_JAVA_OPTS+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_SERVER)/
+
+# Don't start a CA Repeater
+PS_JAVA_OPTS+=-DCA_DISABLE_REPEATER=true
+
+# Disable warnings
+PS_JAVA_OPTS+=-Dnashorn.args=--no-deprecation-warning
+
+# Use GTK 2 (GTK 3 drag/drop doesn't always work)
+PS_JAVA_OPTS+=-Djdk.gtk.verbose=false -Djdk.gtk.version=2
+
+# Drawing pipeline
+PS_JAVA_OPTS+=-Dprism.verbose=false -Dprism.forceGPU=true
+
+# Disable acceleration
+# PS_JAVA_OPTS+= -Dprism.order=sw
+
+#
+PS_JAVA_OPTS+=-Dorg.csstudio.javafx.rtplot.update_counter=false
+
+#
+PS_JAVA_OPTS+=-Dlogback.configurationFile=$(INSTALL_LOCATION_PHOEBUS)/$(PHOEBUS_LOGBACK)
 
 
-# JAVA_OPTS_PHOEBUS+=-Djava.util.prefs.userRoot=$(INSTALL_LOCATION_PHOEBUS)/
-JAVA_OPTS_PHOEBUS+=-DCA_DISABLE_REPEATER=true
-JAVA_OPTS_PHOEBUS+=-Dnashorn.args=--no-deprecation-warning
-JAVA_OPTS_PHOEBUS+=-Djdk.gtk.verbose=false
-JAVA_OPTS_PHOEBUS+=-Djdk.gtk.version=2
-JAVA_OPTS_PHOEBUS+=-Dprism.forceGPU=true
-JAVA_OPTS_PHOEBUS+=-Dlogback.configurationFile=$(INSTALL_LOCATION_PHOEBUS)/logback.xml
-JAVA_OPTS_PHOEBUS+=-Dorg.csstudio.javafx.rtplot.update_counter=false
+OPTIONS_PHOEBUS+=-settings
+OPTIONS_PHOEBUS+=$(INSTALL_LOCATION_PHOEBUS)/$(PHOEBUS_SETTINGS)
+### Logging properties
+OPTIONS_SERVER+=-logging
+OPTIONS_SERVER+=$(INSTALL_LOCATION_PHOEBUS)/$(PHOEBUS_LOGGING_PROPERTIES)
+#OPTIONS_SERVER+=-nosplash
 
 
+# Kafka server location
+PS_KAFKA_URL:=$(KAFKA_URL)
+
+PS_MAIN_CONFIG_TOPIC:=$(ALARM_CONFIG_TOPIC)
+PS_CONFIG_TOPICS:=$(ALARM_CONFIG_TOPICS)
+
+##
+PS_ES_HOST:=$(ES_HOST)
+PS_ES_PORT:=$(ES_PORT)
+# max default size for es queries
+PS_ES_MAX_SIZE:=1000
+PS_ES_INDEXS:=$(addsuffix _alarms, $(shell echo $(PS_CONFIG_TOPICS) | tr A-Z a-z))
+
+PS_CF_PRTO:=$(CF_PRTO)
+PS_CF_HOST:=$(CF_HOST)
+PS_CF_PORT:=$(CF_PORT)
+
+PS_AA_HOST:=$(AA_HOST)
+
+
+PS_OG_PRTO:=$(OG_PRTO)
+PS_OG_HOST:=$(OG_HOST)
+PS_OG_PORT:=$(OG_PORT)
