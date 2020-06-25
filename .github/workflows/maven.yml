@@ -23,6 +23,8 @@ jobs:
         architecture: x64
     - run: |
         java -version
+        echo $JAVA_HOME
+        echo $PATH
         mvn --version
     - run: sudo apt-get install tree openjfx libopenjfx-java
     - run: |
