@@ -45,6 +45,7 @@ OpenJDK 654-Bit Server VM (build 25.242-b08, mixed mode)
 
 ```
 $ make init
+$ make patch
 $ make build.phoebus
 $ make prop.phoebus
 $ make install.phoebus
@@ -60,6 +61,15 @@ $ xPhoebus
 ```
 $ make init
 ```
+
+### `make patch`
+* Apply patch files if patch files exist in `patch`
+* Each patch file is an unique `SRC_TAG` prefix. 
+
+### `make patchrevert`
+* Revert applied patch files if patch files exist in `patch`
+* Each patch file is an unique `SRC_TAG` prefix. 
+
 
 ### `make build.phoebus`
 * Build the default community phoebus, located in `phoebus-src/phoebus-product/target`.
