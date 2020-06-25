@@ -1,0 +1,16 @@
+diff --git core/framework/pom.xml core/framework/pom.xml
+index c7d7b0957..078f5b17c 100644
+--- core/framework/pom.xml
++++ core/framework/pom.xml
+@@ -24,11 +24,5 @@
+       <version>${mockito.version}</version>
+       <scope>test</scope>
+     </dependency>
+-    <dependency>
+-      <groupId>org.phoebus</groupId>
+-      <artifactId>core-formula</artifactId>
+-      <version>4.6.4-SNAPSHOT</version>
+-      <scope>compile</scope>
+-    </dependency>
+   </dependencies>
+ </project>

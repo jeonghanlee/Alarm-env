@@ -1,6 +1,7 @@
-
+# -*- mode: Makefile;-*-
 
 include $(TOP)/configure/RULES_FUNC
+include $(TOP)/configure/RULES_PATCH
 include $(TOP)/configure/RULES_PHOEBUS
 include $(TOP)/configure/RULES_REQ
 include $(TOP)/configure/RULES_SRC

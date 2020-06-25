@@ -25,9 +25,12 @@ jobs:
         java -version
         mvn --version
     - run: sudo apt-get install tree openjfx libopenjfx-java
-    - run: make vars
-    - run: make init
     - run: |
+        make init
+        make patch
+        make vars
+    - run: |
+        source scripts/set_java_path.bash "/opt/hostedtoolcache/jdk/11.0.7/x64"
         make build.phoebus
         make prop.phoebus
         make install.phoebus
