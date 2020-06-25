@@ -1,5 +1,6 @@
 # Phoebus and Alarm Trio Configuration Environment
-![Java CI with Maven](https://github.com/jeonghanlee/phoebus-env/workflows/Java%20CI%20with%20Maven/badge.svg)
+
+![Phoebus and Alarm Trio Build Test](https://github.com/jeonghanlee/phoebus-env/workflows/Phoebus%20and%20Alarm%20Trio%20Build%20Test/badge.svg)
 
 Configuration Environment for Phoebus [1] and Alarm Trio [2]. 
 
