@@ -9,7 +9,7 @@ endef
 
 
 define revert_patch_src
-for i in $(wildcard $(TOP)/patch/$(SRC_TAG))-*.p0.patch); do\
+for i in $(wildcard $(TOP)/patch/$(SRC_TAG)-*.p0.patch); do\
 	printf "\nReverting applied patch %s with the file : %s\n" "$(SRC_ROOT)" "$$i"; \
 	patch -R -d $(SRC_ROOT) --ignore-whitespace -p0 < $$i;\
 done
