@@ -10,20 +10,20 @@ sd_install: sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-con
 sd_install.alarm-server: __sd_install.alarm-server sd_enable.alarm-server
 
 __sd_install.alarm-server:
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service $(SYSTEMD_PATH)/
+	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service $(SYSTEMD_PATH)/
 	$(QUIET)$(SUDO) systemctl daemon-reload
 
 sd_install.alarm-logger: __sd_install.alarm-logger  sd_enable.alarm-logger
 
 __sd_install.alarm-logger:
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service $(SYSTEMD_PATH)/
+	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service $(SYSTEMD_PATH)/
 	$(QUIET)$(SUDO) systemctl daemon-reload
 
 
 sd_install.alarm-config-logger: __sd_install.alarm-config-logger  sd_enable.alarm-config-logger
 
 __sd_install.alarm-config-logger:
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service $(SYSTEMD_PATH)/
+	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service $(SYSTEMD_PATH)/
 	$(QUIET)$(SUDO) systemctl daemon-reload
 
 
@@ -32,32 +32,32 @@ __sd_install.alarm-config-logger:
 sd_clean: sd_clean.alarm-server sd_clean.alarm-logger sd_clean.alarm-config-logger
 
 sd_clean.alarm-server:
-	rm -f $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
 
 sd_clean.alarm-logger:
-	rm -f $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
 
 sd_clean.alarm-config-logger:
-	rm -f $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
 
 .PHONY: sd_config sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger
 
 sd_config: sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger
 
 sd_config.alarm-server: prop.alarm-server
-	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AS_JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(AS_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" -e "s:@USERID@:$(AS_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AS_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(AS_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" -e "s:@USERID@:$(AS_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
 
 sd_config.alarm-logger: prop.alarm-logger
-	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AL_JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_LOGGER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_LOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_LOGGER)|g" -e "s:@PROCSERV_PORT@:$(AL_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_LOGGER):g" -e "s:@USERID@:$(AL_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
+	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AL_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_LOGGER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_LOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_LOGGER)|g" -e "s:@PROCSERV_PORT@:$(AL_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_LOGGER):g" -e "s:@USERID@:$(AL_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
 
 # sd_config.alarm-server:
-# 	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+# 	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" < $(PS_SITE_TEMPLATE_PATH)/sd.service.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
 
 # sd_config.alarm-logger:
-# 	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_LOGGER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_LOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_LOGGER)|g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
+# 	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_LOGGER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_LOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_LOGGER)|g" < $(PS_SITE_TEMPLATE_PATH)/sd.service.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
 
 sd_config.alarm-config-logger: prop.alarm-config-logger
-	$(QUIET)sed -e "s:@JAVAPATH@:$(JAVA_PATH):g" -e "s:@JAVAOPTS@:$(ACL_JAVA_OPTS):g" -e "s|@DOCURL@|$(SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_CONFIGLOGGER):g" -e "s|@TARGET_FILENAME@|$(INSTALL_CONFIGLOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_CONFIGLOGGER)|g" -e "s:@USERID@:$(ACL_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(SITE_TEMPLATE_PATH)/sd.service.in > $(SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
+	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(ACL_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_CONFIGLOGGER):g" -e "s|@TARGET_FILENAME@|$(INSTALL_CONFIGLOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_CONFIGLOGGER)|g" -e "s:@USERID@:$(ACL_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
 
 
 .PHONY: sd_status sd_start sd_stop sd_restart sd_remove sd_disable sd_enable 

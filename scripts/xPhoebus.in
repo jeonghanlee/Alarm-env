@@ -3,8 +3,8 @@
 # Phoebus launcher for Linux
 
 # To get one instance, use server mode
-ID=$(id -u)
-OPT="-server 4$ID"
+#ID=$(id -u)
+OPT="-server 4530"
 
 filter1="-help"
 filter2="-main"
