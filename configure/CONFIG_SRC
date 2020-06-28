@@ -8,7 +8,7 @@ SUDO := sudo
 #
 # SRC_ROOT_INFO 1 : the directory is not there
 # SRC_ROOT_INFO 0 : the directory is there
-SRC_ROOT_INFO := $(shell test -d $(SRC_ROOT) 1>&2 2> /dev/null; echo $$?)
+SRC_ROOT_INFO := $(shell test -d $(PS_SRC_ROOT) 1>&2 2> /dev/null; echo $$?)
 #
 #
 ifeq "$(SRC_ROOT_INFO)" "1"
@@ -16,15 +16,14 @@ INIT_SRC = 1
 endif
 #
 #
-SRC_PATH_PHOEBUS:=$(SRC_ROOT)/$(TARGET_NAME_PHOEBUS)-product
-SRC_PATH_SERVER:=$(SRC_ROOT)/services/$(TARGET_NAME_SERVER)
-SRC_PATH_LOGGER:=$(SRC_ROOT)/services/$(TARGET_NAME_LOGGER)
-SRC_PATH_CONFIGLOGGER:=$(SRC_ROOT)/services/$(TARGET_NAME_CONFIGLOGGER)
+SRC_PATH_PHOEBUS:=$(PS_SRC_ROOT)/$(TARGET_NAME_PHOEBUS)-product
+SRC_PATH_SERVER:=$(PS_SRC_ROOT)/services/$(TARGET_NAME_SERVER)
+SRC_PATH_LOGGER:=$(PS_SRC_ROOT)/services/$(TARGET_NAME_LOGGER)
+SRC_PATH_CONFIGLOGGER:=$(PS_SRC_ROOT)/services/$(TARGET_NAME_CONFIGLOGGER)
 
 
-SITE_TEMPLATE_PATH:=$(TOP)/site-template
-SCRIPTS_PATH:=$(TOP)/scripts
-SYSTEMD_PATH:=/etc/systemd/system
+PS_SITE_TEMPLATE_PATH:=$(TOP)/site-template
+PS_SCRIPTS_PATH:=$(TOP)/scripts
 
 #
 #

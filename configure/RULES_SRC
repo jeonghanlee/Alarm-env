@@ -34,13 +34,13 @@ ifeq "$(INIT_SRC)" "1"
 init: __init
 
 __init:
-	git clone $(SRC_GITURL) $(SRC_ROOT)
-	cd $(SRC_ROOT) && git checkout $(SRC_TAG)
+	git clone $(PS_SRC_GITURL) $(PS_SRC_ROOT)
+	cd $(PS_SRC_ROOT) && git checkout $(PS_SRC_TAG)
 else
 init: __init 
 
 __init:
-	$(QUIET)echo "$(SRC_ROOT) exists. make distclean first, if one would like to restart it."
+	$(QUIET)echo "$(PS_SRC_ROOT) exists. make distclean first, if one would like to restart it."
 endif
 
 
@@ -48,12 +48,12 @@ deinit: distclean
 
 ## Clean Source
 distclean: clean
-ifneq ($(wildcard $(SRC_ROOT)/.*),)
-	$(QUIET)echo "We've found $(SRC_ROOT)"
+ifneq ($(wildcard $(PS_SRC_ROOT)/.*),)
+	$(QUIET)echo "We've found $(PS_SRC_ROOT)"
 	$(QUIET)echo "Removing ....."
-	$(QUIET)rm -rf $(SRC_ROOT)
+	$(QUIET)rm -rf $(PS_SRC_ROOT)
 else
-	$(QUIET)echo "There is no $(SRC_ROOT)."
+	$(QUIET)echo "There is no $(PS_SRC_ROOT)."
 endif
 
 

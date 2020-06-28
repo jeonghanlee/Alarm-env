@@ -1,19 +1,22 @@
+JAVA_PATH=/usr/bin
 
 ## Where the Source repository SRC_URL/SRC_NAME
 ##
-SRC_URL:=https://github.com/ControlSystemStudio
-SRC_NAME:=phoebus
+PS_SRC_URL:=https://github.com/ControlSystemStudio
+PS_SRC_NAME:=phoebus
 
 
 ## Which the source tag / branch / hash id would like to use
 ### 2020-06-24
-SRC_TAG:=f2ec18b
-
-
+PS_SRC_TAG:=f2ec18b
 
 
 ### Placeholder for the site-specific version control 
-SRC_VERSION:=$(SRC_TAG)
+PS_SRC_VERSION:=$(PS_SRC_TAG)
+
+### One may not need to change the following variables
+### SRC_GITURL used for git clone
+PS_SRC_GITURL:=$(PS_SRC_URL)/$(PS_SRC_NAME)
 
 
 -include $(TOP)/../RELEASE.local

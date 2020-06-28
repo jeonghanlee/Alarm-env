@@ -15,7 +15,7 @@ prop.alarm-server:
 		    -e "s:@AS_ES_MAX_SIZE@:$(AS_ES_MAX_SIZE):g" \
 		    -e "s:@AS_ES_INDEXS@:$(AS_ES_INDEXS):g" \
 		    -e "s|@AS_KAFKA_URL@|$(AS_KAFKA_URL)|g" \
-		    < $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS).in > $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
+		    < $(PS_SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS).in > $(PS_SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
 
 # this rule is called install.alarm-logger in configure/RULES_INSTALL
 prop.alarm-logger:
@@ -31,7 +31,7 @@ prop.alarm-logger:
 		    -e "s:@AL_REST_PORT@:$(AL_REST_PORT):g" \
 		    -e "s:@AL_BANNER_MODE@:$(AL_BANNER_MODE):g" \
 		    -e "s:@AL_LOG_LEVEL@:$(AL_LOG_LEVEL):g" \
-		    < $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES).in > $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
+		    < $(PS_SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES).in > $(PS_SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
 
 # this rule is called install.alarm-config-logger in configure/RULES_INSTALL
 prop.alarm-config-logger:
@@ -41,7 +41,7 @@ prop.alarm-config-logger:
 		    -e "s|@ACL_REMOTE_REPO_URL@|$(ACL_REMOTE_REPO_URL)|g" \
 		    -e "s:@ACL_REMOTE_REPO_USERNAME@:$(ACL_REMOTE_REPO_USERNAME):g" \
 		    -e "s:@ACL_REMOTE_REPO_USERPASSWORD@:$(ACL_REMOTE_REPO_USERPASSWORD):g" \
-		    < $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES).in > $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES)
+		    < $(PS_SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES).in > $(PS_SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES)
 
 
 .PHONY: prop_clean prop_clean.alarm-server prop_clean.alarm-logger  prop_clean.alarm-config-logger
@@ -49,12 +49,12 @@ prop.alarm-config-logger:
 prop_clean: prop_clean.alarm-server prop_clean.alarm-logger  prop_clean.alarm-config-logger
 
 prop_clean.alarm-server:
-	rm -f $(SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
 
 prop_clean.alarm-logger:
-	rm -f $(SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(LOGGER_PROPERTIES)
 
 prop_clean.alarm-config-logger:
-	rm -f $(SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES)
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(CONFIGLOGGER_PROPERTIES)
 
 

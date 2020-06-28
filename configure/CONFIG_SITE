@@ -1,18 +1,15 @@
 
-### channelfinder installation location
-TARGET_ROOT:=/opt/phoebus-products
+## Phoebus installation location
+PS_INSTALL_LOCATION:=/opt/phoebus-products
 #
 #
 
-### One may not need to change the following variables
-### SRC_GITURL used for git clone
-SRC_GITURL:=$(SRC_URL)/$(SRC_NAME)
 ### SRC_ROOT used for a local directory which is a clone git repository
 #
-SRC_ROOT:=$(SRC_NAME)-src
+PS_SRC_ROOT:=$(PS_SRC_NAME)-src
 #
 ### Default JAVA path and its options
-JAVA_PATH:=/usr/bin
+PS_JAVA_PATH:=$(JAVA_PATH)
 #JAVA_OPTS:=-Xms512m -Xmx512m
 # # Two more potential interesting options are
 # # JAVA_OPTS=-XX:MaxMetaspaceSize=256M -XX:+UseG1GC -Xms2G -Xmx2G
@@ -30,6 +27,7 @@ ACL_USERID:=alarmacl
 GROUPID:=65534
 #
 
+SYSTEMD_PATH:=/etc/systemd/system
 
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE

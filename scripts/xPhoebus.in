@@ -4,7 +4,7 @@
 
 # To get one instance, use server mode
 ID=$(id -u)
-OPT="-server 4$ID"
+#OPT="-server 4$ID"
 
 filter1="-help"
 filter2="-main"
