@@ -31,11 +31,11 @@ ExecStart=/usr/bin/procServ \
 		    --foreground \
 		    --noautorestart \
 		    --port=@PROCSERV_PORT@ \
-		    --name @TARGET_NAME@ \
+		    --name @TARGET_NAME@-@CONFIG@ \
 		    --chdir @INSTALL_LOCATION@ \
 		    --logfile @INSTALL_LOCATION@/procServ_@TARGET_NAME@.log \
 		    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ \
-		    @OPTIONS@
+		    @OPTIONS@ -config @CONFIG@
 
 User=@USERID@
 Group=@GROUPID@

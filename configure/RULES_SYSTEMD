@@ -1,7 +1,7 @@
 # -*- mode: Makefile;-*-
 
 
-.PHONY: sd_install sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-config-logger
+.PHONY: sd_install sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-config-logger 
 
 
 sd_install: sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-config-logger
@@ -9,9 +9,12 @@ sd_install: sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-con
 
 sd_install.alarm-server: __sd_install.alarm-server sd_enable.alarm-server
 
-__sd_install.alarm-server:
-	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service $(SYSTEMD_PATH)/
+__sd_install.alarm-server: $(patsubst %, __sd_install.%, $(AS_CONFIG_TOPICS))
+
+$(patsubst %, __sd_install.%, $(AS_CONFIG_TOPICS)): __sd_install.%: %
+	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)-$<.service $(SYSTEMD_PATH)/
 	$(QUIET)$(SUDO) systemctl daemon-reload
+
 
 sd_install.alarm-logger: __sd_install.alarm-logger  sd_enable.alarm-logger
 
@@ -32,7 +35,7 @@ __sd_install.alarm-config-logger:
 sd_clean: sd_clean.alarm-server sd_clean.alarm-logger sd_clean.alarm-config-logger
 
 sd_clean.alarm-server:
-	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)*.service
 
 sd_clean.alarm-logger:
 	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
@@ -40,12 +43,15 @@ sd_clean.alarm-logger:
 sd_clean.alarm-config-logger:
 	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
 
-.PHONY: sd_config sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger
+.PHONY: sd_config sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger $(AS_CONFIG_TOPICS)
 
 sd_config: sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger
 
-sd_config.alarm-server: prop.alarm-server
-	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AS_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(AS_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" -e "s:@USERID@:$(AS_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER).service
+sd_config.alarm-server: $(patsubst %, sd_config.%, $(AS_CONFIG_TOPICS))
+
+$(patsubst %, sd_config.%, $(AS_CONFIG_TOPICS)): sd_config.%: % prop.alarm-server
+	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AS_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER)-$<:g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(AS_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" -e "s:@USERID@:$(AS_USERID):g"  -e "s:@CONFIG@:$<:g" -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)-$<.service
+	$(eval AS_PROCSERV_PORT=$(shell echo $$(($(AS_PROCSERV_PORT)+1))))
 
 sd_config.alarm-logger: prop.alarm-logger
 	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AL_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_LOGGER):g"  -e "s|@TARGET_FILENAME@|$(INSTALL_LOGGER)|g"  -e "s|@OPTIONS@|$(OPTIONS_LOGGER)|g" -e "s:@PROCSERV_PORT@:$(AL_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_LOGGER):g" -e "s:@USERID@:$(AL_USERID):g"  -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
@@ -89,26 +95,34 @@ sd_enable: sd_enable.alarm-server  sd_enable.alarm-logger sd_enable.alarm-config
 
 ###
 
-sd_status.alarm-server:
-	systemctl status -l  alarm-server | cat -b
+sd_status.alarm-server: $(patsubst %, sd_status.%, $(AS_CONFIG_TOPICS))
+sd_start.alarm-server: $(patsubst %, sd_start.%, $(AS_CONFIG_TOPICS))
+sd_stop.alarm-server:  $(patsubst %, sd_stop.%, $(AS_CONFIG_TOPICS))
+sd_restart.alarm-server: $(patsubst %, sd_restart.%, $(AS_CONFIG_TOPICS))
+sd_disable.alarm-server: $(patsubst %, sd_disable.%, $(AS_CONFIG_TOPICS))
+sd_enable.alarm-server: $(patsubst %, sd_enable.%, $(AS_CONFIG_TOPICS))
+sd_remove.alarm-server: $(patsubst %, sd_remove.%, $(AS_CONFIG_TOPICS))
 
-sd_start.alarm-server:
-	$(SUDO) systemctl start alarm-server
+$(patsubst %, sd_status.%, $(AS_CONFIG_TOPICS)): sd_status.%: %
+	systemctl status -l  alarm-server-$< | cat -b
 
-sd_stop.alarm-server:
-	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server.service), $(SUDO) systemctl stop alarm-server)
+$(patsubst %, sd_start.%, $(AS_CONFIG_TOPICS)): sd_start.%: %
+	$(SUDO) systemctl start alarm-server-$<
 
-sd_restart.alarm-server:
-	$(SUDO) systemctl restart alarm-server
+$(patsubst %, sd_stop.%, $(AS_CONFIG_TOPICS)): sd_stop.%: %
+	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server-$<.service), $(SUDO) systemctl stop alarm-server-$<)
 
-sd_disable.alarm-server:
-	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server.service), $(SUDO) systemctl disable alarm-server)
+$(patsubst %, sd_restart.%, $(AS_CONFIG_TOPICS)): sd_restart.%: %
+	$(SUDO) systemctl restart alarm-server-$<
 
-sd_enable.alarm-server:
-	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server.service), $(SUDO) systemctl enable alarm-server)
+$(patsubst %, sd_disable.%, $(AS_CONFIG_TOPICS)): sd_disable.%: %
+	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server-$<.service), $(SUDO) systemctl disable alarm-server-$<)
 
-sd_remove.alarm-server:
-	$(SUDO) rm -f $(SYSTEMD_PATH)/alarm-server.service
+$(patsubst %, sd_enable.%, $(AS_CONFIG_TOPICS)): sd_enable.%: %
+	$(if $(wildcard $(SYSTEMD_PATH)/alarm-server-$<.service), $(SUDO) systemctl enable alarm-server-$<)
+
+$(patsubst %, sd_remove.%, $(AS_CONFIG_TOPICS)): sd_remove.%: %
+	$(SUDO) rm -f $(SYSTEMD_PATH)/alarm-server-$<.service
 	$(QUIET)$(SUDO) systemctl daemon-reload
 
 
