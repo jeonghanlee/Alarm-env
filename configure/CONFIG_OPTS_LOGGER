@@ -52,7 +52,7 @@ AL_LOG_LEVEL:=WARN
 
 
 # Alarm-logger procServ port number
-AL_PROCSERV_PORT:=4511
+AL_PROCSERV_PORT:=4526
 
 
 AL_JAVA_OPTS:=$(JAVA_OPTS)

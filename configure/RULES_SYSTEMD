@@ -50,7 +50,7 @@ sd_config: sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-
 sd_config.alarm-server: $(patsubst %, sd_config.%, $(AS_CONFIG_TOPICS))
 
 $(patsubst %, sd_config.%, $(AS_CONFIG_TOPICS)): sd_config.%: % prop.alarm-server
-	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AS_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER)-$<:g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(AS_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" -e "s:@USERID@:$(AS_USERID):g"  -e "s:@CONFIG@:$<:g" -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service_with_procServ.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)-$<.service
+	$(QUIET)sed -e "s:@JAVAPATH@:$(PS_JAVA_PATH):g" -e "s:@JAVAOPTS@:$(AS_JAVA_OPTS):g" -e "s|@DOCURL@|$(PS_SRC_GITURL)|g" -e "s:@TARGET_NAME@:$(TARGET_NAME_SERVER)-$<:g"  -e "s|@TARGET_FILENAME@|$(INSTALL_SERVER)|g"  -e "s|@OPTIONS@|$(OPTIONS_SERVER)|g" -e "s:@PROCSERV_PORT@:$(AS_PROCSERV_PORT):g"  -e "s:@INSTALL_LOCATION@:$(INSTALL_LOCATION_SERVER):g" -e "s:@USERID@:$(AS_USERID):g"  -e "s:@CONFIG@:$<:g" -e "s:@GROUPID@:$(GROUPID):g" < $(PS_SITE_TEMPLATE_PATH)/sd.service-alarm-server.in > $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)-$<.service
 	$(eval AS_PROCSERV_PORT=$(shell echo $$(($(AS_PROCSERV_PORT)+1))))
 
 sd_config.alarm-logger: prop.alarm-logger
