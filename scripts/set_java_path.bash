@@ -20,19 +20,20 @@ function drop_from_path
     local p=$1
     local drop=$2
 
-    local new_path=`echo $p | sed -e "s;:${drop}:;:;g" \
+    local new_path="";
+    new_path=$(echo "$p" | sed -e "s;:${drop}:;:;g" \
                  -e "s;:${drop};;g"   \
                  -e "s;${drop}:;;g"   \
-                 -e "s;${drop};;g";`
-    echo ${new_path}
+                 -e "s;${drop};;g";)
+    echo "${new_path}"
 }
 
 
 function set_variable
 {
     if test $# -ne 2 ; then
-	echo "set_variable: needs 2 arguments"
-	return 1
+	    echo "set_variable: needs 2 arguments"
+	    return 1
     fi
 
     local old_path="$1"
@@ -42,21 +43,18 @@ function set_variable
     local system_old_path=""
 
     if [ -z "$old_path" ]; then
-	new_path=${add_path}
+	    new_path="${add_path}"
     else
-	system_old_path=$(drop_from_path ${old_path} ${add_path})
-	if [ -z "$system_old_path" ]; then
-	    new_path=${add_path}
-	else
-	    new_path=${add_path}:${system_old_path}
-	fi
-   
+	    system_old_path=$(drop_from_path "${old_path}" "${add_path}")
+	    if [ -z "$system_old_path" ]; then
+	        new_path="${add_path}"
+	    else
+	        new_path="${add_path}":"${system_old_path}"
+	    fi
     fi
 
     echo "${new_path}"
-    
 }
-
 
 # If JAVA_HOME exists,
 # Skip, export JAVA_HOME
@@ -65,12 +63,12 @@ if [ -n "$JAVA_HOME" ]; then
 else
     JAVAPATH="$1";
     if [ -n "${JAVAPATH}" ]; then
-	JAVA_HOME=$(dirname $(dirname $(realpath ${JAVAPATH}/javac)))
-	old_path=${PATH}
-	new_PATH="${JAVA_HOME}/bin"
-	PATH=$(set_variable "${old_path}" "${new_PATH}")
-	export PATH
-	export JAVA_HOME
+	    JAVA_HOME=$(dirname "$(dirname "$(realpath "$JAVAPATH/javac")")")
+	    old_path="$PATH"
+	    new_PATH="$JAVA_HOME/bin"
+	    PATH=$(set_variable "${old_path}" "${new_PATH}")
+	    export PATH
+	    export JAVA_HOME
     fi
     
 fi

@@ -1,5 +1,5 @@
-<!-- Disable logback logging
-       Used by kafka client lib
+<!-- 
+  Disable logback logging Used by kafka client lib
 -->
 
 <configuration>

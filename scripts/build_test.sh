@@ -21,18 +21,19 @@
 #
 #  version : 0.0.1
 
+declare -g SC_SCRIPT;
+#declare -g SC_SCRIPTNAME;
+declare -g SC_TOP;
+#declare -g LOGDATE;
 
-declare -gr SC_SCRIPT="$(realpath "$0")"
-declare -gr SC_SCRIPTNAME=${0##*/}
-declare -gr SC_TOP="${SC_SCRIPT%/*}"
-declare -gr SC_LOGDATE="$(date +%y%m%d%H%M)"
+SC_SCRIPT="$(realpath "$0")";
+#SC_SCRIPTNAME=${0##*/};
+SC_TOP="${SC_SCRIPT%/*}"
+#LOGDATE="$(date +%y%m%d%H%M)"
 
 
-function pushd { builtin pushd "$@" > /dev/null; }
-function popd  { builtin popd  "$@" > /dev/null; }
-
-
-
+function pushd { builtin pushd "$@" > /dev/null || exit; }
+function popd  { builtin popd  > /dev/null || exit; }
 
 
 function prop_test
@@ -40,33 +41,34 @@ function prop_test
     local name=${1}; shift;
     local filter="alarm-server";
 
-
-    pushd ${SC_TOP}/../
+    # shellcheck disable=SC2164
+    pushd "$SC_TOP/../"
     if [ -z "$name" ]; then
-	printf "\n>>>>> make prop \n"
+	printf "\\n>>>>> make prop \\n"
 	make prop
-	printf "\n>>>>> Check Setting files \n"
+	printf "\n>>>>> Check Setting files \\n"
 	cat -b site-template/*.properties
 	cat -b site-template/*.ini
-	printf "\n >>>>> Removing files \n"
+	printf "\\n >>>>> Removing files \\n"
 	make prop_clean
 	ls site-template/*.ini
 	ls site-template/*.properties
-	printf "\n >>>>>  Should see No such file or directory \n"
+	printf "\\n >>>>>  Should see No such file or directory \\n"
     else
 	local suffix=properties;
 	if test "${name#*$filter}" != "$name"; then
 	    suffix=ini
 	fi
-	printf "\n>>>>> make prop.${name} \n"
-	make prop.${name}
-	printf "\n>>>>> Check Setting files \n"
-	cat -b site-template/${name}.${suffix}
-	printf "\n >>>>> Removing files \n"
-	make prop_clean.${name}
-	ls site-template/${name}.${suffix}
-	printf "\n >>>>>  Should see No such file or directory \n"
+	printf "\\n>>>>> make prop.%s \\n" "$name"
+	make prop."${name}"
+	printf "\\n>>>>> Check Setting files \\n"
+	cat -b site-template/"${name}.${suffix}"
+	printf "\\n >>>>> Removing files \\n"
+	make prop_clean."${name}"
+	ls site-template/"${name}.${suffix}"
+	printf "\\n >>>>>  Should see No such file or directory \\n"
     fi
+	# shellcheck disable=SC2164
     popd
 }
 
@@ -75,7 +77,8 @@ function prop_test
 function sd_test
 {
     local name=${1}; shift;
-    pushd ${SC_TOP}/../
+	# shellcheck disable=SC2164	
+    pushd "${SC_TOP}/../"
     if [ -z "$name" ]; then
 	printf "\n>>>>> make sd_config \n"
 	make sd_config
@@ -87,14 +90,15 @@ function sd_test
 	printf "\n >>>>>  Should see No such file or directory \n"
     else
 	printf "\n>>>>> make sd_config \n"
-	make sd_config.${name}
+	make sd_config."${name}"
 	printf "\n>>>>> Check Systemd unit file \n"
-	cat -b site-template/${name}.service
+	cat -b site-template/"${name}".service
 	printf "\n >>>>> Removing files \n"
-	make sd_clean.${name}
-	ls site-template/${name}.service
+	make sd_clean."${name}"
+	ls site-template/"${name}".service
 	printf "\n >>>>>  Should see No such file or directory \n"
     fi
+	# shellcheck disable=SC2164	
     popd
 }
 
@@ -103,36 +107,38 @@ function build_test
 {
     
     local name=${1}; shift;
-    pushd ${SC_TOP}/../
+	# shellcheck disable=SC2164
+    pushd "${SC_TOP}/../"
     if [ -z "$name" ]; then
-	printf "\n\n>>>>> make build \n\n"
+	printf "\\n\\n>>>>> make build \\n\\n"
 	make build
-	printf "\n>>>>> make sd_config \n"
+	printf "\\n>>>>> make sd_config \\n"
 	make sd_config
-	printf "\n\n>>>>> make install \n\n"
+	printf "\\n\\n>>>>> make install \\n\\n"
 	make install
-	printf "\n\n>>>>> make exist \n"	
+	printf "\\n\\n>>>>> make exist \\n"	
 	make exist
-	printf "\n\n>>>>> make uninstall \n"	
+	printf "\\n\\n>>>>> make uninstall \\n"	
 	make uninstall
-	printf "\n\n>>>>> make exist \n"	
+	printf "\\n\\n>>>>> make exist \\n"	
 	make exist
-	printf ">>>> Should see [error opening dir]\n"
+	printf ">>>> Should see [error opening dir]\\n"
     else
-	printf "\n\n >>>>> make build \n"
-	make build.${name}
-	printf "\n>>>>> make sd_config \n"
-	make sd_config.${name}
-	printf "\n\n >>>>> make install \n"	
-	make install.${name}
-	printf "\n\n >>>>> make exist \nn"	
-	make exist.${name}
-	printf "\n\n >>>>> make uninstall \nn"
-	make uninstall.${name}
-	printf "\n\n >>>>> make exist \n"
-	make exist.${name}
+	printf "\\n\\n >>>>> make build \\n"
+	make build."${name}"
+	printf "\\n>>>>> make sd_config \\n"
+	make sd_config."${name}"
+	printf "\\n\\n>>>>> make install \\n"	
+	make install."${name}"
+	printf "\\n\\n >>>>> make exist \\n"	
+	make exist."${name}"
+	printf "\\n\\n >>>>> make uninstall \\n"
+	make uninstall."${name}"
+	printf "\\n\\n >>>>> make exist \\n"
+	make exist."${name}"
 	printf ">>>> Should see [error opening dir]\n"
     fi
+	# shellcheck disable=SC2164
     popd
 }
 
@@ -146,23 +152,23 @@ function usage
       	echo "           sd1       : generate alarm-server systemd unit file";
       	echo "           sd2       : generate alarm-logger systemd unit file";
       	echo "           sd3       : generate alarm-config-logger systemd unit file";
-	echo "           prop0     : generate all properties files";
+		echo "           prop0     : generate all properties files";
       	echo "           prop1     : generate alarm-server properties file";
       	echo "           prop2     : generate alarm-logger properties file";
       	echo "           prop3     : generate alarm-config-logger properties file";
-	echo "           build0    : build all alarm services";
+		echo "           build0    : build all alarm services";
       	echo "           build1    : build alarm-server";
       	echo "           build2    : build alarm-logger";
       	echo "           build3    : build alarm-config-logger";
-	echo "           all       : all";	
-	echo ""           ;
-	echo ""    ;
+		echo "           all       : all";
+		echo "";
+		echo "";
 	
-	echo "  Examples : ";
-	echo ""
-	echo "          $0 sd1 ";
-	echo "   ";       
-	echo "";
+		echo "  Examples : ";
+		echo "";
+		echo "          $0 sd1 ";
+		echo "";       
+		echo "";
 	
     } 1>&2;
     exit 1; 

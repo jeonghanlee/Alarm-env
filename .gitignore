@@ -57,3 +57,10 @@ phoebus-products/als-*/target/
 scripts/activate-phoebus
 scripts/xPhoebus
 site-template/phoebus_settings.ini
+hs_err*.log
+.project
+.classpath
+phoebus-products/.settings/*
+phoebus-products/als-*
+
+

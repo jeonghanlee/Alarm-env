@@ -13,9 +13,9 @@ firstarg="$1";
 
 
 if test "${firstarg#*$filter1}" != "$firstarg"; then
-    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ $OPT "$@"
+    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@"
 elif test "${firstarg#*$filter2}" != "$firstarg"; then
-    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ $OPT "$@"
+    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@"
 else
-    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ $OPT "$@" & 
+    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@" & 
 fi
