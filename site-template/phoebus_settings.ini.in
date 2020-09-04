@@ -1,74 +1,169 @@
+# https://control-system-studio.readthedocs.io/en/latest/preference_properties.html#preference-settings
 
-
-# ChannelFinder
-org.phoebus.channelfinder/serviceURL=@PS_CF_PRTO@\://@PS_CF_HOST@:@PS_CF_PORT@/ChannelFinder/
-
-# Databrowser preferences
-org.csstudio.trends.databrowser3/archives=Current|0|pbraw\://@PS_AA_HOST@:17668/retrieval
-org.csstudio.trends.databrowser3/urls=pbraw\://@PS_AA_HOST@:17668/retrieval
-
-# Logbook
-org.phoebus.logbook.ui/logbook_factory=olog
-
-# Olog
-org.phoebus.olog.api.OlogClient/olog_url=@PS_OG_PRTO@\://@PS_OG_HOST@\:@PS_OG_PORT@/Olog/resources
-
-# UI monitoring
-org.phoebus.ui/ui_monitor_period=0
-
-
-### Phoebus Alarm
+### alarm 
 org.phoebus.applications.alarm/server=@PS_KAFKA_URL@
 org.phoebus.applications.alarm/config_name=@PS_MAIN_CONFIG_TOPIC@
 org.phoebus.applications.alarm/config_names=@PS_CONFIG_TOPICS@
 org.phoebus.applications.alarm/alarm_area_level=1
+org.phoebus.applications.alarm/connection_timeout=30
+org.phoebus.applications.alarm/automated_email_sender=Alarm Notifier <alarm_notifier@lab.gov>
+# When defined, alarm server will set it to 1 every heartbeat_secs
+#org.phoebus.applications.alarm/heartbeat_pv=
+# Heartbeat PV period in seconds
+#org.phoebus.applications.alarm/heartbeat_secs=10
+# Period for repeated annunciation. If there are active alarms, i.e. alarms that have not been acknowleded,
+# a message "There are 47 active alarms" will be issued. Format HH:MM:SS
+org.phoebus.applications.alarm/nag_period=00:15:00
 
-### Phoebus Alarm logger (elastic index)
+### alarm.logging.ui (es alarm logger)
 org.phoebus.applications.alarm.logging.ui/es_host=@PS_ES_HOST@
 org.phoebus.applications.alarm.logging.ui/es_port=@PS_ES_PORT@
 org.phoebus.applications.alarm.logging.ui/es_index=@PS_ES_INDEXS@
 org.phoebus.applications.alarm.logging.ui/es_max_size=@PS_ES_MAX_SIZE@
 
+### archive (not used right now)
+#org.csstudio.archive
+
+### archive.reader.appliance
+#org.phoebus.archive.reader.appliance/useStatisticsForOptimizedData=true
+#org.phoebus.archive.reader.appliance/useNewOptimizedOperator=true
+
+### archive.reader.rdb
+# org.phoebus.archive.reader.rdb
+
+### console
+org.phoebus.applications.console/prompt=/bin/bash >>> 
+org.phoebus.applications.console/prompt_info=Enter shell command (starting directory is $(user.home))
+org.phoebus.applications.console/directory=$(user.home)
+org.phoebus.applications.console/shell=/bin/bash
+
+### display.builder.editor
+#org.csstudio.display.builder.editor/new_display_template=
+
+### display.builder.model
+#org.csstudio.display.builder.model/color_files=color.def;color2.def
+#org.csstudio.display.builder.model/font_files=font.def;font2.def
+# Base macros for every display
+#org.csstudio.display.builder.model/macros=<EXAMPLE_MACRO>Value from Preferences</EXAMPLE_MACRO><TEST>true</TEST>
+# When writing a display file, skip properties that are still at default values?
+#org.csstudio.display.builder.model/skip_defaults=true
+
+### display.builder.representation
+#org.csstudio.display.builder.representation/update_accumulation_time = 20
+
+### display.builder.representation.javafx
+#org.csstudio.display.builder.representation.javafx/inc_dec_slider=true
+
+# display.builder.runtime
+#org.csstudio.display.builder.runtime/python_path
+# 4 Hz = 250ms
+#org.csstudio.display.builder.runtime/update_throttle=250
+
+# display.converter.edm
+#org.csstudio.display.converter.edm
+#org.csstudio.display.converter.edm/colors_list=
+#org.csstudio.display.converter.edm/font_mappings=
 
 
-# Hide menu entries that are only useful in specific scenarios
-#org.phoebus.ui/hide_spi_menu=org.phoebus.ui.monitoring.FreezeUI, org.phoebus.sns.mpsbypasses.OpenMPSBypasses,org.phoebus.logbook.ui.LogEntryCalenderMenuEntry,org.phoebus.logbook.ui.LogEntryTableMenuEntry
-
-# Site-specific welcome
-#org.phoebus.ui/welcome=file:$(phoebus.install)/site_welcome.html
-
-# Support external tools
-#org.phoebus.framework.workbench/external_app_text=Text Editor,txt|dat|tab|py|ini|def|db|xml|xsl|css|cmd|sh|st|log|out|md|tex|shp|bob|opi|pvs|edl,gedit
-#org.phoebus.framework.workbench/external_app_image=Image Viewer,png|jpg|gif|jpeg,eog
-#org.phoebus.framework.workbench/external_app_pdf=PDF Viewer,pdf|ps,firefox
-#org.phoebus.framework.workbench/external_app_gnumeric=Gnumeric,csv|gnumeric,gnumeric
-#org.phoebus.framework.workbench/external_app_py=Python IDE,py,idle
-
-org.phoebus.ui/ui_monitor_period=5000
+# email
+org.phoebus.email/mailhost=smtp.lab.gov
+org.phoebus.email/mailport=25
+org.phoebus.email/username=
+org.phoebus.email/password=
+org.phoebus.email/from=Phoebus <phoebus@lab.gov>
 
 
-# Channel Access
-# org.phoebus.pv.ca/addr_list=127.0.0.1 
+# errlog
+org.phoebus.applications.errlog/max_lines=500
 
-# Display Builder
-org.phoebus.ui/top_resources=
-org.csstudio.display.builder.runtime/probe_display=
-org.csstudio.display.builder.runtime/python_path=
+# filebrowser
+org.phoebus.applications.filebrowser/default_root=/home/lab/folder
+org.phoebus.applications.filebrowser/show_hidden=false
 
-# Subtle shading
+# framework.autocomplete
+#org.phoebus.framework.autocomplete
+
+# framework.workbench
+# Defines applications to use for specific file extensions
+# Start 'gedit' for text files
+#org.phoebus.framework.autocomplete/external_app_text=Text Editor,txt|dat|py|ini|db|xml|xsl|css|cmd|sh|st|log|out|md|shp,gedit
+# Start 'eog' for images, 'firefox' for PDF files
+#org.phoebus.framework.autocomplete/external_app_image=Image Viewer,png|jpg|gif|jpeg,eog
+# Start 'firefox' to view PDFs
+#org.phoebus.framework.autocomplete/external_app_pdf=PDF Viewer,pdf,firefox
+# Directory where external applications are started
+org.phoebus.framework.autocomplete/external_apps_directory=$(user.home)
+
+# javafx.rtplot
+#org.csstudio.javafx.rtplot
 org.csstudio.javafx.rtplot/shady_future=128, 128, 128, 10
 
-# PV throttle (250)
-org.csstudio.display.builder.runtime/update_throttle=250
+# logbook.ui
+#org.phoebus.logbook.ui
+org.phoebus.logbook.ui/logbook_factory=olog
 
-# Display hesitation to accumulate updates (20)
-org.csstudio.display.builder.representation/update_accumulation_time = 20
-# Pause after updates (100)
-org.csstudio.display.builder.representation/update_delay = 100
-# Line Plot update throttle
-org.csstudio.display.builder.representation/plot_update_delay = 250
-# Image plot update throttle
-org.csstudio.display.builder.representation/image_update_delay = 250
+# pv
+org.phoebus.pv/default=ca
+
+# pv.ca
+#org.phoebus.pv.ca/addr_list=
+#org.phoebus.pv.ca/name_servers=
+
+
+# pv.formula
+#org.phoebus.pv.formula/throttle_ms=500
+
+# pv.mqtt
+#org.phoebus.pv.mqtt/mqtt_broker=tcp://localhost:1883
+
+# pvtable
+org.phoebus.applications.pvtable/show_units=true
+org.phoebus.applications.pvtable/show_description=true
+
+# pvtree
+#org.phoebus.applications.pvtree/update_period
+
+
+# saveandrestore
+#org.phoebus.applications.saveandrestore
+
+
+# scan.client
+#org.csstudio.scan.client
+
+# scan.ui
+#org.csstudio.scan.ui/monitor_status=false
+
+# security
+org.phoebus.security/authorization_file=authorization.conf
+
+# trends.databrowser3
+org.csstudio.trends.databrowser3/archives=Current|0|pbraw\://@PS_AA_HOST@:17668/retrieval
+org.csstudio.trends.databrowser3/urls=pbraw\://@PS_AA_HOST@:17668/retrieval
+org.csstudio.trends.databrowser3/time_span_shortcuts=30 Minutes,-30 min|1 Hour,-1 hour|12 Hours,-12 hour|1 Day,-1 days|7 Days,-7 days
+org.csstudio.trends.databrowser3/plt_repository=
+
+# ui
+org.phoebus.ui/ui_monitor_period=0
+org.phoebus.ui/home_display=
+org.phoebus.ui/top_resources=
+#org.phoebus.ui/welcome.html=file:$(phoebus.intall)/welcome.html
+
+
+# update
+#org.phoebus.applications.update
+
+# viewer3d
+#org.phoebus.app.viewer3d
+
+# ChannelFinder
+org.phoebus.channelfinder/serviceURL=@PS_CF_PRTO@\://@PS_CF_HOST@:@PS_CF_PORT@/ChannelFinder/
+
+# Olog
+#org.phoebus.olog.api.OlogClient/olog_url=@PS_OG_PRTO@\://@PS_OG_HOST@\:@PS_OG_PORT@/Olog/resources
+
+# Subtle shading
+
 
 # Faster (for tests)
 # Display actual update rate by setting
@@ -83,15 +178,4 @@ org.csstudio.display.builder.representation/image_update_delay = 250
 #org.csstudio.display.converter.edm/edm_paths_config=
 #org.csstudio.display.converter.edm/colors_list=
 #org.csstudio.display.converter.edm/auto_converter_dir=
-
-
-# Alarm server emails
-# org.phoebus.email/mailhost=
-# org.phoebus.applications.alarm/automated_email_sender=Alarm Notifier
-
-
-# Comma-separated list of default log books for new log entries
-org.phoebus.logbook.ui/logbook_factory=
-org.phoebus.logbook.ui/default_logbooks=
-org.phoebus.logbook.ui/save_credentials=
 
