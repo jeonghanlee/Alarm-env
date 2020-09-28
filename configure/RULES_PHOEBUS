@@ -2,7 +2,7 @@
 
 JAVAHOME = ${JAVA_HOME}
 
-.PHONY: phoebus als-phoebus build.phoebus build.als-phoebus
+.PHONY: phoebus build.phoebus
 
 # Phoebus doesn't own phoebus.org, so we cannot download Phoebus snapshot from sonatype,
 # So, it is mandatory to build Phoebus first, before we build any of Alarm services.
@@ -16,21 +16,7 @@ else
 	$(QUIET)mvn -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true
 endif
 
-
-
-als-phoebus:
-ifeq "$(JAVAHOME)" ""
-	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"
-	$(QUIET)echo "source scripts/set_java_path.bash \"$(JAVA_PATH)\" "
-else
-
-	$(QUIET)mvn -f $(TOP)/phoebus-products/pom.xml clean install -Dmaven.test.skip=true
-endif
-
-
 build.phoebus: phoebus
-
-build.als-phoebus: als-phoebus
 
 .PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 

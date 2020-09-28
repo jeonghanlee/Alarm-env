@@ -63,4 +63,5 @@ hs_err*.log
 phoebus-products/.settings/*
 phoebus-products/als-*
 
-
+windows/phoebus-src-windows
+windows/phoebus-product-windows

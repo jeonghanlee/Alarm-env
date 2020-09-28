@@ -1,0 +1,6 @@
+.PHONY: phoebus als-phoebus build.phoebus build.als-phoebus
+
+
+install.als-phoebus: install.phoebus
+	$(QUIET)cp $(TOP)/../splash.png $(INSTALL_LOCATION_PHOEBUS)/site_splash.png
+	$(QUIET)cp $(TOP)/../welcome.html $(INSTALL_LOCATION_PHOEBUS)/welcome_to_als.html

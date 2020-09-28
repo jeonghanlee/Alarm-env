@@ -1,0 +1,82 @@
+
+.PHONY: init.windows patch.windows build.windows prop.windows install.windows init.windows.jvm init.windows.mvn init.windows.phoebus
+
+
+# pull jdk and maven
+init.windows: init.windows.jvm init.windows.mvn init.windows.phoebus init.windows.batch init.windows.zip
+
+
+init.windows.jvm:
+	$(QUIET)mkdir -p $(WINDOWS_SRC_LOCATION)
+	$(QUIET)curl https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip --output $(WINDOWS_SRC_LOCATION)/lib/openjdk-14.0.2_windows.zip --create-dirs
+	pwd
+	$(QUIET)unzip $(WINDOWS_SRC_LOCATION)/lib/openjdk-14.0.2_windows.zip -d $(WINDOWS_SRC_LOCATION)/lib
+	$(QUIET)rm $(WINDOWS_SRC_LOCATION)/lib/openjdk-14.0.2_windows.zip
+
+init.windows.mvn:
+	$(QUIET)mkdir -p $(WINDOWS_SRC_LOCATION)/
+	$(QUIET)curl https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.zip --output $(WINDOWS_SRC_LOCATION)/lib/apache-maven-3.6.0-bin.zip --create-dirs
+	$(QUIET)unzip $(WINDOWS_SRC_LOCATION)/lib/apache-maven-3.6.0-bin.zip -d $(WINDOWS_SRC_LOCATION)/lib
+	$(QUIET)rm $(WINDOWS_SRC_LOCATION)/lib/apache-maven-3.6.0-bin.zip
+
+init.windows.phoebus:
+	$(QUIET)git clone $(PS_SRC_GITURL) $(WINDOWS_SRC_LOCATION)/$(PS_SRC_ROOT)
+	$(QUIET)cd $(WINDOWS_SRC_LOCATION)/$(PS_SRC_ROOT) && git checkout $(PS_SRC_TAG)
+
+init.windows.batch:
+	$(QUIET)cp $(BUILD_PHOEBUS_WINDOWS) $(WINDOWS_SRC_LOCATION)
+
+init.windows.zip:
+	$(QUIET)cd $(WINDOWS_SRC_LOCATION)/.. && zip -r phoebus-src.zip $(WINDOWS_SRC)
+
+# from: https://stackoverflow.com/questions/47837071/making-make-clean-ask-for-confirmation
+distclean.windows.product.check:
+	@echo -n "This will rm -rf $(WINDOWS_PRODUCT_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
+
+distclean.windows.src.check:
+	@echo -n "This will rm -rf $(WINDOWS_SRC_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
+
+distclean.windows.src: distclean.windows.src.check
+	$(QUIET)rm -rf $(WINDOWS_SRC_LOCATION)
+	$(QUIET)rm $(WINDOWS_LOCATION)/phoebus-src.zip
+
+distclean.windows.product: distclean.windows.product.check
+	$(QUIET)rm -rf $(WINDOWS_PRODUCT_LOCATION)
+	$(QUIET)rm $(WINDOWS_LOCATION)/PhoebusWindows.zip
+
+distclean.windows: distclean.windows.src distclean.windows.product
+
+
+# jdk, phoebus-product, settings, phoebus.bat, logging.properties, logback.xml, authorization.conf, caget
+# zip folder
+prop.windows:
+	$(QUIET)mkdir -p $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp -r $(WINDOWS_SRC_LOCATION)/lib/jdk-14.0.2 $(WINDOWS_PRODUCT_LOCATION)/jdk-14.0.2
+	$(QUIET)cp $(ZIP_DOWNLOAD_LOCATION)/phoebus-product.zip $(WINDOWS_PRODUCT_LOCATION) 
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && unzip phoebus-product.zip
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus-product.zip
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/phoebus-product/target $(WINDOWS_PRODUCT_LOCATION)/phoebus
+	$(QUIET)rm -r $(WINDOWS_PRODUCT_LOCATION)/phoebus-product
+	$(QUIET)cp $(WINDOWS_LOCATION)/ca* $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(WINDOWS_LOCATION)/Com.dll $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(RUN_PHOEBUS_WINDOWS) $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS) $(WINDOWS_PRODUCT_LOCATION)/phoebus/settings.ini
+	$(QUIET)cp $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(PS_SITE_TEMPLATE_PATH)/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.tar.gz
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.zip
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.jar $(WINDOWS_PRODUCT_LOCATION)/phoebus/phoebus.jar
+
+
+prop.windows.als:
+	$(QUIET)cp $(TOP)/../beamline/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../beamline/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus
+	$(QUIET)cp $(TOP)/../beamline/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus
+	$(QUIET)cp $(TOP)/../site_splash.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../toolbar.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../initial.bob $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+
+
+# remove unneccsary files, zip up
+install.windows: prop.windows prop.windows.als
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION)/.. && zip -r PhoebusWindows.zip $(WINDOWS_PRODUCT)
+

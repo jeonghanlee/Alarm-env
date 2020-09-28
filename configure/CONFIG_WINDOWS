@@ -1,0 +1,13 @@
+
+WINDOWS_LOCATION:=$(TOP)/windows
+ZIP_DOWNLOAD_LOCATION:=~/Downloads
+
+# Separate these from location, so we can zip folders correctly and not have full path
+WINDOWS_SRC:=phoebus-src-windows
+WINDOWS_PRODUCT:=phoebus-product-windows
+
+WINDOWS_SRC_LOCATION:=$(WINDOWS_LOCATION)/$(WINDOWS_SRC)
+WINDOWS_PRODUCT_LOCATION:=$(WINDOWS_LOCATION)/$(WINDOWS_PRODUCT)
+
+RUN_PHOEBUS_WINDOWS:=$(WINDOWS_LOCATION)/phoebus.bat
+BUILD_PHOEBUS_WINDOWS:=$(WINDOWS_LOCATION)/build_windows.bat
