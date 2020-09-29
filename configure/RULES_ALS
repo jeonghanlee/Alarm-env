@@ -1,6 +1,13 @@
 .PHONY: phoebus als-phoebus build.phoebus build.als-phoebus
 
+# copy authorization.conf welcome.html settings.ini site_splash.png toolbar.ong initial.bob into folder
 
-install.als-phoebus: install.phoebus
-	$(QUIET)cp $(TOP)/../splash.png $(INSTALL_LOCATION_PHOEBUS)/site_splash.png
-	$(QUIET)cp $(TOP)/../welcome.html $(INSTALL_LOCATION_PHOEBUS)/welcome_to_als.html
+install.phoebus.als: install.phoebus
+	$(QUIET)cp $(TOP)/../site_splash.png $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../logo.png $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../phoebus.desktop $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../toolbar.png $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../initial.bob $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../accelerator/authorization.conf $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../accelerator/welcome.html $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(INSTALL_LOCATION_PHOEBUS)/bin/xPhoebus $(INSTALL_LOCATION_PHOEBUS)/phoebus.sh
