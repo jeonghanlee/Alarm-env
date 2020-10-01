@@ -8,6 +8,26 @@ install.phoebus.als: install.phoebus
 	$(QUIET)cp $(TOP)/../phoebus.desktop $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)cp $(TOP)/../toolbar.png $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)cp $(TOP)/../initial.bob $(INSTALL_LOCATION_PHOEBUS)/
-	$(QUIET)cp $(TOP)/../accelerator/authorization.conf $(INSTALL_LOCATION_PHOEBUS)/
-	$(QUIET)cp $(TOP)/../accelerator/welcome.html $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/authorization.conf $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/welcome.html $(INSTALL_LOCATION_PHOEBUS)/
 	$(QUIET)cp $(INSTALL_LOCATION_PHOEBUS)/bin/xPhoebus $(INSTALL_LOCATION_PHOEBUS)/phoebus.sh
+
+install.phoebus.als.home: install.phoebus
+	$(QUIET)cp $(TOP)/../site_splash.png $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../logo.png $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/linux/phoebus.desktop $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/linux/setup.sh $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/linux/README.txt $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../toolbar.png $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../initial.bob $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/authorization.conf $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)cp $(TOP)/../home/linux/settings.ini $(INSTALL_LOCATION_PHOEBUS)/phoebus_settings.ini
+	$(QUIET)cp $(TOP)/../home/welcome.html $(INSTALL_LOCATION_PHOEBUS)/
+	$(QUIET)rm $(INSTALL_LOCATION_PHOEBUS)/product-phoebus.jar
+	$(QUIET)rm -r $(INSTALL_LOCATION_PHOEBUS)/bin
+	$(QUIET)rm $(INSTALL_LOCATION_PHOEBUS)/activate-phoebus
+	$(QUIET)cd $(INSTALL_LOCATION_PHOEBUS) && git clone https://controls2.als.lbl.gov/bitbucket/scm/hlc/accelerator-bob.git accelerator-bob
+
+
+install.phoebus.als.home.tar:
+	$(QUIET)cd $(INSTALL_LOCATION_PHOEBUS)/.. && tar -czvf phoebus-home.tar.gz phoebus
