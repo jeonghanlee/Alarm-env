@@ -1,16 +1,20 @@
 @echo OFF
+echo Start running phoebus.bat
 
-SET TOP=%cd%
+set "MYPATH=%CD%"
+cd  C:\"Program Files (x86)"\Phoebus
 
-SET JAVA_HOME=%TOP%\jdk-14.0.2
-SET PATH=%JAVA_HOME%\bin;%PATH%
+set "OPTIONS=-settings phoebus\settings.ini -logging phoebus\phoebus_logging.properties -DCA_DISABLE_REPEATER=true -Dnashorn.args=--no-deprecation-warning -Djdk.gtk.verbose=false -Djdk.gtk.version=2 -Dprism.forceGPU=true -Dorg.csstudio.javafx.rtplot.update_counter=false"
 
-echo %TOP%
+if not "%1" == "" (
+jdk-14.0.2\bin\java "-Dphoebus.user=C:\Program Files (x86)\Phoebus" -jar "phoebus\phoebus.jar" %OPTIONS% -resource %1
+) else (
+jdk-14.0.2\bin\java -jar "phoebus\phoebus.jar" %OPTIONS%
+)
 
-set "OPTIONS=-DCA_DISABLE_REPEATER=true -Dnashorn .args=--no-deprecation-warning -Djdk.gtk.verbose=false -Djdk.gtk.version=2 -Dprism.forceGPU=true -Dorg.csstudio.javafx.rtplot.update_counter=false"
+cd %MYPATH%
 
-%JAVA_HOME%\bin\java -jar "phoebus\phoebus.jar" %OPTIONS%
+rem Following line keeps the cmd window open for testing
 
-echo %JDK_JAVA_OPTIONS%
-
-java -jar %PHOEBUS_JAR% -settings %TOP%\phoebus\settings.ini -logging %TOP%\phoebus\phoebus_logging.properties %OPTIONS% -resource %l &
+echo Finished running.
+echo You can close this window when you're done.

@@ -37,12 +37,30 @@ distclean.windows.src.check:
 	@echo -n "This will rm -rf $(WINDOWS_SRC_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
 
 distclean.windows.src: distclean.windows.src.check
-	$(QUIET)rm -rf $(WINDOWS_SRC_LOCATION)
-	$(QUIET)rm $(WINDOWS_LOCATION)/phoebus-src.zip
+	@if [ -d $(WINDOWS_SRC_LOCATION) ]; then \
+		rm -rf $(WINDOWS_SRC_LOCATION); \
+	else \
+		echo "$(WINDOWS_SRC_LOCATION) does not exist!"; \
+	fi
+	@if [ -d $(WINDOWS_SRC_LOCATION) ]; then \
+		rm $(WINDOWS_LOCATION)/phoebus-src.zip;
+	else \
+		echo "$(WINDOWS_LOCATION)/phoebus-src.zip does not exist!"; \
+	fi
+
 
 distclean.windows.product: distclean.windows.product.check
-	$(QUIET)rm -rf $(WINDOWS_PRODUCT_LOCATION)
-	$(QUIET)rm $(WINDOWS_LOCATION)/PhoebusWindows.zip
+	@if [ -d $(WINDOWS_PRODUCT_LOCATION) ]; then \
+		rm -rf $(WINDOWS_PRODUCT_LOCATION); \
+	else \
+		echo "$(WINDOWS_PRODUCT_LOCATION) does not exist!"; \
+	fi
+	@if [ -d $(WINDOWS_PRODUCT_LOCATION) ]; then \
+		rm $(WINDOWS_LOCATION)/PhoebusWindows.zip; \
+	else \
+		echo "$(WINDOWS_LOCATION)/phoebus-src.zip does not exist!"; \
+	fi
+
 
 distclean.windows: distclean.windows.src distclean.windows.product
 
@@ -66,17 +84,45 @@ prop.windows:
 	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.zip
 	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.jar $(WINDOWS_PRODUCT_LOCATION)/phoebus/phoebus.jar
 
-
-prop.windows.als:
-	$(QUIET)cp $(TOP)/../beamline/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../beamline/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus
-	$(QUIET)cp $(TOP)/../beamline/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus
+prop.windows.als: prop.windows
 	$(QUIET)cp $(TOP)/../site_splash.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
 	$(QUIET)cp $(TOP)/../toolbar.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../logo.ico $(WINDOWS_PRODUCT_LOCATION)/
 	$(QUIET)cp $(TOP)/../initial.bob $(WINDOWS_PRODUCT_LOCATION)/phoebus/
 
+prop.windows.als.beamline: prop.windows.als
+	$(QUIET)cp $(TOP)/../beamline/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../beamline/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../beamline/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+
+prop.windows.als.home: prop.windows.als
+	$(QUIET)cp $(TOP)/../home/windows/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../home/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../home/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+
+prop.windows.als.accelerator: prop.windows.als
+	$(QUIET)cp $(TOP)/../accelerator/windows/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../accelerator/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../accelerator/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+
+prop.windows.als.eps: prop.windows.als
+	$(QUIET)cp $(TOP)/../eps/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../eps/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../eps/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
 
 # remove unneccsary files, zip up
-install.windows: prop.windows prop.windows.als
-	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION)/.. && zip -r PhoebusWindows.zip $(WINDOWS_PRODUCT)
+install.windows.beamline: distclean.windows.product prop.windows.als.beamline
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_beamline_v1_1.zip ./*
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_beamline_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
 
+install.windows.home: distclean.windows.product prop.windows.als.home
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_home_v1_1.zip ./* 
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_home_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
+
+install.windows.accelerator: distclean.windows.product prop.windows.als.accelerator
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_accelerator_v1_1.zip ./*
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_accelerator_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
+
+install.windows.eps: distclean.windows.product prop.windows.als.eps
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_eps_v1_1.zip ./* 
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_eps_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
