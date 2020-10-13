@@ -55,12 +55,6 @@ distclean.windows.product: distclean.windows.product.check
 	else \
 		echo "$(WINDOWS_PRODUCT_LOCATION) does not exist!"; \
 	fi
-	@if [ -d $(WINDOWS_PRODUCT_LOCATION) ]; then \
-		rm $(WINDOWS_LOCATION)/PhoebusWindows.zip; \
-	else \
-		echo "$(WINDOWS_LOCATION)/phoebus-src.zip does not exist!"; \
-	fi
-
 
 distclean.windows: distclean.windows.src distclean.windows.product
 
@@ -126,3 +120,5 @@ install.windows.accelerator: distclean.windows.product prop.windows.als.accelera
 install.windows.eps: distclean.windows.product prop.windows.als.eps
 	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_eps_v1_1.zip ./* 
 	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_eps_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
+
+install.windows.als: install.windows.beamline install.windows.eps install.windows.accelerator install.windows.home
