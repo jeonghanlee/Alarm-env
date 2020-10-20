@@ -22,6 +22,10 @@ OG_PRTO:=https
 OG_HOST:=localhost
 OG_PORT:=8181
 
+RS_ADDR_LIST:=localhost
+AS_ADDR_LIST:=localhost
+PS_ADDR_LIST:=
+
 # These allow developers to override the variable
 -include $(TOP)/../CONFIG_COMMON.local
 -include $(TOP)/configure/CONFIG_COMMON.local

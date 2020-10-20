@@ -68,6 +68,7 @@ prop.phoebus:
 		    -e "s:@PS_OG_PRTO@:$(PS_OG_PRTO):g" \
 		    -e "s:@PS_OG_HOST@:$(PS_OG_HOST):g" \
 		    -e "s:@PS_OG_PORT@:$(PS_OG_PORT):g" \
+		    -e "s:@PS_CA_ADDR_LIST@:$(PS_ADDR_LIST):g" \
 		    < $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS).in > $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS)
 
 prop_clean.phoebus:

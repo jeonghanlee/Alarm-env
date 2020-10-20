@@ -1,4 +1,6 @@
 
+org.phoebus.pv.ca/addr_list=@AS_CA_ADDR_LIST@
+
 ### Phoebus Alarm
 org.phoebus.applications.alarm/server=@AS_KAFKA_URL@
 org.phoebus.applications.alarm/config_name=@AS_MAIN_CONFIG_TOPIC@

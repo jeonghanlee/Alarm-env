@@ -106,7 +106,7 @@ org.phoebus.logbook.ui/logbook_factory=olog
 org.phoebus.pv/default=ca
 
 # pv.ca
-#org.phoebus.pv.ca/addr_list=
+org.phoebus.pv.ca/addr_list=@PS_CA_ADDR_LIST@
 #org.phoebus.pv.ca/name_servers=
 
 
@@ -147,7 +147,7 @@ org.csstudio.trends.databrowser3/plt_repository=
 org.phoebus.ui/ui_monitor_period=0
 org.phoebus.ui/home_display=
 org.phoebus.ui/top_resources=
-#org.phoebus.ui/welcome.html=file:$(phoebus.intall)/welcome.html
+#org.phoebus.ui/welcome.html=file:$(phoebus.install)/welcome.html
 
 
 # update
