@@ -1,0 +1,40 @@
+
+.PHONY: build.mac tar.mac
+
+mac: distclean.mac init patch build.mac prop tar.mac
+
+
+build.mac:
+ifeq "$(JAVAHOME)" ""
+	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"     
+	$(QUIET)echo "source scripts/set_java_path.bash \"$(JAVA_PATH)\" "
+else
+	$(QUIET)mvn clean verify -Djavafx.platform=mac -f $(PS_SRC_ROOT)/dependencies/pom.xml
+	$(QUIET)mvn -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true
+endif
+
+tar.mac:
+	$(QUIET)mkdir -p $(MAC_PRODUCT_LOCATION)/
+	$(QUIET)curl https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_osx-x64_bin.tar.gz --output $(MAC_PRODUCT_LOCATION)/lib/openjdk-14.0.2_mac.tar.gz --create-dirs
+	$(QUIET)tar -xvf $(MAC_PRODUCT_LOCATION)/lib/openjdk-14.0.2_mac.tar.gz $(MAC_PRODUCT_LOCATION)/lib
+	$(QUIET)rm $(MAC_PRODUCT_LOCATION)/lib/openjdk-14.0.2_mac.tar.gz
+	$(QUIET)cp -r $(PS_SRC_ROOT)/phoebus-product/target $(MAC_PRODUCT_LOCATION)/phoebus 
+	$(QUIET)cp $(PS_SRC_ROOT)/phoebus-product/phoebus.sh $(MAC_PRODUCT_LOCATION)/
+	$(QUIET)cp $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS) $(MAC_PRODUCT_LOCATION)/phoebus/settings.ini
+	$(QUIET)cp $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(PS_SITE_TEMPLATE_PATH)/authorization.conf $(MAC_PRODUCT_LOCATION)/phoebus
+	$(QUIET)rm $(MAC_PRODUCT_LOCATION)/phoebus/*.tar.gz
+	$(QUIET)rm $(MAC_PRODUCT_LOCATION)/phoebus/*.zip
+	$(QUIET)mv $(MAC_PRODUCT_LOCATION)/phoebus/*.jar $(MAC_PRODUCT_LOCATION)/phoebus/phoebus.jar
+	$(QUIET)cd $(MAC_PRODUCT_LOCATION) && tar -czvf PhoebusMac.tar.gz ./*
+	$(QUIET)mv $(MAC_PRODUCT_LOCATION)/PhoebusMac.tar.gz $(TOP)/
+
+# from: https://stackoverflow.com/questions/47837071/making-make-clean-ask-for-confirmation
+distclean.mac.check:
+	@echo -n "This will rm -rf $(MAC_PRODUCT_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
+
+distclean.mac: distclean.mac.check
+	@if [ -d $(MAC_PRODUCT_LOCATION) ]; then \
+		rm -rf $(MAC_PRODUCT_LOCATION); \
+	else \
+		echo "$(MAC_PRODUCT_LOCATION) does not exist!"; \
+	fi

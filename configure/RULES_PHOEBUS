@@ -12,7 +12,7 @@ ifeq "$(JAVAHOME)" ""
 	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"     
 	$(QUIET)echo "source scripts/set_java_path.bash \"$(JAVA_PATH)\" "
 else
-#	$(QUIET)mvn clean verify  -f $(PS_SRC_ROOT)/dependencies/pom.xml
+	$(QUIET)mvn clean verify -Djavafx.platform=linux -f $(PS_SRC_ROOT)/dependencies/pom.xml
 	$(QUIET)mvn -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true
 endif
 

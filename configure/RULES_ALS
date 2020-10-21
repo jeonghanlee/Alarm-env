@@ -1,6 +1,9 @@
-.PHONY: phoebus als-phoebus build.phoebus build.als-phoebus
+.PHONY: phoebus als-phoebus build.phoebus build.als-phoebus $(ALS_WINDOWS_EDITIONS)
 
 # copy authorization.conf welcome.html settings.ini site_splash.png toolbar.ong initial.bob into folder
+#
+windows.als: distclean.windows init patch build.windows zip.windows.als
+linux.als.home: init patch build.phoebus prop.phoebus install.phoebus.als.home tar.phoebus.als.home
 
 install.phoebus.als: install.phoebus
 	$(QUIET)cp $(TOP)/../site_splash.png $(INSTALL_LOCATION_PHOEBUS)/
@@ -28,6 +31,34 @@ install.phoebus.als.home: install.phoebus
 	$(QUIET)rm $(INSTALL_LOCATION_PHOEBUS)/activate-phoebus
 	$(QUIET)cd $(INSTALL_LOCATION_PHOEBUS) && git clone https://controls2.als.lbl.gov/bitbucket/scm/hlc/accelerator-bob.git accelerator-bob
 
-
-install.phoebus.als.home.tar:
+tar.phoebus.als.home:
 	$(QUIET)cd $(INSTALL_LOCATION_PHOEBUS)/.. && tar -czvf phoebus-home.tar.gz phoebus
+
+prop.windows.als:
+	$(QUIET)mkdir -p $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)curl https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip --output $(WINDOWS_PRODUCT_LOCATION)/lib/openjdk-14.0.2_windows.zip --create-dirs
+	pwd
+	$(QUIET)unzip $(WINDOWS_PRODUCT_LOCATION)/lib/openjdk-14.0.2_windows.zip -d $(WINDOWS_PRODUCT_LOCATION)/lib
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/lib/openjdk-14.0.2_windows.zip
+	$(QUIET)cp -r $(PS_SRC_ROOT)/phoebus-product/target $(WINDOWS_PRODUCT_LOCATION)/phoebus 
+	$(QUIET)cp $(WINDOWS_LOCATION)/ca* $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(WINDOWS_LOCATION)/Com.dll $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(RUN_PHOEBUS_WINDOWS) $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(WINDOWS_PRODUCT_LOCATION)/phoebus
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.tar.gz
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.zip
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.jar $(WINDOWS_PRODUCT_LOCATION)/phoebus/phoebus.jar
+
+
+zip.windows.als: $(patsubst %, zip.windows.als.%, $(ALS_WINDOWS_EDITIONS))
+
+$(patsubst %, zip.windows.als.%, $(ALS_WINDOWS_EDITIONS)): zip.windows.als.%: % distclean.windows prop.windows.als
+	$(QUIET)cp $(TOP)/../site_splash.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../toolbar.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../logo.ico $(WINDOWS_PRODUCT_LOCATION)/
+	$(QUIET)cp $(TOP)/../initial.bob $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../$</settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../$</welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cp $(TOP)/../$</authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_$<.zip ./* 
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_$<.zip $(TOP)/

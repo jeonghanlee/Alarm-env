@@ -6,6 +6,8 @@ include $(TOP)/configure/CONFIG_SITE
 include $(TOP)/configure/CONFIG_TARGET
 include $(TOP)/configure/CONFIG_OPTS
 include $(TOP)/configure/CONFIG_WINDOWS
+include $(TOP)/configure/CONFIG_MAC
+include $(TOP)/configure/CONFIG_ALS
 
 #
 include $(TOP)/configure/CONFIG_SRC

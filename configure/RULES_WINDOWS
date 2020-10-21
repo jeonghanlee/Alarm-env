@@ -1,74 +1,24 @@
 
-.PHONY: init.windows patch.windows build.windows prop.windows install.windows init.windows.jvm init.windows.mvn init.windows.phoebus
+.PHONY: build.windows zip.windows
 
+windows: distclean.windows init patch build.windows prop zip.windows
 
-# pull jdk and maven
-init.windows: init.windows.jvm init.windows.mvn init.windows.phoebus init.windows.batch init.windows.zip
+build.windows:
+ifeq "$(JAVAHOME)" ""
+	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"     
+	$(QUIET)echo "source scripts/set_java_path.bash \"$(JAVA_PATH)\" "
+else
+	$(QUIET)mvn clean verify -Djavafx.platform=win -f $(PS_SRC_ROOT)/dependencies/pom.xml
+	$(QUIET)mvn -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true
+endif
 
-
-init.windows.jvm:
-	$(QUIET)mkdir -p $(WINDOWS_SRC_LOCATION)
-	$(QUIET)curl https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip --output $(WINDOWS_SRC_LOCATION)/lib/openjdk-14.0.2_windows.zip --create-dirs
-	pwd
-	$(QUIET)unzip $(WINDOWS_SRC_LOCATION)/lib/openjdk-14.0.2_windows.zip -d $(WINDOWS_SRC_LOCATION)/lib
-	$(QUIET)rm $(WINDOWS_SRC_LOCATION)/lib/openjdk-14.0.2_windows.zip
-
-init.windows.mvn:
-	$(QUIET)mkdir -p $(WINDOWS_SRC_LOCATION)/
-	$(QUIET)curl https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.zip --output $(WINDOWS_SRC_LOCATION)/lib/apache-maven-3.6.0-bin.zip --create-dirs
-	$(QUIET)unzip $(WINDOWS_SRC_LOCATION)/lib/apache-maven-3.6.0-bin.zip -d $(WINDOWS_SRC_LOCATION)/lib
-	$(QUIET)rm $(WINDOWS_SRC_LOCATION)/lib/apache-maven-3.6.0-bin.zip
-
-init.windows.phoebus:
-	$(QUIET)git clone $(PS_SRC_GITURL) $(WINDOWS_SRC_LOCATION)/$(PS_SRC_ROOT)
-	$(QUIET)cd $(WINDOWS_SRC_LOCATION)/$(PS_SRC_ROOT) && git checkout $(PS_SRC_TAG)
-
-init.windows.batch:
-	$(QUIET)cp $(BUILD_PHOEBUS_WINDOWS) $(WINDOWS_SRC_LOCATION)
-
-init.windows.zip:
-	$(QUIET)cd $(WINDOWS_SRC_LOCATION)/.. && zip -r phoebus-src.zip $(WINDOWS_SRC)
-
-# from: https://stackoverflow.com/questions/47837071/making-make-clean-ask-for-confirmation
-distclean.windows.product.check:
-	@echo -n "This will rm -rf $(WINDOWS_PRODUCT_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
-
-distclean.windows.src.check:
-	@echo -n "This will rm -rf $(WINDOWS_SRC_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
-
-distclean.windows.src: distclean.windows.src.check
-	@if [ -d $(WINDOWS_SRC_LOCATION) ]; then \
-		rm -rf $(WINDOWS_SRC_LOCATION); \
-	else \
-		echo "$(WINDOWS_SRC_LOCATION) does not exist!"; \
-	fi
-	@if [ -d $(WINDOWS_SRC_LOCATION) ]; then \
-		rm $(WINDOWS_LOCATION)/phoebus-src.zip;
-	else \
-		echo "$(WINDOWS_LOCATION)/phoebus-src.zip does not exist!"; \
-	fi
-
-
-distclean.windows.product: distclean.windows.product.check
-	@if [ -d $(WINDOWS_PRODUCT_LOCATION) ]; then \
-		rm -rf $(WINDOWS_PRODUCT_LOCATION); \
-	else \
-		echo "$(WINDOWS_PRODUCT_LOCATION) does not exist!"; \
-	fi
-
-distclean.windows: distclean.windows.src distclean.windows.product
-
-
-# jdk, phoebus-product, settings, phoebus.bat, logging.properties, logback.xml, authorization.conf, caget
-# zip folder
-prop.windows:
+zip.windows:
 	$(QUIET)mkdir -p $(WINDOWS_PRODUCT_LOCATION)/
-	$(QUIET)cp -r $(WINDOWS_SRC_LOCATION)/lib/jdk-14.0.2 $(WINDOWS_PRODUCT_LOCATION)/jdk-14.0.2
-	$(QUIET)cp $(ZIP_DOWNLOAD_LOCATION)/phoebus-product.zip $(WINDOWS_PRODUCT_LOCATION) 
-	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && unzip phoebus-product.zip
-	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus-product.zip
-	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/phoebus-product/target $(WINDOWS_PRODUCT_LOCATION)/phoebus
-	$(QUIET)rm -r $(WINDOWS_PRODUCT_LOCATION)/phoebus-product
+	$(QUIET)curl https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip --output $(WINDOWS_PRODUCT_LOCATION)/lib/openjdk-14.0.2_windows.zip --create-dirs
+	pwd
+	$(QUIET)unzip $(WINDOWS_PRODUCT_LOCATION)/lib/openjdk-14.0.2_windows.zip -d $(WINDOWS_PRODUCT_LOCATION)/lib
+	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/lib/openjdk-14.0.2_windows.zip
+	$(QUIET)cp -r $(PS_SRC_ROOT)/phoebus-product/target $(WINDOWS_PRODUCT_LOCATION)/phoebus 
 	$(QUIET)cp $(WINDOWS_LOCATION)/ca* $(WINDOWS_PRODUCT_LOCATION)/
 	$(QUIET)cp $(WINDOWS_LOCATION)/Com.dll $(WINDOWS_PRODUCT_LOCATION)/
 	$(QUIET)cp $(RUN_PHOEBUS_WINDOWS) $(WINDOWS_PRODUCT_LOCATION)/
@@ -77,48 +27,16 @@ prop.windows:
 	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.tar.gz
 	$(QUIET)rm $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.zip
 	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/phoebus/*.jar $(WINDOWS_PRODUCT_LOCATION)/phoebus/phoebus.jar
+	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows.zip ./* 
+	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows.zip $(TOP)/
 
-prop.windows.als: prop.windows
-	$(QUIET)cp $(TOP)/../site_splash.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../toolbar.png $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../logo.ico $(WINDOWS_PRODUCT_LOCATION)/
-	$(QUIET)cp $(TOP)/../initial.bob $(WINDOWS_PRODUCT_LOCATION)/phoebus/
+# from: https://stackoverflow.com/questions/47837071/making-make-clean-ask-for-confirmation
+distclean.windows.check:
+	@echo -n "This will rm -rf $(WINDOWS_PRODUCT_LOCATION). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
 
-prop.windows.als.beamline: prop.windows.als
-	$(QUIET)cp $(TOP)/../beamline/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../beamline/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../beamline/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-
-prop.windows.als.home: prop.windows.als
-	$(QUIET)cp $(TOP)/../home/windows/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../home/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../home/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-
-prop.windows.als.accelerator: prop.windows.als
-	$(QUIET)cp $(TOP)/../accelerator/windows/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../accelerator/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../accelerator/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-
-prop.windows.als.eps: prop.windows.als
-	$(QUIET)cp $(TOP)/../eps/settings.ini $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../eps/welcome.html $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-	$(QUIET)cp $(TOP)/../eps/authorization.conf $(WINDOWS_PRODUCT_LOCATION)/phoebus/
-
-# remove unneccsary files, zip up
-install.windows.beamline: distclean.windows.product prop.windows.als.beamline
-	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_beamline_v1_1.zip ./*
-	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_beamline_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
-
-install.windows.home: distclean.windows.product prop.windows.als.home
-	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_home_v1_1.zip ./* 
-	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_home_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
-
-install.windows.accelerator: distclean.windows.product prop.windows.als.accelerator
-	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_accelerator_v1_1.zip ./*
-	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_accelerator_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
-
-install.windows.eps: distclean.windows.product prop.windows.als.eps
-	$(QUIET)cd $(WINDOWS_PRODUCT_LOCATION) && zip -r PhoebusWindows_eps_v1_1.zip ./* 
-	$(QUIET)mv $(WINDOWS_PRODUCT_LOCATION)/PhoebusWindows_eps_v1_1.zip $(ZIP_DOWNLOAD_LOCATION)/
-
-install.windows.als: install.windows.beamline install.windows.eps install.windows.accelerator install.windows.home
+distclean.windows: distclean.windows.check
+	@if [ -d $(WINDOWS_PRODUCT_LOCATION) ]; then \
+		rm -rf $(WINDOWS_PRODUCT_LOCATION); \
+	else \
+		echo "$(WINDOWS_PRODUCT_LOCATION) does not exist!"; \
+	fi

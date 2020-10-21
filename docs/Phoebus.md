@@ -136,19 +136,43 @@ xPhoebus
 
 That `activate-phoebus` is also installed in `INSTALL_LOCATION_PHOEBUS`. The installation location of `xpheobus` is `INSTALL_LOCATION_PHOEBUS/bin`. In addtion. the genric `phoebus.sh` is installed in `INSTALL_LOCATION_PHOEBUS`, however we don't add the path to `PATH` in `activate-phoebus`.
 
+## For Mac and Windows Builds
+
+Phoebus is very easy to build cross platform. See [4].
+
+To build a Phoebus windows product and create a zip file in $(TOP), run this command:
+```
+make windows
+```
+
+To build a tarball Phoebus product for Mac in $(TOP), run this command:
+```
+make mac
+``` 
+
 ## Upcoming feature based on nsls2-phoebus
 
-* Build the ALS products
+* Build the ALS Windows products
 
 ```bash
-make als
+make windows.als
 ```
 
-* Print out makefile variables
+* Build the ALS home Linux edition
 
 ```bash
-make vars
+make linux.als.home
 ```
+
+* Install the ALS accelerator edition
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make install.phoebus.als 
+```
+
 
 ## References
 
@@ -157,3 +181,5 @@ make vars
 [2] <https://github.com/shroffk/nsls2-phoebus>
 
 [3] <https://github.com/kasemir/phoebus-sns>
+
+[4] <https://github.com/controlSystemStudio/phoebus#cross-platform-build>
