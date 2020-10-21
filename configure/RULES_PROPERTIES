@@ -15,6 +15,7 @@ prop.alarm-server:
 		    -e "s:@AS_ES_MAX_SIZE@:$(AS_ES_MAX_SIZE):g" \
 		    -e "s:@AS_ES_INDEXS@:$(AS_ES_INDEXS):g" \
 		    -e "s|@AS_KAFKA_URL@|$(AS_KAFKA_URL)|g" \
+		    -e "s|@AS_CA_ADDR_LIST@|$(AS_ADDR_LIST)|g" \
 		    < $(PS_SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS).in > $(PS_SITE_TEMPLATE_PATH)/$(SERVER_SETTINGS)
 
 # this rule is called install.alarm-logger in configure/RULES_INSTALL

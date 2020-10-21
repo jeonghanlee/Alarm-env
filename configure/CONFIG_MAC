@@ -1,0 +1,6 @@
+
+MAC_LOCATION:=$(TOP)/mac
+
+MAC_PRODUCT:=phoebus-product-mac
+
+MAC_PRODUCT_LOCATION:=$(MAC_LOCATION)/$(MAC_PRODUCT)
