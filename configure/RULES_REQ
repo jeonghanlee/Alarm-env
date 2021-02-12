@@ -7,12 +7,12 @@
 
 # dependencies_build is the minimum modules, which we need to build the alarm trio.
 depedencies-build:
-	$(QUIET) mvn -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects core,app --also-make
-	$(QUIET) mvn -f $(PS_SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --also-make 
-	$(QUIET) mvn -f $(PS_SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects alarm --also-make 
-	$(QUIET) mvn -f $(PS_SRC_ROOT)/app/alarm/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model --also-make 
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects core,app --also-make
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(PS_SRC_ROOT)/core/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --also-make 
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(PS_SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects alarm --also-make 
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(PS_SRC_ROOT)/app/alarm/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects model --also-make 
 
 # Potential extension for near future. 
 save-and-restore-build:
-	$(QUIET) mvn -f $(PS_SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects save-and-restore --also-make  
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(PS_SRC_ROOT)/app/pom.xml clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --projects save-and-restore --also-make  
 

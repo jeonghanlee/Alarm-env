@@ -141,14 +141,16 @@ That `activate-phoebus` is also installed in `INSTALL_LOCATION_PHOEBUS`. The ins
 Phoebus is very easy to build cross platform. See [4].
 
 To build a Phoebus windows product and create a zip file in $(TOP), run this command:
-```
+
+```bash
 make windows
 ```
 
 To build a tarball Phoebus product for Mac in $(TOP), run this command:
-```
+
+```bash
 make mac
-``` 
+```
 
 ## Upcoming feature based on nsls2-phoebus
 
@@ -165,6 +167,7 @@ make linux.als.home
 ```
 
 * Install the ALS accelerator edition
+
 ```bash
 make init
 make patch
@@ -172,7 +175,6 @@ make build.phoebus
 make prop.phoebus
 make install.phoebus.als 
 ```
-
 
 ## References
 
