@@ -26,7 +26,7 @@ jobs:
         echo $JAVA_HOME
         echo $PATH
         mvn --version
-    - run: sudo apt-get install tree openjfx libopenjfx-java
+    - run: sudo apt-get install tree openjfx libopenjfx-java maven
     - run: |
         make init
         make patch
