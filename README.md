@@ -18,7 +18,7 @@ To download, install, setup all relevant components, one should do many steps ma
 
 See [docs/Phoebus.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/Phoebus.md)
 
-See [docs/PhoebusOnAppleM1.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/PhoebusOnAppleM1.md)
+If one would like to see the current status of the native support of Phoebus on Apple M1 aarch64, please [docs/PhoebusOnAppleM1.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/PhoebusOnAppleM1.md)
 
 ## Alarm Trios Building and Installation
 

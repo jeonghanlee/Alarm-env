@@ -71,4 +71,21 @@ Loading library prism_es2 from resource failed: java.lang.UnsatisfiedLinkError: 
 This may be fixed by the follwing commit in <https://github.com/openjdk/jfx/commit/e1adfa9179bb05a879b419b6221e8aa980fd6af1>. However, I don't know when they accept this commit, and release new version of jfx.
 
 * Have to fixed `prop.phoebus` rule to use the proper JAVA options for running Phoebus
-* Better to check this branch work with Darwin x86_64 environment
+
+## Phoebus on the Apple M1 with `x86_64` mode
+
+Note that one should install `x86_64` JAVA JDK. And the other procedure is the same as Linux distribution.
+
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make install.phoebus
+source scripts/activate-phoebus
+xPhoebus
+```
+
+|![1.png](Phoebus_x86_64_M1.png)|
+| :---: |
+|**Figure 1 Running Phoebus on Apple M1 with x86_64 mode** |
