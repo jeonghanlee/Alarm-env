@@ -26,7 +26,12 @@ jobs:
         echo $JAVA_HOME
         echo $PATH
         mvn --version
-    - run: sudo apt-get install tree openjfx libopenjfx-java maven
+    - run: sudo apt-get install tree openjfx libopenjfx-java
+    - run: |
+        echo "JAVA_HOME:=/opt/hostedtoolcache/jdk/11.0.10/x64" > configure/RELEASE.local
+        echo "JAVA_PATH:=/opt/hostedtoolcache/jdk/11.0.10/x64" >> configure/RELEASE.local
+        echo "MAVEN_HOME:=/usr/share/apache-maven-3.6.3" >> configure/RELEASE.local
+        echo "MAVEN_PATH:=/usr/share/apache-maven-3.6.3/bin" >> configure/RELEASE.local
     - run: |
         make init
         make patch
