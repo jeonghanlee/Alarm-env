@@ -1,4 +1,9 @@
-JAVA_PATH=/usr/bin
+
+JAVA_HOME:=/usr/bin
+MAVEN_HOME:=/usr/share/maven
+
+JAVA_PATH:=$(JAVA_HOME)/bin
+MAVEN_PATH:=$(MAVEN_HOME)/bin
 
 ## Where the Source repository SRC_URL/SRC_NAME
 ##
@@ -9,7 +14,8 @@ PS_SRC_NAME:=phoebus
 ## Which the source tag / branch / hash id would like to use
 ### 2020-06-24
 PS_SRC_TAG:=f2ec18b
-
+### 2020-12-04
+#PS_SRC_TAG:=5782dc0
 
 ### Placeholder for the site-specific version control 
 PS_SRC_VERSION:=$(PS_SRC_TAG)

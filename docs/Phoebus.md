@@ -4,6 +4,9 @@ All configurations are based on three source repositories such as pheobus [1], n
 
 ## Requirements
 
+Java SDK and Maven are required. One can use the following individual distribution packages if exist.
+Or Pleaes check <https://github.com/jeonghanlee/java-env>, where you can configure some predefined Java packages. If OS is MacOS Big Sur, the above repository will be useful, because it supports the native Jave environment. However, at this moment, we cannot use it, because OpenJFX is not ready for it.
+
 ### Apache Tomcat Native Library and Maven
 
 * Debian 10
@@ -44,7 +47,18 @@ OpenJDK Runtime Environment (build 1.8.0_242-b08)
 OpenJDK 654-Bit Server VM (build 25.242-b08, mixed mode)
 ```
 
+* MacOS Big Sur (11.2.1)
+
+```bash
+JAVA : /opt/java-env/JDK15/bin/java 
+openjdk 15.0.2 2021-01-19
+OpenJDK Runtime Environment Zulu15.29+15-CA (build 15.0.2+7)
+OpenJDK 64-Bit Server VM Zulu15.29+15-CA (build 15.0.2+7, mixed mode, sharing)
+```
+
 ## A typical example to build and run the Phoebus
+
+The following rules work in most Linux distribution and MacOS Big Sur (x86_64). In addtion, there is an additional rule for the Mac below. Note that for Window, please see the below.
 
 ```bash
 make init
@@ -141,14 +155,16 @@ That `activate-phoebus` is also installed in `INSTALL_LOCATION_PHOEBUS`. The ins
 Phoebus is very easy to build cross platform. See [4].
 
 To build a Phoebus windows product and create a zip file in $(TOP), run this command:
-```
+
+```bash
 make windows
 ```
 
 To build a tarball Phoebus product for Mac in $(TOP), run this command:
-```
+
+```bash
 make mac
-``` 
+```
 
 ## Upcoming feature based on nsls2-phoebus
 
@@ -165,6 +181,7 @@ make linux.als.home
 ```
 
 * Install the ALS accelerator edition
+
 ```bash
 make init
 make patch
@@ -172,7 +189,6 @@ make build.phoebus
 make prop.phoebus
 make install.phoebus.als 
 ```
-
 
 ## References
 

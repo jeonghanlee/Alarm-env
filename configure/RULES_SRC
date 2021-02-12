@@ -59,19 +59,32 @@ else
 	$(QUIET)echo "There is no $(PS_SRC_ROOT)."
 endif
 
+.PHONY: info.maven
+
+info.maven:
+	$(QUIET)echo "-------------------------------------------------------------"
+	$(QUIET)echo ">>> MAVEN information"
+	$(QUIET)echo "MAVEN : $(MAVEN_CMD)"
+	$(QUIET)$(MAVEN_CMD) -version
+	$(QUIET)echo "-------------------------------------------------------------"
+	$(QUIET)echo ">>> JAVA information"
+	$(QUIET)echo "JAVA : $(JAVA_CMD)"
+	$(QUIET)$(JAVA_CMD) --version
+	$(QUIET)echo "-------------------------------------------------------------"
+
 
 .PHONY: build build.alarm-server build.alarm-logger build.alarm-config-logger 
 
 build: build.alarm-server build.alarm-logger build.alarm-config-logger
 
 build.alarm-server:
-	$(QUIET)mvn -f $(SRC_PATH_SERVER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(SRC_PATH_SERVER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
 
 build.alarm-logger:
-	$(QUIET)mvn -f $(SRC_PATH_LOGGER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(SRC_PATH_LOGGER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
 
 build.alarm-config-logger:
-	$(QUIET)mvn -f $(SRC_PATH_CONFIGLOGGER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(SRC_PATH_CONFIGLOGGER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
 
 
 restart: restart.alarm-server restart.alarm-logger restart.alarm-config-logger

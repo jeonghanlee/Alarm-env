@@ -3,7 +3,32 @@
 INSTALL:= install
 INSTALL_PROGRAM:=$(INSTALL)
 INSTALL_DATA:=$(INSTALL) -m 644
-SUDO := sudo
+INSTALL_755:=$(INSTALL) -m 755
+
+# IF INSTALL_LOCATIOIN is not WRITABLE, SUDO and SUDOBASH should be used 
+# SUDO_INFO 1 : SUDO is needed (NOT writable)
+# SUDO_INFO 0 : SUDO is not needed
+ifeq "$(INSTALL_LOCATION)" "${HOME}"
+SUDO_INFO := $(shell test -w $(INSTALL_LOCATION) 1>&2 2> /dev/null; echo $$?)
+else
+SUDO_INFO := $(shell test -w $(INSTALL_LOCATION)/.. 1>&2 2> /dev/null; echo $$?)
+endif
+
+SUDO_CMD:=$(shell which sudo)
+
+# For CentOS, devtoolset-{7,8} has -E option within sudo shell
+# So we have to remove -E option as well if we would like to use devtoolset
+#
+ifeq "$(SUDO_INFO)" "1"
+SUDO = $(SUDO_CMD)
+else
+ifeq ($(UNAME_S),Darwin)
+SUDO = $(SUDO_CMD)
+else
+SUDO :=
+endif
+endif
+
 #
 #
 # SRC_ROOT_INFO 1 : the directory is not there
@@ -24,6 +49,11 @@ SRC_PATH_CONFIGLOGGER:=$(PS_SRC_ROOT)/services/$(TARGET_NAME_CONFIGLOGGER)
 
 PS_SITE_TEMPLATE_PATH:=$(TOP)/site-template
 PS_SCRIPTS_PATH:=$(TOP)/scripts
+
+PATH:=$(MAVEN_PATH):$(JAVA_PATH):${PATH}
+
+MAVEN_CMD:=$(MAVEN_PATH)/mvn
+JAVA_CMD:=$(JAVA_PATH)/java 
 
 #
 #

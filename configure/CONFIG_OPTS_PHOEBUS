@@ -18,8 +18,10 @@ PS_JAVA_OPTS+=-DCA_DISABLE_REPEATER=true
 # Disable warnings
 PS_JAVA_OPTS+=-Dnashorn.args=--no-deprecation-warning
 
+ifeq ($(UNAME_S),Linux)
 # Use GTK 2 (GTK 3 drag/drop doesn't always work)
 PS_JAVA_OPTS+=-Djdk.gtk.verbose=false -Djdk.gtk.version=2
+endif
 
 # Drawing pipeline
 PS_JAVA_OPTS+=-Dprism.verbose=false -Dprism.forceGPU=true
