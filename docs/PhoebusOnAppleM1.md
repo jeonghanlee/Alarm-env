@@ -89,3 +89,13 @@ xPhoebus
 |![1.png](Phoebus_x86_64_M1.png)|
 | :---: |
 |**Figure 1 Running Phoebus on Apple M1 with x86_64 mode** |
+
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make macapp
+or 
+make zipapp
+```

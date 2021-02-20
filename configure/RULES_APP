@@ -1,0 +1,52 @@
+# This rule is for the MacOS only.
+# The workflow was copied from https://github.com/kasemir/phoebus-sns/blob/master/make_app.sh
+
+ifeq ($(UNAME_S),Darwin)
+
+.PHONY:
+
+# 
+
+# phoebus.app/jdk
+# phoebus.app/product-sns-4.6.0
+# phoebus.app/Contents/...
+# phoebus.app/Contents started out as mostly the Contents/MacOS/command,
+# but newer versions of Mac OS require more and more content,
+# otherwise *.app is considered "damaged or incomplete".
+# Contents skeleton thanks to https://github.com/thedzy/Run-script-as-an-Applicaiton 
+
+
+# MACAPP/
+# MACAPP/jdk
+# MACAPP/PS_SRC_NAME
+# MACAPP/Contents
+
+macapp: build.app install.app
+
+zipapp: build.app zip.app
+
+build.app:
+	$(QUIET)echo "Preparing ... $(MACAPP)"
+	$(QUIET)-rm -rf $(MACAPP)/
+	$(QUIET)mkdir -p $(MACAPP)/jdk $(MACAPP_TARGET)
+	$(QUIET)cp -rp $(MACAPP_TEMPLATE_PATH)/* $(MACAPP)/
+	$(QUIET)echo "Copying JDK from $(JAVA_HOME)...."
+	$(QUIET)cp -rp $(JAVA_HOME)/* $(MACAPP)/jdk/
+	$(QUIET)rm -rf $(MACAPP)/jdk/demo $(MACAPP)/jdk/*.jdk
+	$(QUIET)echo "Building $(PS_SRC_NAME) ..."
+	$(QUIET)$(INSTALL_DATA) -b $(PS_SITE_TEMPLATE_PATH)/.versions  $(MACAPP_TARGET)/
+	$(QUIET)cp $(SRC_PATH_PHOEBUS)/target/product-*.jar  $(MACAPP_TARGET)/product-phoebus.jar
+	$(QUIET)cp -r $(SRC_PATH_PHOEBUS)/target/lib  $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(SRC_PATH_PHOEBUS)/phoebus.sh $(PS_SITE_TEMPLATE_PATH)/authorization.conf $(MACAPP_TARGET)/
+
+zip.app:
+	$(QUIET)rm -f $(TOP)/$(MACAPP).zip
+	$(QUIET)echo "Zipping $(MACAPP)...."
+	$(QUIET)zip -qr $(TOP)/$(MACAPP).zip $(MACAPP)
+
+install.app: uninstall.app
+	$(QUIET)$(SUDO) ditto $(MACAPP) /Applications/$(MACAPP)
+
+uninstall.app:
+	$(QUIET)$(SUDO) rm -rf /Applications/$(MACAPP)
+
+endif 

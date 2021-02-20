@@ -66,3 +66,7 @@ phoebus-products/als-*
 windows/phoebus-src-windows
 windows/phoebus-product-windows
 *.zip
+Phoebus.app
+.DS_*
+
+
