@@ -28,9 +28,13 @@ then
   echo "Updated."
 fi
 
-export JAVA_HOME="$JAVA_PATH"
-export PATH="$JAVA_HOME/bin:$PATH"
-export HOSTNAME=$(/bin/hostname)
+JAVA_HOME="$JAVA_PATH"
+PATH="$JAVA_HOME/bin:$PATH"
+HOSTNAME=$(/bin/hostname)
+
+export JAVA_HOME
+export PATH
+export HOSTNAME
 
 ICNS_FILE="${CONTENTS}/Resources/Phoebus.icns"
 DOCK_NAME="ALS CS Studio Phoebus"

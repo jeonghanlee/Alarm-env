@@ -68,5 +68,6 @@ windows/phoebus-product-windows
 *.zip
 Phoebus.app
 .DS_*
+*.dmg
 
 

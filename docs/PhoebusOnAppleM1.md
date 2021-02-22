@@ -60,6 +60,18 @@ make prop.phoebus
 make macapp
 ```
 
+### Create the dmg file
+
+Phoebus-VERSION.dmg file will be located in `$TOP`.
+
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make dmgapp
+```
+
 ### Zipped Apple Applications
 
 Phoebus.app.zip file will be located in `$TOP`.
