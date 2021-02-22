@@ -1,0 +1,41 @@
+## This rule is for the MacOS only.
+
+
+ifeq ($(UNAME_S),Darwin)
+
+.PHONY: macapp zipapp build.app install.app uninstall.app
+
+## Phoebus.app/Contents/{MacOS,Resources}
+## Phoebus.app/jdk
+## Phoebus.app/phoebus
+## Contents skeleton thanks to https://github.com/thedzy/Run-script-as-an-Applicaiton 
+
+macapp: build.app install.app
+
+zipapp: build.app zip.app
+
+build.app: src_version
+	$(QUIET)echo "Preparing ... $(MACAPP)"
+	$(QUIET)-rm -rf $(MACAPP)/
+	$(QUIET)mkdir -p $(MACAPP)/jdk $(MACAPP_TARGET)
+	$(QUIET)cp -rp $(MACAPP_TEMPLATE_PATH)/* $(MACAPP)/
+	$(QUIET)echo "Copying JDK from $(JAVA_HOME)...."
+	$(QUIET)cp -rp $(JAVA_HOME)/* $(MACAPP)/jdk/
+	$(QUIET)rm -rf $(MACAPP)/jdk/demo $(MACAPP)/jdk/*.jdk
+	$(QUIET)echo "Building $(PS_SRC_NAME) ..."
+	$(QUIET)$(INSTALL_DATA) -b $(PS_SITE_TEMPLATE_PATH)/.versions  $(MACAPP_TARGET)/
+	$(QUIET)cp $(SRC_PATH_PHOEBUS)/target/product-*.jar  $(MACAPP_TARGET)/product-phoebus.jar
+	$(QUIET)cp -r $(SRC_PATH_PHOEBUS)/target/lib  $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGGING_PROPERTIES) $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_LOGBACK) $(SRC_PATH_PHOEBUS)/phoebus.sh $(PS_SITE_TEMPLATE_PATH)/authorization.conf $(MACAPP_TARGET)/
+
+zip.app:
+	$(QUIET)rm -f $(TOP)/$(MACAPP).zip
+	$(QUIET)echo "Zipping $(MACAPP)...."
+	$(QUIET)zip -qr $(TOP)/$(MACAPP).zip $(MACAPP)
+
+install.app: uninstall.app
+	$(QUIET)$(SUDO) ditto $(MACAPP) /Applications/$(MACAPP)
+
+uninstall.app:
+	$(QUIET)$(SUDO) rm -rf /Applications/$(MACAPP)
+
+endif

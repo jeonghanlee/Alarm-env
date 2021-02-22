@@ -1,11 +1,12 @@
 # Phoebus on Apple Silicon M1 with Big Sur
 
+Note that one cannot run Phoebus with the Native (aarch64) support, because of javafx.
+
 ## Requirements
 
 ### JAVA environment
 
-One should configure the Native (aarch64) Java environment with the maven environment. Please remember this is the native (aarch64, arm64) version.
-Please check the following repository <https://github.com/jeonghanlee/java-env> for Darwin (aarch64, x86) and Linux. One can check them through
+One should configure the Native (aarch64) or the emulated (x86_64) Java environment with the maven environment. Please check the following repository <https://github.com/jeonghanlee/java-env> for Darwin (aarch64, x86_64) and Linux. One can check them through
 
 ```bash
 $ make vars FILTER=UNAME
@@ -22,6 +23,8 @@ UNAME_S = Darwin
 
 ## Build
 
+* `arm64` and `x86_64`
+
 ```bash
 echo "JAVA_HOME:=/opt/java-env/JDK15" > configure/RELEASE.local
 echo "JAVA_PATH:=/opt/java-env/JDK15/bin" >> configure/RELEASE.local
@@ -29,19 +32,58 @@ echo "MAVEN_HOME:=/opt/java-env/MAVEN363" >> configure/RELEASE.local
 echo "MAVEN_PATH:=/opt/java-env/MAVEN363/bin" >> configure/RELEASE.local
 ```
 
+## Phoebus on the Apple M1 with `x86_64` mode
+
+Note that one should install `x86_64` JAVA JDK. And the other procedure is the same as Linux distribution.
+
+### Command-Line Environment
+
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make install.phoebus
+source scripts/activate-phoebus
+xPhoebus
+```
+
+### Applications within Apple LaunchPad
+
+Please check the LaunchPad, one can see the Adavneced Light Source Phoebus Icon.
+
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make macapp
+```
+
+### Zipped Apple Applications
+
+Phoebus.app.zip file will be located in `$TOP`.
+
+```bash
+make init
+make patch
+make build.phoebus
+make prop.phoebus
+make zipapp
+```
+
+|![1.png](Phoebus_x86_64_M1.png)|
+| :---: |
+|**Figure 1 Running Phoebus on Apple M1 with x86_64 mode** |
+
+## Phoebus on the Apple M1 with `arm64` mode
+
 ```bash
 $ make init
 $ make build.phoebus
 $ make prop.phoebus
 $ make install.phoebus
 $ make exist
-No /opt/phoebus-products/alarm-server
-No alarm-server.service unit file
-No /opt/phoebus-products/alarm-logger
-No alarm-logger.service unit file
-No /opt/phoebus-products/alarm-config-logger
-No alarm-config-logger.service unit file
-tree -aL 1 /opt/phoebus-products/phoebus
 /opt/phoebus-products/phoebus
 ├── .versions
 ├── activate-phoebus
@@ -58,7 +100,7 @@ tree -aL 1 /opt/phoebus-products/phoebus
 2 directories, 9 files
 ```
 
-## Notice
+### Notice
 
 The building procedure is quickly done, however, I see the following error messages :
 
@@ -69,23 +111,3 @@ Loading library prism_es2 from resource failed: java.lang.UnsatisfiedLinkError: 
 ```
 
 This may be fixed by the follwing commit in <https://github.com/openjdk/jfx/commit/e1adfa9179bb05a879b419b6221e8aa980fd6af1>. However, I don't know when they accept this commit, and release new version of jfx.
-
-* Have to fixed `prop.phoebus` rule to use the proper JAVA options for running Phoebus
-
-## Phoebus on the Apple M1 with `x86_64` mode
-
-Note that one should install `x86_64` JAVA JDK. And the other procedure is the same as Linux distribution.
-
-```bash
-make init
-make patch
-make build.phoebus
-make prop.phoebus
-make install.phoebus
-source scripts/activate-phoebus
-xPhoebus
-```
-
-|![1.png](Phoebus_x86_64_M1.png)|
-| :---: |
-|**Figure 1 Running Phoebus on Apple M1 with x86_64 mode** |
