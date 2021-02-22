@@ -58,7 +58,7 @@ OpenJDK 64-Bit Server VM Zulu15.29+15-CA (build 15.0.2+7, mixed mode, sharing)
 
 ## A typical example to build and run the Phoebus
 
-The following rules work in most Linux distribution and MacOS Big Sur (x86_64). In addtion, there is an additional rule for the Mac below. Note that for Window, please see the below.
+The following rules work in most Linux distribution and MacOS Big Sur (x86_64). In addtion, there are three additional rules for the MacOS. One is shown in the later in this document, and others are shown in [docs/PhoebusOnAppleM1.md](https://github.com/jeonghanlee/phoebus-env/blob/master/docs/PhoebusOnAppleM1.md). For Windows, please see the below instruction.
 
 ```bash
 make init

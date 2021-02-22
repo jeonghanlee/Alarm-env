@@ -3,32 +3,38 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleGetInfoString</key>
-	<string>1.0, Copyright © 2010 __MyCompanyName__, All Rights Reserved</string>
-	<key>CFBundleIdentifier</key>
-	<string>gov.lbl.Phoebus</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>Phoebus</string>
-	<key>CFBundlePackageType</key>
-	<string>BNDL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1.0</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2010 __MyCompanyName__, All Rights Reserved.</string>
+	<string>en_US</string>
 	<key>NSPrincipalClass</key>
 	<string>ShellScript</string>
 	<key>CFBundleExecutable</key>
 	<string>main.command</string>
+	<key>CFBundleGetInfoString</key>
+	<string>@DEPLOY_BUNDLE_GET_INFO_STRING@</string>
 	<key>CFBundleIconFile</key>
-	<string>phoebus</string>
-	<key>NSMainNibFile</key>
-	<string>main.nib</string>
+	<string>Phoebus.icns</string>
+	<key>CFBundleIconName</key>
+	<string>Phoebus</string>
+	<key>CFBundleIdentifier</key>
+	<string>gov.lbl.phoebus</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>ALS CS Studio Phoebus</string>
+	<key>CFBundleDisplayName</key>
+	<string>ALS CS Studio Phoebus</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@DEPLOY_BUNDLE_SHORT_VERSION@</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>@DEPLOY_BUNDLE_VERSION@</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2021 Lawrence Berkeley National Laboratory, All Rights Reserved.</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 </dict>
 </plist>

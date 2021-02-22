@@ -1,25 +1,14 @@
-# This rule is for the MacOS only.
-# The workflow was copied from https://github.com/kasemir/phoebus-sns/blob/master/make_app.sh
+## This rule is for the MacOS only.
+
 
 ifeq ($(UNAME_S),Darwin)
 
-.PHONY:
+.PHONY: macapp zipapp build.app install.app uninstall.app
 
-# 
-
-# phoebus.app/jdk
-# phoebus.app/product-sns-4.6.0
-# phoebus.app/Contents/...
-# phoebus.app/Contents started out as mostly the Contents/MacOS/command,
-# but newer versions of Mac OS require more and more content,
-# otherwise *.app is considered "damaged or incomplete".
-# Contents skeleton thanks to https://github.com/thedzy/Run-script-as-an-Applicaiton 
-
-
-# MACAPP/
-# MACAPP/jdk
-# MACAPP/PS_SRC_NAME
-# MACAPP/Contents
+## Phoebus.app/Contents/{MacOS,Resources}
+## Phoebus.app/jdk
+## Phoebus.app/phoebus
+## Contents skeleton thanks to https://github.com/thedzy/Run-script-as-an-Applicaiton 
 
 macapp: build.app install.app
 
@@ -49,4 +38,4 @@ install.app: uninstall.app
 uninstall.app:
 	$(QUIET)$(SUDO) rm -rf /Applications/$(MACAPP)
 
-endif 
+endif

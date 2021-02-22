@@ -9,11 +9,14 @@
 # Location of this script
 # cd .. pwd determines the full path
 # even if called from shell with relative path
-CONTENTS="$( cd "$(dirname "$0")" || exit ; pwd -P )"
-BASE=${CONTENTS%/*/*}
+# 
+MACOS="$( cd "$(dirname "$0")" || exit ; pwd -P )"
+BASE=${MACOS%/*/*}
 
 # Phoebus TOP
 TOP="${BASE}/phoebus"
+CONTENTS="${BASE}/Contents"
+JAVA_PATH="${BASE}/jdk"
 
 if [ -d "${TOP}/update" ]
 then
@@ -25,15 +28,14 @@ then
   echo "Updated."
 fi
 
-export JAVA_HOME="$BASE/jdk"
-
+export JAVA_HOME="$JAVA_PATH"
 export PATH="$JAVA_HOME/bin:$PATH"
-
 export HOSTNAME=$(/bin/hostname)
 
-JAR="${TOP}/product-phoebus.jar"
+ICNS_FILE="${CONTENTS}/Resources/Phoebus.icns"
+DOCK_NAME="ALS CS Studio Phoebus"
+JAR_FILE="${TOP}/product-phoebus.jar"
+SETTINGS="${TOP}/phoebus_settings.ini"
+JAVA_OPTIONS="-Dlogback.configurationFile=${TOP}/phoebus_logback.xml"
 
-# To get one instance, use server mode
-# OPT="-server 4918"
-
-java -jar "$JAR" "$OPT" "$@" 
+java  -Xdock:name="${DOCK_NAME}" -Xdock:icon="${ICNS_FILE}" "${JAVA_OPTIONS}" -jar "${JAR_FILE}" -settings "${SETTINGS}" "$OPT" "$@"
