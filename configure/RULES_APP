@@ -14,7 +14,7 @@ macapp: build.app install.app
 
 zipapp: build.app zip.app
 
-build.app:
+build.app: src_version
 	$(QUIET)echo "Preparing ... $(MACAPP)"
 	$(QUIET)-rm -rf $(MACAPP)/
 	$(QUIET)mkdir -p $(MACAPP)/jdk $(MACAPP_TARGET)
