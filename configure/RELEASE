@@ -1,5 +1,5 @@
 
-JAVA_HOME:=/usr/bin
+JAVA_HOME:=/usr
 MAVEN_HOME:=/usr/share/maven
 
 JAVA_PATH:=$(JAVA_HOME)/bin

@@ -12,7 +12,7 @@ Or Pleaes check <https://github.com/jeonghanlee/java-env>, where you can configu
 * Debian 10
 
 ```bash
-apt install maven openjfx libopenjfx-java
+apt install maven openjfx libopenjfx-java openjdk-11-jdk
 ```
 
 * CentOS 7
