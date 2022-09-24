@@ -96,6 +96,7 @@ src_version: FORCE
 
 clean:
 	rm -rf $(PS_SITE_TEMPLATE_PATH)/.versions
+
 FORCE:
 
 

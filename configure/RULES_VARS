@@ -9,7 +9,6 @@ VARS_EXCLUDES+=PY_CF%
 VARS_EXCLUDES+=comma
 VARS_EXCLUDES+=space
 
-
 LEVEL?=1
 
 FILTER?=1
@@ -41,8 +40,7 @@ PRINT.%:
 #	$(QUIET)echo $*\'s origin is $(origin $*)
 
 print-%:
-	$(QUIET)echo $* = $($*)
-#	$(QUIET)echo $*\'s origin is $(origin $*)
+	$(QUIET)echo $($*)
 
 
 .PHONY : exist exist.alarm-server exist.alarm-server exist.alarm-server exist.phoebus 

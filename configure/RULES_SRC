@@ -45,7 +45,7 @@ endif
 
 # from: https://stackoverflow.com/questions/47837071/making-make-clean-ask-for-confirmation
 distclean.check:
-	@echo -n "This will rm -rf $(PS_SRC_ROOT). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
+	@echo "This will rm -rf $(PS_SRC_ROOT). Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
 
 deinit: distclean
 

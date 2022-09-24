@@ -56,9 +56,10 @@ sh.phoebus:
 sh_clean.phoebus:
 	rm -f $(PS_SCRIPTS_PATH)/$(PHOEBUS_SHELL)
 
+.PHONY: prop.phoebus prop.phoebus.show prop.phoebus.clean
 
-
-prop.phoebus:
+prop.phoebus: $(PHOEBUS_SETTINGS).in
+	$(QUIET)echo ">>> Generate $(basename $<) from $<"
 	$(QUIET)sed -e "s:@PS_CF_PRTO@:$(PS_CF_PRTO):g" \
 		    -e "s:@PS_CF_HOST@:$(PS_CF_HOST):g" \
 		    -e "s:@PS_CF_PORT@:$(PS_CF_PORT):g" \
@@ -74,7 +75,10 @@ prop.phoebus:
 		    -e "s:@PS_OG_HOST@:$(PS_OG_HOST):g" \
 		    -e "s:@PS_OG_PORT@:$(PS_OG_PORT):g" \
 		    -e "s:@PS_CA_ADDR_LIST@:$(PS_ADDR_LIST):g" \
-		    < $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS).in > $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS)
+		    < $< > $(basename $<)
 
-prop_clean.phoebus:
-	rm -f $(PS_SITE_TEMPLATE_PATH)/$(PHOEBUS_SETTINGS)
+prop.phoebus.clean: $(PHOEBUS_SETTINGS).in
+	rm -f $(basename $<)
+
+prop.phoebus.show: $(PHOEBUS_SETTINGS).in
+	$(QUIET)cat -b $(basename $<)

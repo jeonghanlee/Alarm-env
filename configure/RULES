@@ -1,4 +1,11 @@
-# -*- mode: Makefile;-*-
+vpath %.local $(TOP)/configure
+vpath %.in  $(PS_SITE_TEMPLATE_PATH)
+vpath %.ini $(PS_SITE_TEMPLATE_PATH)
+vpath %.in $(PS_SITE_TEMPLATE_PATH)
+vpath %.properties $(PS_SITE_TEMPLATE_PATH)
+vpath %.in $(PS_SITE_TEMPLATE_PATH)/systemd
+vpath %.services $(PS_SITE_TEMPLATE_PATH)/systemd
+
 
 include $(TOP)/configure/RULES_FUNC
 include $(TOP)/configure/RULES_PATCH

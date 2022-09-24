@@ -1,6 +1,7 @@
 
-## Phoebus installation location
-PS_INSTALL_LOCATION:=/opt/phoebus-products
+# Phoebus installation location
+PS_INSTALL_PATH:=/opt
+PS_INSTALL_LOCATION:=$(PS_INSTALL_PATH)/phoebus-products
 #
 #
 
@@ -26,6 +27,8 @@ ACL_USERID:=alarmacl
 ### Do not change it if one doesn't know what could be done properly.
 GROUPID:=65534
 #
+
+PS_SITE_TEMPLATE_PATH=$(TOP)/site-template
 
 SYSTEMD_PATH:=/etc/systemd/system
 

@@ -1,60 +1,14 @@
-# Phoebus
+# phoebus-env
 
-All configurations are based on three source repositories such as pheobus [1], nsls2-phoebus [2], and phoebus-sns [3].
+Configuration Environment for phoebus at https://github.com/ControlSystemStudio/phoebus
 
-## Requirements
-
-Java SDK and Maven are required. One can use the following individual distribution packages if exist.
-Or Pleaes check <https://github.com/jeonghanlee/java-env>, where you can configure some predefined Java packages. If OS is MacOS Big Sur, the above repository will be useful, because it supports the native Jave environment. However, at this moment, we cannot use it, because OpenJFX is not ready for it.
-
-### Apache Tomcat Native Library and Maven
-
-* Debian 10
+## Prerequired Packages
 
 ```bash
-apt install maven openjfx libopenjfx-java openjdk-11-jdk
+git make sudo tree maven
 ```
 
-* CentOS 7
 
-```bash
-yum install maven
-```
-
-* CentOS 8 & Fedora 31
-
-One can use `yum` instead of `dnf`. `epel-release` is needed.
-
-```bash
-dnf install maven
-```
-
-### JDK 8 or newer
-
-* Debian 10
-
-```bash
-openjdk version "11.0.6" 2020-01-14
-OpenJDK Runtime Environment (build 11.0.6+10-post-Debian-1deb10u1)
-OpenJDK 64-Bit Server VM (build 11.0.6+10-post-Debian-1deb10u1, mixed mode, sharing)
-```
-
-* Fedora 31
-
-```bash
-openjdk version "1.8.0_242"
-OpenJDK Runtime Environment (build 1.8.0_242-b08)
-OpenJDK 654-Bit Server VM (build 25.242-b08, mixed mode)
-```
-
-* MacOS Big Sur (11.2.1)
-
-```bash
-JAVA : /opt/java-env/JDK15/bin/java 
-openjdk 15.0.2 2021-01-19
-OpenJDK Runtime Environment Zulu15.29+15-CA (build 15.0.2+7)
-OpenJDK 64-Bit Server VM Zulu15.29+15-CA (build 15.0.2+7, mixed mode, sharing)
-```
 
 ## A typical example to build and run the Phoebus
 
@@ -62,7 +16,19 @@ The following rules work in most Linux distribution and MacOS Big Sur (x86_64). 
 
 ```bash
 make init
-make patch
+make build.phoebus
+make prop.phoebus
+make install.phoebus
+source scripts/activate-phoebus
+xPhoebus
+```
+
+
+## macOS (M1)
+
+```bash
+make init
+make conf.macos
 make build.phoebus
 make prop.phoebus
 make install.phoebus
@@ -74,7 +40,7 @@ xPhoebus
 
 ### `make init`
 
-* Download the lastest phoebus source
+* Download the fastest phoebus source
 
 * Switch to a specific version defined in `$(SRC_TAG)` in `configure/RELEASE`
 
@@ -82,7 +48,7 @@ xPhoebus
 make init
 ```
 
-### `make patch`
+### `make patch` if patch files exist
 
 * Apply patch files if patch files exist in `patch`
 

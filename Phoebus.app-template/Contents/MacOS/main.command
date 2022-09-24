@@ -37,9 +37,9 @@ export PATH
 export HOSTNAME
 
 ICNS_FILE="${CONTENTS}/Resources/Phoebus.icns"
-DOCK_NAME="ALS CS Studio Phoebus"
+DOCK_NAME="ALS and ALS-U Control System Studio Phoebus"
 JAR_FILE="${TOP}/product-phoebus.jar"
 SETTINGS="${TOP}/phoebus_settings.ini"
 JAVA_OPTIONS="-Dlogback.configurationFile=${TOP}/phoebus_logback.xml"
 
-java  -Xdock:name="${DOCK_NAME}" -Xdock:icon="${ICNS_FILE}" "${JAVA_OPTIONS}" -jar "${JAR_FILE}" -settings "${SETTINGS}" "$OPT" "$@"
+"${JAVA_PATH}"/bin/java -Xdock:name="${DOCK_NAME}" -Xdock:icon="${ICNS_FILE}" "${JAVA_OPTIONS}" -jar "${JAR_FILE}" -settings "${SETTINGS}" "$OPT" "$@"

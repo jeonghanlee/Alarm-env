@@ -16,6 +16,21 @@ dmgapp: build.app dmg.app
 
 zipapp: build.app zip.app
 
+tarapp: build.app tar.app
+
+# somehow, homebrew cannot handle libjli.dylib library properly
+# The first directory which @rpath looks for is executable path, so just create a relative symlink in bin
+# otool -L Phoebus_arm64.app/jdk/bin/java
+# Phoebus_arm64.app/jdk/bin/java:
+#	/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.11)
+#	@rpath/libjli.dylib (compatibility version 1.0.0, current version 1.0.0)
+#	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 23.0.0)
+#	/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 60158.100.133)
+#	/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices (compatibility version 1.0.0, current version 56.0.0)
+#	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1311.100.3)
+# However, if we use the JAVA_HOME as /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+# We don't have this rpath issue
+#
 build.app: src_version
 	$(QUIET)echo "Preparing ... $(MACAPP)"
 	$(QUIET)-rm -rf $(MACAPP)/
@@ -36,6 +51,12 @@ zip.app:
 	$(QUIET)rm -f $(TOP)/$(MACAPP).zip
 	$(QUIET)echo "Zipping $(MACAPP)...."
 	$(QUIET)zip -qr $(TOP)/$(MACAPP).zip $(MACAPP)
+
+tar.app:
+	$(QUIET)rm -f $(TOP)/$(basename $(MACAPP)).tar.gz
+	$(QUIET)echo "Tar with gziping  $(basename $(MACAPP))...."
+	$(QUIET)tar -czf $(basename $(MACAPP)).tar.gz $(MACAPP)
+	$(QUIET)echo "$(basename $(MACAPP)).tar.gz in $(TOP)"
 
 install.app: uninstall.app
 	$(QUIET)$(SUDO) ditto $(MACAPP) /Applications/$(MACAPP)

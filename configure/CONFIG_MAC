@@ -6,6 +6,6 @@ MAC_PRODUCT:=phoebus-product-mac
 MAC_PRODUCT_LOCATION:=$(MAC_LOCATION)/$(MAC_PRODUCT)
 
 
-MACAPP:=Phoebus.app
-MACAPP_TEMPLATE_PATH:=$(TOP)/$(MACAPP)-template
+MACAPP:=Phoebus_$(UNAME_M).app
+MACAPP_TEMPLATE_PATH:=$(TOP)/Phoebus.app-template
 MACAPP_TARGET:=$(MACAPP)/$(PS_SRC_NAME)
