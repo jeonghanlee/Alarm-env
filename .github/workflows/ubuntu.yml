@@ -1,0 +1,49 @@
+---
+
+name: Ubuntu Latest
+
+on:
+  push:
+    branches: [ master ]
+
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Ubuntu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '18.0.2'
+    - name: Install required Packages
+      run: sudo apt install -y make tree git wget
+    - name: Check JAVA configuration    
+    - run: |
+        which java
+        which mvn
+    - run: |
+        echo "JAVA_HOME:=${JAVA_HOME}"      > configure/CONFIG_COMMON.local
+        echo "JAVA_PATH:=${JAVA_HOME}/bin" >> configure/CONFIG_COMMON.local
+        echo "MAVEN_HOME:=/usr"            >> configure/CONFIG_COMMON.local
+        echo "MAVEN_PATH:=/usr/bin"        >> configure/CONFIG_COMMON.local
+    - run: |
+        make init
+        make patch
+        make vars
+    - run: |
+        make build.phoebus
+        make prop.phoebus
+        make install.phoebus
+    - run: |
+        make build
+        make sd_config
+        make install
+    - run: make exist
+    - run:
+        bash scripts/build_test.sh all
+
