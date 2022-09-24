@@ -1,6 +1,6 @@
 # Phoebus and Alarm Trio Configuration Environment
-
-![Phoebus and Alarm Trio Build Test](https://github.com/jeonghanlee/phoebus-env/workflows/Phoebus%20and%20Alarm%20Trio%20Build%20Test/badge.svg)
+[![Ubuntu Latest](https://github.com/jeonghanlee/phoebus-env/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/jeonghanlee/phoebus-env/actions/workflows/ubuntu.yml)
+[macOS build](https://github.com/jeonghanlee/phoebus-env/actions/workflows/macOS.yml/badge.svg)](https://github.com/jeonghanlee/phoebus-env/actions/workflows/macOS.yml)
 
 Configuration Environment for Phoebus [1] and Alarm Trio [2].
 
