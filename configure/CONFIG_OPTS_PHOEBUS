@@ -17,9 +17,13 @@ PS_JAVA_OPTS+=-DCA_DISABLE_REPEATER=true
 # Disable warnings
 PS_JAVA_OPTS+=-Dnashorn.args=--no-deprecation-warning
 
+
+# https://bugs.openjdk.org/browse/JDK-8277962
+# openjfx18, we have to remove this option
+#
 ifeq ($(UNAME_S),Linux)
 # Use GTK 2 (GTK 3 drag/drop doesn't always work)
-PS_JAVA_OPTS+=-Djdk.gtk.verbose=false -Djdk.gtk.version=2
+#PS_JAVA_OPTS+=-Djdk.gtk.verbose=false -Djdk.gtk.version=2
 endif
 
 # Drawing pipeline

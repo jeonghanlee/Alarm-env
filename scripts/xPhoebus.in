@@ -4,7 +4,7 @@
 
 # To get one instance, use server mode
 #ID=$(id -u)
-OPT="-server 4530"
+OPT="-server 4918"
 
 filter1="-help"
 filter2="-main"
@@ -13,9 +13,9 @@ firstarg="$1";
 
 
 if test "${firstarg#*$filter1}" != "$firstarg"; then
-    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@"
+    @JAVAPATH@/java @JAVAOPTS@ -Dfile.encoding=UTF-8 -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@"
 elif test "${firstarg#*$filter2}" != "$firstarg"; then
-    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@"
+    @JAVAPATH@/java @JAVAOPTS@ -Dfile.encoding=UTF-8 -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@"
 else
-    @JAVAPATH@/java @JAVAOPTS@ -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@" & 
+    @JAVAPATH@/java @JAVAOPTS@ -Dfile.encoding=UTF-8 -jar @TARGET_FILENAME@ @OPTIONS@ "$OPT" "$@" & 
 fi
