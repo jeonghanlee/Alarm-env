@@ -75,6 +75,7 @@ prop.phoebus: $(PHOEBUS_SETTINGS).in
 		    -e "s:@PS_OG_HOST@:$(PS_OG_HOST):g" \
 		    -e "s:@PS_OG_PORT@:$(PS_OG_PORT):g" \
 		    -e "s:@PS_CA_ADDR_LIST@:$(PS_ADDR_LIST):g" \
+		    -e "s:@PS_DEFAULT_FILEBROWSER_ROOT@:$(PS_DEFAULT_FILEBROWSER_ROOT):g" \
 		    < $< > $(basename $<)
 
 prop.phoebus.clean: $(PHOEBUS_SETTINGS).in

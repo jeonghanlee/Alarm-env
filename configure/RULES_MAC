@@ -13,6 +13,9 @@ conf.macbrew:
 	$(QUIET)echo "MAVEN_PATH:=/opt/homebrew/opt/maven/bin"  >> $(TOP)/configure/CONFIG_COMMON.local
 
 
+conf.macos.show:
+	cat -b $(TOP)/configure/CONFIG_COMMON.local
+
 build.mac:
 ifeq "$(JAVAHOME)" ""
 	$(QUIET)echo "JAVA_HOME must be defined. Please do the following command first:"     

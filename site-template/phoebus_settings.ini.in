@@ -77,7 +77,7 @@ org.phoebus.email/from=Phoebus <phoebus@lab.gov>
 org.phoebus.applications.errlog/max_lines=500
 
 # filebrowser
-org.phoebus.applications.filebrowser/default_root=/home/lab/folder
+org.phoebus.applications.filebrowser/default_root=@PS_DEFAULT_FILEBROWSER_ROOT@
 org.phoebus.applications.filebrowser/show_hidden=false
 
 # framework.autocomplete
@@ -114,7 +114,7 @@ org.phoebus.pv.ca/addr_list=@PS_CA_ADDR_LIST@
 #org.phoebus.pv.formula/throttle_ms=500
 
 # pv.mqtt
-#org.phoebus.pv.mqtt/mqtt_broker=tcp://localhost:1883
+#org.phoebus.pv.mqtt/mqtt_broker=tcp\://localhost\:1883
 
 # pvtable
 org.phoebus.applications.pvtable/show_units=true
@@ -138,8 +138,8 @@ org.phoebus.applications.pvtable/show_description=true
 org.phoebus.security/authorization_file=authorization.conf
 
 # trends.databrowser3
-org.csstudio.trends.databrowser3/archives=Current|0|pbraw\://@PS_AA_HOST@:17668/retrieval
-org.csstudio.trends.databrowser3/urls=pbraw\://@PS_AA_HOST@:17668/retrieval
+org.csstudio.trends.databrowser3/archives=Current|0|pbraw\://@PS_AA_HOST@\:17668/retrieval
+org.csstudio.trends.databrowser3/urls=pbraw\://@PS_AA_HOST@\:17668/retrieval
 org.csstudio.trends.databrowser3/time_span_shortcuts=30 Minutes,-30 min|1 Hour,-1 hour|12 Hours,-12 hour|1 Day,-1 days|7 Days,-7 days
 org.csstudio.trends.databrowser3/plt_repository=
 
@@ -157,13 +157,12 @@ org.phoebus.ui/top_resources=
 #org.phoebus.app.viewer3d
 
 # ChannelFinder
-org.phoebus.channelfinder/serviceURL=@PS_CF_PRTO@\://@PS_CF_HOST@:@PS_CF_PORT@/ChannelFinder/
+org.phoebus.channelfinder/serviceURL=@PS_CF_PRTO@\://@PS_CF_HOST@\:@PS_CF_PORT@/ChannelFinder/
 
 # Olog
 #org.phoebus.olog.api.OlogClient/olog_url=@PS_OG_PRTO@\://@PS_OG_HOST@\:@PS_OG_PORT@/Olog/resources
 
 # Subtle shading
-
 
 # Faster (for tests)
 # Display actual update rate by setting
