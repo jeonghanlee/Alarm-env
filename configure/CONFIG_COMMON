@@ -1,6 +1,6 @@
 # Debian
 
-JAVA_HOME:=/usr/lib/jvm/default-java
+JAVA_HOME:=/usr
 MAVEN_HOME:=/usr/share/maven
 
 JAVA_PATH:=$(JAVA_HOME)/bin
@@ -33,7 +33,7 @@ OG_PORT:=8181
 
 RS_ADDR_LIST:=localhost
 AS_ADDR_LIST:=localhost
-PS_ADDR_LIST:=
+PS_ADDR_LIST:=localhost
 
 # These allow developers to override the variable
 -include $(TOP)/../CONFIG_COMMON.local

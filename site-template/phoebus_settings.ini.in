@@ -106,7 +106,7 @@ org.phoebus.logbook.ui/logbook_factory=olog
 org.phoebus.pv/default=ca
 
 # pv.ca
-org.phoebus.pv.ca/addr_list=@PS_CA_ADDR_LIST@
+org.phoebus.pv.ca/addr_list=127.0.0.1 @PS_CA_ADDR_LIST@
 #org.phoebus.pv.ca/name_servers=
 
 
