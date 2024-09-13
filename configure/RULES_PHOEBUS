@@ -2,7 +2,7 @@
 
 JAVAHOME = ${JAVA_HOME}
 
-.PHONY: phoebus build.phoebus
+.PHONY: depverify phoebus build.phoebus
 
 # Phoebus doesn't own phoebus.org, so we cannot download Phoebus snapshot from sonatype,
 # So, it is mandatory to build Phoebus first, before we build any of Alarm services.
@@ -21,7 +21,10 @@ endif
 	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(PS_SRC_ROOT)/pom.xml clean install -Dmaven.test.skip=true
 endif
 
-build.phoebus: phoebus
+build.phoebus: depverify phoebus
+
+depverify:
+	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) clean verify -f $(PS_SRC_ROOT)/dependencies/pom.xml
 
 .PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 
