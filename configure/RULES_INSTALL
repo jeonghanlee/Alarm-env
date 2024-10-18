@@ -45,7 +45,7 @@ install.alarm-config-logger: src_version src_preinst.alarm-config-logger
 .PHONY: uninstall uninstall.alarm-server uninstall.alarm-logger uninstall.alarm-config-logger
 
 
-uninstall: uninstall.alarm-server uninstall.alarm-logger uninstall.alarm-config-logger
+uninstall: uninstall.phoebus uninstall.alarm-server uninstall.alarm-logger uninstall.alarm-config-logger
 
 
 uninstall.alarm-server: sd_stop.alarm-server sd_disable.alarm-server sd_remove.alarm-server src_postrm.alarm-server

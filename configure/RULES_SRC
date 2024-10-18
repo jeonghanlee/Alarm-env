@@ -75,7 +75,7 @@ info.maven:
 
 .PHONY: build build.alarm-server build.alarm-logger build.alarm-config-logger 
 
-build: build.alarm-server build.alarm-logger build.alarm-config-logger
+build: build.phoebus build.alarm-server build.alarm-logger build.alarm-config-logger
 
 build.alarm-server:
 	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(SRC_PATH_SERVER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
@@ -87,13 +87,13 @@ build.alarm-config-logger:
 	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) -f $(SRC_PATH_CONFIGLOGGER)/pom.xml $(MVN_OPTS) clean install -Dmaven.test.skip=true --also-make 
 
 
-restart: restart.alarm-server restart.alarm-logger restart.alarm-config-logger
+#restart: restart.alarm-server restart.alarm-logger restart.alarm-config-logger
 
-restart.alarm-server: uninstall.alarm-server build.alarm-server sd_config.alarm-server install.alarm-server sd_start.alarm-server
+#restart.alarm-server: uninstall.alarm-server build.alarm-server sd_config.alarm-server install.alarm-server sd_start.alarm-server
 
-restart.alarm-logger: uninstall.alarm-logger build.alarm-logger sd_config.alarm-logger install.alarm-logger sd_start.alarm-logger
+#restart.alarm-logger: uninstall.alarm-logger build.alarm-logger sd_config.alarm-logger install.alarm-logger sd_start.alarm-logger
 
-restart.alarm-config-logger: uninstall.alarm-config-logger build.alarm-config-logger sd_config.alarm-config-logger install.alarm-config-logger sd_start.alarm-config-logger
+#restart.alarm-config-logger: uninstall.alarm-config-logger build.alarm-config-logger sd_config.alarm-config-logger install.alarm-config-logger sd_start.alarm-config-logger
 # .PHONY: build $(SRC_PATHS)
 
 
