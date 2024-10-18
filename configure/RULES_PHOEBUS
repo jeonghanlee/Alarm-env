@@ -27,7 +27,11 @@ depverify:
 
 # Alarm Log Table Customization (Table header, default visible options)
 prop.alarm-log-table:
-	cp $(PS_SITE_TEMPLATE_PATH)/$(LOGGER_LOGTABLE_MSG_PROPERTIES) $(PS_SRC_ROOT)/app/alarm/logging-ui/src/main/resources/org/phoebus/applications/alarm/logging/ui/messages.properities
+	$(QUIET)echo ">>> Remove the existing messages*.properties"
+	rm $(PS_SRC_ROOT)/app/alarm/logging-ui/src/main/resources/org/phoebus/applications/alarm/logging/ui/messages.properties
+	rm $(PS_SRC_ROOT)/app/alarm/logging-ui/src/main/resources/org/phoebus/applications/alarm/logging/ui/messages_fr.properties
+	$(QUIET)echo ">>> Copy the site customized messages.properties"
+	cp $(PS_SITE_TEMPLATE_PATH)/$(LOGGER_LOGTABLE_MSG_PROPERTIES) $(PS_SRC_ROOT)/app/alarm/logging-ui/src/main/resources/org/phoebus/applications/alarm/logging/ui/messages.properties
 
 .PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 
