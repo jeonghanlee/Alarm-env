@@ -3,11 +3,13 @@
 
 .PHONY: sd_install sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-config-logger 
 
+sd_install:
+	$(QUIET)echo "Currently, we disable the systemd configuration"
+#sd_install: sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-config-logger
+#	$(QUIET)$(SUDO) systemctl daemon-reload
 
-sd_install: sd_install.alarm-server sd_install.alarm-logger sd_install.alarm-config-logger
-	$(QUIET)$(SUDO) systemctl daemon-reload
-
-sd_install.alarm-server: __sd_install.alarm-server sd_enable.alarm-server
+sd_install.alarm-server:
+#sd_install.alarm-server: __sd_install.alarm-server sd_enable.alarm-server
 
 __sd_install.alarm-server: $(patsubst %, __sd_install.%, $(AS_CONFIG_TOPICS))
 
@@ -16,14 +18,16 @@ $(patsubst %, __sd_install.%, $(AS_CONFIG_TOPICS)): __sd_install.%: %
 	$(QUIET)$(SUDO) systemctl daemon-reload
 
 
-sd_install.alarm-logger: __sd_install.alarm-logger  sd_enable.alarm-logger
+sd_install.alarm-logger:
+#sd_install.alarm-logger: __sd_install.alarm-logger  sd_enable.alarm-logger
 
 __sd_install.alarm-logger:
 	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service $(SYSTEMD_PATH)/
 	$(QUIET)$(SUDO) systemctl daemon-reload
 
 
-sd_install.alarm-config-logger: __sd_install.alarm-config-logger  sd_enable.alarm-config-logger
+sd_install.alarm-config-logger:
+#sd_install.alarm-config-logger: __sd_install.alarm-config-logger  sd_enable.alarm-config-logger
 
 __sd_install.alarm-config-logger:
 	$(QUIET)$(SUDO) install -b -m 644 $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service $(SYSTEMD_PATH)/
@@ -32,16 +36,23 @@ __sd_install.alarm-config-logger:
 
 .PHONY: sd_clean sd_clean.alarm-server sd_clean.alarm-logger sd_clean.alarm-config-logger
 
-sd_clean: sd_clean.alarm-server sd_clean.alarm-logger sd_clean.alarm-config-logger
+sd_clean:
+#sd_clean: sd_clean.alarm-server sd_clean.alarm-logger sd_clean.alarm-config-logger
 
 sd_clean.alarm-server:
-	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)*.service
 
 sd_clean.alarm-logger:
-	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
 
 sd_clean.alarm-config-logger:
-	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
+
+#sd_clean.alarm-server:
+#	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_SERVER)*.service
+
+#sd_clean.alarm-logger:
+#	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_LOGGER).service
+
+#sd_clean.alarm-config-logger:
+#	rm -f $(PS_SITE_TEMPLATE_PATH)/$(TARGET_NAME_CONFIGLOGGER).service
 
 .PHONY: sd_config sd_config.alarm-server sd_config.alarm-logger sd_config.alarm-config-logger $(AS_CONFIG_TOPICS)
 
