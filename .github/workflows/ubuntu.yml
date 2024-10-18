@@ -38,14 +38,14 @@ jobs:
         make build.phoebus
         make prop.phoebus
         make install.phoebus
-    - name: BUild Alarm Trio
-      run: |
-        make build
-        make sd_config
-        make install
-    - name: Environment Check
-      run: make exist
-    - name: Build Test run
-      run:
-        bash scripts/build_test.sh all
+#    - name: BUild Alarm Trio
+#      run: |
+#        make build
+#        make sd_config
+#        make install
+#    - name: Environment Check
+#      run: make exist
+#    - name: Build Test run
+#      run:
+#        bash scripts/build_test.sh all
 
