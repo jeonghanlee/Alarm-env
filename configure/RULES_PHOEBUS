@@ -19,10 +19,15 @@ ifeq ($(UNAME_S),Darwin)
 endif
 endif
 
-build.phoebus: depverify phoebus
+build.phoebus: prop.alarm-log-table depverify phoebus
 
+# Java Dependency verification
 depverify:
 	$(QUIET)JAVA_HOME=$(JAVA_HOME) $(MAVEN_CMD) clean verify -f $(PS_SRC_ROOT)/dependencies/pom.xml
+
+# Alarm Log Table Customization (Table header, default visible options)
+prop.alarm-log-table:
+	cp $(PS_SITE_TEMPLATE_PATH)/$(LOGGER_LOGTABLE_MSG_PROPERTIES) $(PS_SRC_ROOT)/app/alarm/logging-ui/src/main/resources/org/phoebus/applications/alarm/logging/ui/messages.properities
 
 .PHONY: install.phoebus uninstall.phoebus sh.phoebus sh_clean.phoebus prop.phoebus prop_clean.phoebus 
 
@@ -84,3 +89,4 @@ prop.phoebus.clean: $(PHOEBUS_SETTINGS).in
 
 prop.phoebus.show: $(PHOEBUS_SETTINGS).in
 	$(QUIET)cat -b $(basename $<)
+

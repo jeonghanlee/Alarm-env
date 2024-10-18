@@ -91,7 +91,7 @@ src_version: FORCE
 	$(QUIET)echo "- SRC REMOTE URL   : $(PS_SRC_GITURL)"  >> $(PS_SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC SITE VERSION : $(PS_SRC_TAG)"     >> $(PS_SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC GIT  VERSION : "  >> $(PS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)cd $(PS_SRC_ROOT) && git describe --tags >> $(PS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)-cd $(PS_SRC_ROOT) && git describe --always >> $(PS_SITE_TEMPLATE_PATH)/.versions
 
 
 clean:
