@@ -2,6 +2,7 @@
 
 LOGGER_PROPERTIES:=alarm-logger.properties
 LOGGER_LOGGING_PROPERTIES:=alarm-logger_logging.properties
+LOGGER_LOGTABLE_MSG_PROPERTIES:=alarm-logger_logtable-messages.properties
 
 # All options are defined in AlarmLoggingServer.java
 #
