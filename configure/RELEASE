@@ -1,6 +1,7 @@
 ## Where the Source repository SRC_URL/SRC_NAME
 #
-PS_SRC_URL:=https://github.com/ControlSystemStudio
+#PS_SRC_URL:=https://github.com/ControlSystemStudio
+PS_SRC_URL:=https://github.com/jeonghanlee
 PS_SRC_NAME:=phoebus
 
 
@@ -13,7 +14,7 @@ PS_SRC_NAME:=phoebus
 ### 2024-01-10
 #PS_SRC_TAG:=tags/v4.7.3
 # 2024-10-09
-PS_SRC_TAG:=e3333ee
+PS_SRC_TAG:=alarm-log-table-refactor
 #PS_SRC_TAG:=master
 
 ### Placeholder for the site-specific version control 
